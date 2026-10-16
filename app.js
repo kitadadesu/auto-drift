@@ -32,7 +32,7 @@ function stop() {
   $('status').textContent = '停止中 · STARTで同じ旅を再開'; render();
 }
 async function start() {
-  if (requested && engine.running) return;
+  if (requested && engine.running && engine.ctx?.state === 'running' && !document.hidden) return;
   try {
     ensureJourney(); requested = true; const id = ++generation;
     $('start').disabled = true; $('stop').disabled = false;

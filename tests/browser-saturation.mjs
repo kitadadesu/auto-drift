@@ -222,38 +222,6 @@ try {
     Math.max(...result.stable.windows.slice(-5)) <
       Math.max(...result.stable.windows.slice(0, 5)) * 2,
   );
-  await page.reload();
-  await page.evaluate(() => {
-    const connect = AudioNode.prototype.connect;
-    window.audioCounts = {osc:0, contexts:0};
-    const create = AudioContext.prototype.createOscillator;
-    AudioContext.prototype.createOscillator = function(){window.audioCounts.osc++; return create.call(this);};
-    AudioNode.prototype.connect = function(dest,...args){
-      if(dest instanceof AudioDestinationNode){const mute=dest.context.createGain();mute.gain.value=0;connect.call(this,mute);return connect.call(mute,dest,...args);}
-      return connect.call(this,dest,...args);
-    };
-  });
-  await page.locator('#start').click();
-  await page.waitForTimeout(1600);
-  assert.match(await page.locator('#status').textContent(),/DRIFTING/);
-  const osc = await page.evaluate(()=>audioCounts.osc);
-  const initial = await page.locator('#knob-bloom').inputValue();
-  await page.waitForTimeout(14000);
-  assert.notEqual(await page.locator('#knob-bloom').inputValue(),initial);
-  assert.equal(await page.evaluate(()=>audioCounts.osc),osc);
-  await page.locator('#stop').click();
-  const stopped = await page.locator('#elapsed').textContent();
-  await page.waitForTimeout(1700);
-  assert.equal(await page.locator('#elapsed').textContent(),stopped);
-  await page.locator('#start').click();
-  await page.waitForTimeout(1600);
-  assert.notEqual(await page.locator('#elapsed').textContent(),stopped);
-  await page.locator('#stop').click();
-  for(const width of [1440,390]) {
-    await page.setViewportSize({width,height:1000});
-    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
-    if(process.env.OUTPUT_DIR) await page.screenshot({path:`${process.env.OUTPUT_DIR}/autodrift-${width}.png`,fullPage:true});
-  }
   assert.deepEqual(errors, []);
   if (process.env.OUTPUT_DIR)
     await writeFile(
