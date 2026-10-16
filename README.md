@@ -13,10 +13,14 @@
 
 非表示タブでは音声とタイムラインを停止し、復帰時に同じ場所から再開します。ブラウザがAudioContextを中断した場合はSTARTで復帰してください。画面ロックやOSによる強制終了後の永続復元はありません。音色変化は数分単位なので、最初の数秒はゆっくりです。
 
+HISTORYは最初の和音・開始シーンから和声採用と音色目標・25%ごとの進捗・到達を記録します。パネル内スクロール、直近600イベント、JSON出力に対応。STOP/RESUMEで保持し、新しい旅で消去します。時刻は旅の経過時間です。
+
+Inharmonicityは起動1%、通常シーン0〜3%程度、DISSOLVE約6%、自動生成上限8%。手動操作は全範囲を維持し、35秒保持＋12秒で自動範囲へ戻ります。
+
 ## 実装
 
-- `audio.js` / `autoplay.js` / `harmony.js` / `music.js` / `chords.js` / `notes.js`: Fret Drift main `46d7c1a`から再利用。声部の共通音、Wander、Edge→通常解決、可変間隔、採用履歴と120秒以上の実証的転調を維持。
-- `journey.js`: 和声の長時間進行。到着には主音低音・主和音反復・直近履歴の調性支持・滞在が必要。未成立目標は5分で破棄し、ラベルだけの転調をしません。密な音響では和声間隔を延ばします。
+- `audio.js` / `autoplay.js` / `harmony.js` / `music.js` / `chords.js` / `notes.js`: Fret Drift main `46d7c1a`から再利用。声部の共通音、Wander、Edge→通常解決、可変間隔、採用履歴と180秒以上の実証的転調を維持。
+- `journey.js`: 和声の長時間進行。到着には主音低音・主和音反復・直近履歴の調性支持・滞在が必要。未成立目標は7分で破棄し、ラベルだけの転調をしません。密な音響では和声間隔を延ばします。
 - `texture.js`: 試作コミット `453ec051893be67d5b45a54211d2337609ff5d7c`を拡張。HOLLOW / CLEAR / HAZE / GLOW / DISSOLVEを確率選択し、毎回異なる目標値・継続時間・パラメーター別オフセットでモーフ。約25分周期の緩い大局的傾向を重ね、シーン順は固定しません。
 - `app.js`: 共有のアクティブ時間。500msごとの軽いUI/進行更新、`Drone.update`は最大1Hz。既存AudioParam平滑化、最大36発振器、固定エフェクト網を維持。Volumeは初期55%で固定し、無音シーンを作りません。
 - Shimmerの非共振LP/HP、feedback上限0.94、固定PRE/POST Saturation、DC除去を保持。自動制御のDecayは最大10.5秒で、高Drive・高Character時はDecay≤8秒、Shimmer≤65%。人工Feedback演奏は未実装。

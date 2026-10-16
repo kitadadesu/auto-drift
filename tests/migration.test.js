@@ -53,7 +53,7 @@ test("Migration probabilistically selects different close keys, excludes recent 
   assert.ok(migrationTarget(sparse));
   assert.ok(beginMigration(initialMigration(), context).target);
 });
-test("Arrival requires actual tonic bass, third, repeated evidence, dwell and two minutes", () => {
+test("Arrival requires actual tonic bass, third, repeated evidence, dwell and three minutes", () => {
   let context = createContext(g),
     state = { ...initialMigration(), target: key, from: "7:major" };
   for (let i = 0; i < 8; i++) {
@@ -70,7 +70,7 @@ test("Arrival requires actual tonic bass, third, repeated evidence, dwell and tw
   }
   state = { ...initialMigration(), target: key, from: "7:major" };
   context = createContext(c);
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 8; i++) {
     context = accept(context, c);
     state = advanceMigration(state, context, c, c, 20000);
     assert.equal(state.arrived, false);
@@ -79,7 +79,7 @@ test("Arrival requires actual tonic bass, third, repeated evidence, dwell and tw
   assert.ok(state.arrived);
   assert.deepEqual(state.recent, ["7:major"]);
   const bad = advanceMigration(
-    { ...state, elapsed: 300000, arrived: false },
+    { ...state, elapsed: 420000, arrived: false },
     createContext(g),
     g,
     g,
@@ -175,14 +175,14 @@ test("Clock active duration excludes pause, resets stop and invalidates old call
   }
 });
 
-test("seeded migration reaches a new tonal center through adopted chords near two minutes", () => {
+test("seeded migration reaches a new tonal center through adopted chords after the three-minute minimum", () => {
   let seed = 23;
   const rng = () => (seed = (1664525 * seed + 1013904223) >>> 0) / 2 ** 32;
   let current = [40, 45, 50, 55, 59, 64],
     context = createContext(current),
     state = { ...initialDrift(), migration: initialMigration() };
   let arrival = null;
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < 70; i++) {
     state.migration = beginMigration(state.migration, context, rng);
     const m = state.migration;
     const next = chooseNext(
@@ -204,7 +204,7 @@ test("seeded migration reaches a new tonal center through adopted chords near tw
     }
   }
   assert.ok(arrival);
-  assert.ok(arrival.elapsed >= 120000 && arrival.elapsed <= 240000);
+  assert.ok(arrival.elapsed >= 180000 && arrival.elapsed <= 420000);
   assert.notEqual(keyId(arrival.target), arrival.from);
   assert.ok(arrival.visits >= 2);
   assert.ok(arrival.stable >= 18000);

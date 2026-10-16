@@ -35,10 +35,17 @@ const browser = await chromium.launch({
 try {
   const page = await browser.newPage(),
     errors = [];
+  page.setDefaultTimeout(10000);
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto(`http://127.0.0.1:${port}`);
+  await page.goto(`http://127.0.0.1:${server.address().port}`);
 
-  await page.evaluate(() => {
+  await page.evaluate(async () => {
+    const {Drone} = await import('./audio.js');
+    const move = Drone.prototype.move;
+    Drone.prototype.move = function(notes){window.adoptedNotes=[...notes];return move.call(this,notes);};
+    const fill = CanvasRenderingContext2D.prototype.fillText;
+    window.pitchLabels=[];
+    CanvasRenderingContext2D.prototype.fillText=function(text,...args){if(/^\d · /.test(text))window.pitchLabels.push(text);return fill.call(this,text,...args);};
     const connect = AudioNode.prototype.connect;
     window.audioCounts = {osc:0, contexts:0};
     const create = AudioContext.prototype.createOscillator;
@@ -48,15 +55,25 @@ try {
       return connect.call(this,dest,...args);
     };
   });
-  assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).backgroundColor),'rgb(16, 21, 29)');
+  assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).backgroundColor),'rgb(12, 20, 27)');
+  await page.locator('#auto-texture').uncheck();
+  await page.locator('#auto-texture').check();
   await page.locator('#start').click();
   await page.waitForTimeout(1600);
   assert.match(await page.locator('#status').textContent(),/DRIFTING/);
+  console.log('started');
+  await page.locator('#history summary').click();
+  await page.waitForFunction(()=>document.querySelectorAll('#history-list li').length===2);
+  assert.equal(await page.locator('#history-list li').count(),2);
+  assert.match(await page.locator('#history-list').textContent(),/E2.*B2.*E3/);
+  console.log('history visible');
   const osc = await page.evaluate(()=>audioCounts.osc);
   const initial = await page.locator('.knob input').evaluateAll(es=>es.map(e=>e.value).join(','));
   await page.waitForTimeout(14000);
   assert.notEqual(await page.locator('.knob input').evaluateAll(es=>es.map(e=>e.value).join(',')),initial);
   assert.equal(await page.evaluate(()=>audioCounts.osc),osc);
+  assert.ok(await page.evaluate(async()=>{const {note}=await import('./music.js');return adoptedNotes.length===6 && pitchLabels.slice(-6).every((label,i)=>label===(6-i)+' · '+note(adoptedNotes[i]));}));
+  assert.ok((await page.locator('#history-list li').count())>2);
   await page.locator('#stop').click();
   const stopped = await page.locator('#elapsed').textContent();
   await page.waitForTimeout(1700);
@@ -64,7 +81,8 @@ try {
   await page.locator('#start').click();
   await page.waitForTimeout(1600);
   assert.notEqual(await page.locator('#elapsed').textContent(),stopped);
-  await page.evaluate(() => audioCtx.suspend());
+  console.log('stop/resume pass');
+  await page.evaluate(() => { void audioCtx.suspend(); });
   const paused = await page.locator('#elapsed').textContent();
   await page.waitForTimeout(1200);
   assert.equal(await page.locator('#elapsed').textContent(), paused);
@@ -79,11 +97,29 @@ try {
   await page.waitForTimeout(1600);
   assert.notEqual(await page.locator('#elapsed').textContent(), hidden);
   await page.locator('#stop').click();
-  for(const width of [1440,390]) {
-    await page.setViewportSize({width,height:1000});
+  for(const [width,height] of [[1440,900],[1366,768],[390,844]]) {
+    console.log('viewport',width,height);
+    await page.setViewportSize({width,height});
     assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+    if(width>950) assert.ok(await page.evaluate(()=>document.documentElement.scrollHeight<=innerHeight+1),'desktop scroll');
+    await page.locator('.sound-details:not(#history) summary').click();
+    assert.equal(await page.locator('.knob input').count(),23);
+    for(const el of await page.locator('.knob input').all()) {await el.evaluate(e=>{e.value=e.min;e.dispatchEvent(new Event('input',{bubbles:true}));});}
+    await page.locator('#knob-inharmonicity').evaluate(e=>{e.value='0.8';e.dispatchEvent(new Event('input',{bubbles:true}));});
+    assert.equal(await page.locator('#value-inharmonicity').textContent(),'80%');
+    if(width>950) assert.ok(await page.evaluate(()=>document.documentElement.scrollHeight<=innerHeight+1),'expanded scroll');
+    await page.locator('.sound-details:not(#history) summary').click();
+    await page.locator('#history summary').click();
     if(process.env.OUTPUT_DIR) await page.screenshot({path:`${process.env.OUTPUT_DIR}/autodrift-${width}.png`,fullPage:true});
   }
+  // 1366×768 at browser 125% zoom exposes approximately 1093×614 CSS pixels.
+  await page.setViewportSize({width:1093,height:614});
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollHeight<=innerHeight+1),'125% scroll');
+  await page.locator('#reset').click();
+  assert.equal(await page.locator('#history-list li').count(),0);
+  await page.locator('#start').click();
+  await page.waitForTimeout(1000);
+  assert.equal(await page.locator('#history-list li').count(),2);
   assert.deepEqual(errors, []);
  console.log("AutoDrift UI / audio start, moving knobs, fixed oscillator count, stop-resume, desktop/mobile: PASS");
 } finally {
