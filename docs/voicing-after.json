@@ -1,0 +1,238 @@
+{
+  "reports": [
+    {
+      "seed": 23,
+      "controls": {
+        "wander": 0.25,
+        "edge": 0.08
+      },
+      "minutes": 10,
+      "transitions": 39,
+      "crowding": 0.12029914529914529,
+      "roughness": 1.0808005136476293,
+      "harmonies": 29,
+      "registers": 39,
+      "edges": 0,
+      "arrivals": 1,
+      "range": [
+        34,
+        67
+      ],
+      "maxLeap": 4,
+      "pool": 135,
+      "poolHarmonies": 49,
+      "multipleRegisters": 47,
+      "meanMs": 67.28033448717947,
+      "p95Ms": 94.87129199999981,
+      "maxMs": 100.73808399999984
+    },
+    {
+      "seed": 23,
+      "controls": {
+        "wander": 0.25,
+        "edge": 0.08
+      },
+      "minutes": 30,
+      "transitions": 122,
+      "crowding": 0.08784153005464482,
+      "roughness": 0.8670738812886426,
+      "harmonies": 62,
+      "registers": 121,
+      "edges": 1,
+      "arrivals": 5,
+      "range": [
+        31,
+        76
+      ],
+      "maxLeap": 6,
+      "pool": 144,
+      "poolHarmonies": 48,
+      "multipleRegisters": 48,
+      "meanMs": 71.00538116393443,
+      "p95Ms": 106.81116699999984,
+      "maxMs": 280.62645900000007
+    },
+    {
+      "seed": 23,
+      "controls": {
+        "wander": 0.25,
+        "edge": 0.08
+      },
+      "minutes": 60,
+      "transitions": 239,
+      "crowding": 0.05320781032078105,
+      "roughness": 0.763155550126337,
+      "harmonies": 99,
+      "registers": 238,
+      "edges": 2,
+      "arrivals": 10,
+      "range": [
+        31,
+        79
+      ],
+      "maxLeap": 6,
+      "pool": 120,
+      "poolHarmonies": 41,
+      "multipleRegisters": 38,
+      "meanMs": 75.8494246903766,
+      "p95Ms": 100.73808399999984,
+      "maxMs": 1260.434041999999
+    },
+    {
+      "seed": 91,
+      "controls": {
+        "wander": 0.25,
+        "edge": 0.08
+      },
+      "minutes": 10,
+      "transitions": 41,
+      "crowding": 0.19024390243902442,
+      "roughness": 0.8097864212066423,
+      "harmonies": 28,
+      "registers": 41,
+      "edges": 0,
+      "arrivals": 0,
+      "range": [
+        37,
+        76
+      ],
+      "maxLeap": 4,
+      "pool": 122,
+      "poolHarmonies": 40,
+      "multipleRegisters": 38,
+      "meanMs": 56.951870999999876,
+      "p95Ms": 67.00750000000335,
+      "maxMs": 71.69241700000202
+    },
+    {
+      "seed": 91,
+      "controls": {
+        "wander": 0.25,
+        "edge": 0.08
+      },
+      "minutes": 30,
+      "transitions": 120,
+      "crowding": 0.08402777777777778,
+      "roughness": 0.6383343147055588,
+      "harmonies": 51,
+      "registers": 120,
+      "edges": 0,
+      "arrivals": 2,
+      "range": [
+        35,
+        83
+      ],
+      "maxLeap": 6,
+      "pool": 120,
+      "poolHarmonies": 39,
+      "multipleRegisters": 38,
+      "meanMs": 59.99107646666692,
+      "p95Ms": 78.93929199999911,
+      "maxMs": 100.07216700000208
+    },
+    {
+      "seed": 91,
+      "controls": {
+        "wander": 0.25,
+        "edge": 0.08
+      },
+      "minutes": 60,
+      "transitions": 240,
+      "crowding": 0.04201388888888889,
+      "roughness": 0.47453563032106716,
+      "harmonies": 88,
+      "registers": 240,
+      "edges": 0,
+      "arrivals": 5,
+      "range": [
+        33,
+        106
+      ],
+      "maxLeap": 6,
+      "pool": 119,
+      "poolHarmonies": 38,
+      "multipleRegisters": 38,
+      "meanMs": 59.62075560416671,
+      "p95Ms": 80.15849999999773,
+      "maxMs": 108.59149999999863
+    },
+    {
+      "seed": 19,
+      "controls": {
+        "wander": 1,
+        "edge": 1
+      },
+      "minutes": 10,
+      "transitions": 40,
+      "crowding": 0.10604166666666667,
+      "roughness": 0.8683236126495576,
+      "harmonies": 26,
+      "registers": 40,
+      "edges": 4,
+      "arrivals": 1,
+      "range": [
+        38,
+        76
+      ],
+      "maxLeap": 4,
+      "pool": 170,
+      "poolHarmonies": 58,
+      "multipleRegisters": 55,
+      "meanMs": 64.89395517499925,
+      "p95Ms": 126.747666999996,
+      "maxMs": 132.80504199999996
+    },
+    {
+      "seed": 19,
+      "controls": {
+        "wander": 1,
+        "edge": 1
+      },
+      "minutes": 30,
+      "transitions": 120,
+      "crowding": 0.037430555555555564,
+      "roughness": 0.5846425984693477,
+      "harmonies": 54,
+      "registers": 120,
+      "edges": 9,
+      "arrivals": 2,
+      "range": [
+        28,
+        86
+      ],
+      "maxLeap": 4,
+      "pool": 165,
+      "poolHarmonies": 55,
+      "multipleRegisters": 55,
+      "meanMs": 63.63957325833314,
+      "p95Ms": 100.89233300000342,
+      "maxMs": 132.80504199999996
+    },
+    {
+      "seed": 19,
+      "controls": {
+        "wander": 1,
+        "edge": 1
+      },
+      "minutes": 60,
+      "transitions": 236,
+      "crowding": 0.01903248587570622,
+      "roughness": 0.3822509969140914,
+      "harmonies": 91,
+      "registers": 235,
+      "edges": 14,
+      "arrivals": 5,
+      "range": [
+        26,
+        103
+      ],
+      "maxLeap": 5,
+      "pool": 144,
+      "poolHarmonies": 48,
+      "multipleRegisters": 48,
+      "meanMs": 63.2920711822033,
+      "p95Ms": 92.65287499999977,
+      "maxMs": 132.80504199999996
+    }
+  ]
+}

@@ -41,6 +41,57 @@ export const soundKey = (v) =>
   pcs(v)
     .sort((a, b) => a - b)
     .join(",");
+// Slot-sensitive identity for voice leading; soundKey remains harmonic identity.
+export const voicingKey = (v) => v.map((n) => n ?? "_").join(",");
+const registerKey = (v) => pitches(v).sort((a, b) => a - b).join(",");
+// Fixed harmonic reference approximating audio.js's core + 2/3/4/6 partials.
+// This is a ranking proxy, not a measurement of the current effects or timbre.
+const spectrum = [[1, 1], [2, 0.30], [3, 0.22], [4, 0.14], [6, 0.09]];
+const pairCache = new Map(); // At most 116*117/2 MIDI pairs; never grows with history.
+function pairColor(a, b) {
+  if (a > b) [a, b] = [b, a];
+  const id = a * 128 + b;
+  if (pairCache.has(id)) return pairCache.get(id);
+  const gap = b - a;
+  const low = Math.max(0, Math.min(1, (60 - a) / 24));
+  const crowding = gap < 5 ? low * (5 - gap) / 5 : 0;
+  const fa = 440 * 2 ** ((a - 69) / 12), fb = 440 * 2 ** ((b - 69) / 12);
+  let roughness = 0;
+  for (const [ra, wa] of spectrum)
+    for (const [rb, wb] of spectrum) {
+      const x = fa * ra, y = fb * rb;
+      const separation = 0.24 * Math.abs(x - y) / (0.021 * Math.min(x, y) + 19);
+      roughness += wa * wb * (Math.exp(-3.5 * separation) - Math.exp(-5.75 * separation));
+    }
+  const value = { crowding, roughness };
+  pairCache.set(id, value);
+  return value;
+}
+export function voicingColor(v) {
+  const notes = pitches(v).sort((a, b) => a - b);
+  let crowding = 0, roughness = 0;
+  for (let i = 0; i < notes.length; i++)
+    for (let j = i + 1; j < notes.length; j++) {
+      const pair = pairColor(notes[i], notes[j]);
+      crowding += pair.crowding;
+      roughness += pair.roughness;
+    }
+  // Reward bass space only below middle C; no reward for unlimited widening.
+  const bassSpace = notes.length > 1
+    ? Math.min(1, (notes[1] - notes[0]) / 7) * Math.max(0, Math.min(1, (60 - notes[0]) / 24)) : 0;
+  const penalty = Math.min(6, crowding * 2 + roughness * 3);
+  return { crowding, roughness, bassSpace, score: bassSpace * 0.8 - penalty };
+}
+// Soft tether after an octave of drift: otherwise any roughness proxy can game
+// its score by continually climbing, eventually losing the ambient bass register.
+export function registerDrift(v, origin) {
+  const notes = pitches(v), start = pitches(origin);
+  if (!notes.length || !start.length) return 0;
+  const mean = (a) => a.reduce((sum, n) => sum + n, 0) / a.length;
+  return Math.min(4,
+    Math.max(0, Math.abs(mean(notes) - mean(start)) - 12) * 0.12 +
+    Math.max(0, Math.abs(Math.min(...notes) - Math.min(...start)) - 12) * 0.12);
+}
 const valid = (v) =>
   Array.isArray(v) &&
   v.length === 6 &&
@@ -297,6 +348,49 @@ export function voiceChord(source, target, maxLeap = 7) {
   }
   return states.get((1 << target.length) - 1)?.v ?? null;
 }
+/** Bounded k-best coverage DP: four paths per mask, up to three actual registers per
+ * chord including the original optimum. Every path retains mute slots and maxLeap.
+ * Incremental acoustic costs allow an open alternative to survive early pruning.
+ */
+export function voiceChordVariants(source, target, maxLeap = 7) {
+  const baseline = voiceChord(source, target, maxLeap);
+  if (!baseline) return [];
+  const slots = source.flatMap((n, i) => n === null ? [] : [i]);
+  let states = new Map([[0, [{ cost: 0, v: Array(6).fill(null) }]]]);
+  for (const slot of slots) {
+    const next = new Map();
+    for (const [mask, paths] of states)
+      for (const path of paths)
+        for (let d = -maxLeap; d <= maxLeap; d++) {
+          const n = source[slot] + d, idx = target.indexOf(mod12(n));
+          if (n < 12 || n > 127 || idx < 0) continue;
+          const m = mask | (1 << idx);
+          let interaction = 0;
+          for (const old of path.v) {
+            if (old === null) continue;
+            const pair = pairColor(old, n);
+            interaction += pair.crowding * 4 + pair.roughness * 6;
+          }
+          const cost = path.cost + Math.abs(d) + d * d * 0.1 + interaction;
+          const bucket = next.get(m) ?? [];
+          if (bucket.length === 4 && cost >= bucket[3].cost) continue;
+          const v = [...path.v];
+          v[slot] = n;
+          const at = bucket.findIndex((p) => p.cost > cost);
+          bucket.splice(at < 0 ? bucket.length : at, 0, { cost, v });
+          if (bucket.length > 4) bucket.pop();
+          next.set(m, bucket);
+        }
+    states = next;
+  }
+  const paths = states.get((1 << target.length) - 1) ?? [];
+  const unique = new Map([[registerKey(baseline), baseline]]);
+  for (const { v } of paths) {
+    if (unique.size >= 3) break;
+    if (!unique.has(registerKey(v))) unique.set(registerKey(v), v);
+  }
+  return [...unique.values()];
+}
 /** Atlas scale-index arithmetic: never quantize an outside-scale tone silently. */
 export function shiftScale(v, k, steps) {
   const scale = scales[k.mode];
@@ -373,9 +467,9 @@ export function candidatePool(v, state = createContext(v), edge = false) {
     count = pitches(v).length,
     sourceDegree = classify(v, k).degree;
   const candidates = new Map();
-  const add = (target, kind, root = null) => {
+  const add = (target, kind, root = null, assigned = false) => {
     if (!target) return;
-    const result = assignVoices(v, pitches(target));
+    const result = assigned ? target : assignVoices(v, pitches(target));
     if (!result || result.every((n, i) => n === v[i])) return;
     const cmp = comparison(v, result),
       set = pcs(result),
@@ -403,8 +497,10 @@ export function candidatePool(v, state = createContext(v), edge = false) {
     const novelty = state.accepted
       .slice(-4)
       .filter((a) => soundKey(a) === soundKey(result)).length;
+    const color = voicingColor(result);
+    const colorBias = color.score * (edge ? 0.35 : 0.7);
     const score =
-      harmonic +
+      harmonic + colorBias - registerDrift(result, state.origin) +
       (resolving ? resolutionScore(v, result, state) : 0) +
       cmp.common.length * 1.1 +
       cmp.retained.length * 0.5 +
@@ -415,7 +511,7 @@ export function candidatePool(v, state = createContext(v), edge = false) {
       (edge ? Math.min(outside, 3) * 2.2 : -outside * 3) +
       (kind === "音階内の全声部変換" ? 2 : 0) -
       (chord?.score ?? 0) * 0.12;
-    const id = soundKey(result);
+    const id = voicingKey(result);
     const item = {
       voicing: result,
       name:
@@ -424,6 +520,8 @@ export function candidatePool(v, state = createContext(v), edge = false) {
       root: root ?? chord?.root,
       degree,
       score,
+      color,
+      colorBias,
       outside,
       comparison: cmp,
       key: keyLabel(k),
@@ -448,7 +546,15 @@ export function candidatePool(v, state = createContext(v), edge = false) {
       const shifted = shiftScale(v, key, step);
       if (shifted) add(shifted, "音階内の全声部変換");
     }
-  const addSet = (set, kind, root) => add(voiceChord(v, set), kind, root);
+  const variants = new Map();
+  const addSet = (set, kind, root) => {
+    // Complete-set paths cannot change these harmonic eligibility checks.
+    const outside = set.filter((p) => !scale.includes(p)).length;
+    if ((edge && !outside) || (!edge && outside > 1) || set.length > count) return;
+    const id = [...set].sort((a, b) => a - b).join(",");
+    if (!variants.has(id)) variants.set(id, voiceChordVariants(v, [...set].sort((a, b) => a - b)));
+    for (const variant of variants.get(id)) add(variant, kind, root, true);
+  };
   // Third-stacked triads, sevenths, ninths, elevenths and sixth/add-nine colors.
   for (const key of [
     k,
@@ -518,20 +624,23 @@ export function propose(v, state, edge = false, seed = 0, seen = []) {
     (c) => c.score >= ranked[0].score - (edge ? 10 : 8),
   );
   let available = eligible.filter((c) => !seen.includes(soundKey(c.voicing)));
-  if (available.length < 4) available = [...eligible];
+  if (new Set(available.map((c) => soundKey(c.voicing))).size < 4) available = [...eligible];
   const result = [],
     random = seeded(seed);
   while (result.length < 4 && available.length) {
+    const counts = new Map();
+    for (const c of available) counts.set(soundKey(c.voicing), (counts.get(soundKey(c.voicing)) ?? 0) + 1);
     const weights = available.map(
       (c) =>
         Math.exp((c.score - ranked[0].score) / 3) /
-        (1 + result.filter((r) => r.root === c.root).length * 3),
+        ((1 + result.filter((r) => r.root === c.root).length * 3) * counts.get(soundKey(c.voicing))),
     );
     let point = random() * weights.reduce((a, b) => a + b, 0);
     let idx = weights.findIndex((w) => (point -= w) < 0);
     if (idx < 0) idx = 0;
     result.push(available[idx]);
-    available.splice(idx, 1);
+    const selectedKey = soundKey(available[idx].voicing);
+    available = available.filter((c) => soundKey(c.voicing) !== selectedKey);
   }
   return result;
 }

@@ -2,6 +2,7 @@ import {
   candidatePool,
   comparison,
   soundKey,
+  voicingKey,
   centerKey,
   keyId,
   scaleOf,
@@ -224,20 +225,26 @@ export function chooseNext(
   ) {
     const targetContext = { ...context, center: keyId(state.migration.target) };
     const additions = pool(current, targetContext, false);
-    const seen = new Set(candidates.map((c) => soundKey(c.voicing)));
+    const seen = new Set(candidates.map((c) => voicingKey(c.voicing)));
     candidates = [
       ...candidates,
-      ...additions.filter((c) => !seen.has(soundKey(c.voicing))),
+      ...additions.filter((c) => !seen.has(voicingKey(c.voicing))),
     ];
   }
   // Keep the existing voice-leading grammar and reject the weakest musical candidates.
   const best = Math.max(...candidates.map((c) => c.score));
   candidates = candidates.filter((c) => c.score >= best - 12);
+  const counts = new Map();
+  for (const c of candidates) counts.set(soundKey(c.voicing), (counts.get(soundKey(c.voicing)) ?? 0) + 1);
   const candidate = weightedChoice(
     candidates,
     candidates.map(
       (c) =>
-        autoScore(c, current, context, state) +
+        autoScore(c, current, context, state) -
+        // Acoustic preference relaxes during Wander without changing harmonic tension.
+        (c.colorBias ?? 0) * 0.65 * state.wander * 0.65 -
+        // weightedChoice uses temperature 2.4: normalize harmonic mass by variants.
+        2.4 * Math.log(counts.get(soundKey(c.voicing))) +
         (settings.migration ? migrationBias(c, current, state.migration) : 0),
     ),
     rng,
