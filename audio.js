@@ -14,7 +14,7 @@ export const defaults = {
   character: 0.15,
   saturationMix: 0.4,
   saturationPost: 0,
-  inharmonicity: 0.12,
+  inharmonicity: 0.01,
   drift: 0.4,
   detune: 7,
   attack: 1.2,

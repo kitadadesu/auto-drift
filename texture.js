@@ -13,6 +13,7 @@ export const textureBounds = {
   reverb: [0, 0.85], delay: [0, 0.52], detune: [0, 26],
 };
 Object.assign(textureBounds, { saturationPost: [0,1], glide: [1,8], attack: [.4,4], decay: [.5,4], sustain: [.55,.9], release: [1,5], time: [.15,1.2], feedback: [.05,.5] });
+export const autoInharmonicityMax = .08;
 const clamp = (x, lo = 0, hi = 1) => Math.max(lo, Math.min(hi, x));
 const lerp = (a, b, t) => a + (b - a) * t;
 const smooth = (v) => { const x = clamp(v); return x * x * (3 - 2 * x); };
@@ -22,23 +23,23 @@ const smooth = (v) => { const x = clamp(v); return x * x * (3 - 2 * x); };
 // destinations with different delayed envelopes. Distinct characters emerge
 // every ~1–3 minutes, while the 25-minute macro arc stays slower.
 export const textureScenes = {
-  HOLLOW: { bloom: .02, harmonics: .015, inharmonicity: .01, drift: .10,
+  HOLLOW: { bloom: .02, harmonics: .015, inharmonicity: 0, drift: .10,
     dryDrift: .01, wetDrift: .01, shimmer: .02, shimmerDecay: 2,
     diffusion: .08, drive: .015, character: .02, saturationMix: .05,
     reverb: .12, delay: .01, detune: 1 },
-  CLEAR: { bloom: .36, harmonics: .13, inharmonicity: .03, drift: .20,
+  CLEAR: { bloom: .36, harmonics: .13, inharmonicity: .005, drift: .20,
     dryDrift: .07, wetDrift: .12, shimmer: .13, shimmerDecay: 4,
     diffusion: .25, drive: .09, character: .04, saturationMix: .16,
     reverb: .26, delay: .08, detune: 4 },
-  HAZE: { bloom: .92, harmonics: .16, inharmonicity: .12, drift: .47,
+  HAZE: { bloom: .92, harmonics: .16, inharmonicity: .015, drift: .47,
     dryDrift: .27, wetDrift: .73, shimmer: .63, shimmerDecay: 8.2,
     diffusion: .86, drive: .09, character: .08, saturationMix: .23,
     reverb: .55, delay: .25, detune: 14 },
-  GLOW: { bloom: .98, harmonics: .93, inharmonicity: .23, drift: .72,
+  GLOW: { bloom: .98, harmonics: .93, inharmonicity: .025, drift: .72,
     dryDrift: .19, wetDrift: .38, shimmer: .30, shimmerDecay: 6.2,
     diffusion: .57, drive: .46, character: .27, saturationMix: .45,
     reverb: .25, delay: .13, detune: 11 },
-  DISSOLVE: { bloom: .65, harmonics: .77, inharmonicity: .82, drift: .94,
+  DISSOLVE: { bloom: .65, harmonics: .77, inharmonicity: .06, drift: .94,
     dryDrift: .53, wetDrift: .87, shimmer: .31, shimmerDecay: 6.5,
     diffusion: .85, drive: .82, character: .93, saturationMix: .52,
     reverb: .38, delay: .23, detune: 21 },
@@ -65,24 +66,27 @@ export function chooseTextureScene(scene, previous = null, rng = Math.random) {
   if (noBacktrack.length) pool = noBacktrack;
   return pool[Math.min(pool.length - 1, Math.floor(rng() * pool.length))];
 }
-export function safeTextureValues(values) {
+export function safeTextureValues(values, balance = true) {
   const out = {};
   for (const k of textureKeys) {
     const [lo, hi] = textureBounds[k];
     out[k] = clamp(Number.isFinite(values[k]) ? values[k] : lo, lo, hi);
   }
+  out.inharmonicity = Math.min(out.inharmonicity, autoInharmonicityMax);
   // An aggressive folded spectrum and a very loud shimmer return should not
   // reach maximum level together, regardless of random target variation.
   // Prevent simultaneous full-spectrum partials, smeared wet tails and
   // intermodulation distortion from burying the six-note harmony. Keep the
   // contrast between *dry bright* and *wet soft* scenes pronounced.
   const density = clamp((out.harmonics*.57 + out.drive*.46 + out.saturationMix*.28 + out.bloom*.18 - .56)/.65);
-  out.shimmer *= 1 - density*.43;
-  out.reverb *= 1 - density*.38;
-  out.delay *= 1 - density*.27;
-  if (out.drive > .65 && out.character > .65) {
-    out.shimmer = Math.min(out.shimmer, .42);
-    out.shimmerDecay = Math.min(out.shimmerDecay, 7.5);
+  if (balance) {
+    out.shimmer *= 1 - density*.43;
+    out.reverb *= 1 - density*.38;
+    out.delay *= 1 - density*.27;
+    if (out.drive > .65 && out.character > .65) {
+      out.shimmer = Math.min(out.shimmer, .42);
+      out.shimmerDecay = Math.min(out.shimmerDecay, 7.5);
+    }
   }
   return out;
 }
@@ -98,15 +102,15 @@ function destination(name, rng) {
   const values = {};
   for (const k of textureKeys) {
     const [lo, hi] = textureBounds[k];
-    // ±5% of knob range makes repeated visits related but not identical.
-    values[k] = clamp(profile[k] + (rng() - .5) * (hi - lo) * .10, lo, hi);
+    // Vary ordinary knobs ±5%; inharmonicity only ±0.2 percentage points.
+    values[k] = clamp(profile[k] + (rng() - .5) * (k === "inharmonicity" ? .004 : (hi - lo) * .10), lo, hi);
   }
   return safeTextureValues(values);
 }
 export class TextureDrift {
   constructor(manual, rng = Math.random) {
     this.manual = { ...manual };
-    this.values = { ...manual };
+    this.values = { ...manual, inharmonicity: clamp(manual.inharmonicity, 0, autoInharmonicityMax) };
     this.rng = rng;
     this.enabled = false;
     this.returning = false;
@@ -202,8 +206,10 @@ export class TextureDrift {
     const desired = {};
     for (const k of textureKeys) {
       const progress = smooth((raw - p.offsets[k]) / (1 - p.offsets[k]));
-      const profile = lerp(this.manual[k], p.target[k], this.depth);
-      const automatic = lerp(p.from[k], profile, progress);
+      const baseline = k === "inharmonicity" ? clamp(this.manual[k], 0, autoInharmonicityMax) : this.manual[k];
+      const from = k === "inharmonicity" ? clamp(p.from[k], 0, autoInharmonicityMax) : p.from[k];
+      const profile = lerp(baseline, p.target[k], this.depth);
+      const automatic = lerp(from, profile, progress);
       const override = this.overrides.get(k);
       if (!override) desired[k] = automatic;
       else if (this.elapsed < override.until) desired[k] = override.value;
@@ -215,7 +221,10 @@ export class TextureDrift {
         desired[k] = automatic;
       }
     }
-    this.values = { ...this.values, ...safeTextureValues(desired) };
+    // Manual overrides retain the full knob range through their smooth release.
+    const safe = safeTextureValues(desired, false);
+    if (this.overrides.has("inharmonicity")) safe.inharmonicity = clamp(desired.inharmonicity);
+    this.values = { ...this.values, ...safe };
     return this.values;
   }
   get status() {

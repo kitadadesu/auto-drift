@@ -82,3 +82,18 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid
  footer{line-height:1.8}
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+
+.history-inner{padding:8px}.history-inner button{padding:6px 10px}
+#history-list{max-height:150px;overflow:auto;padding:0 8px 0 24px;margin:8px 0;font-size:11px;line-height:1.8;overflow-wrap:anywhere}
+.sound-details .detail-inner{max-height:235px;overflow:auto}
+@media(min-width:951px){
+ main{position:relative;height:100dvh;min-height:650px;grid-template-rows:auto auto auto minmax(180px,1fr) auto auto auto auto}
+ .visual-pane{min-height:0}
+ .sound-details[open]{position:static}
+ .sound-details[open]>.detail-inner,.history-details[open]>.history-inner{position:absolute;bottom:160px;left:clamp(16px,2.7vw,36px);right:clamp(16px,2.7vw,36px);z-index:5;background:#14232b;border:1px solid #557277;border-radius:6px;box-shadow:0 -12px 35px #0008}
+}
+@media(min-width:951px) and (max-height:650px){
+ main{min-height:0;padding-top:8px;gap:5px}.hero .intro,.brand small{display:none}
+ .landscape-info{padding:10px 14px;gap:6px}.journey{gap:5px}.texture-meter{display:none}
+ .hero h1{font-size:22px}.journey-row{padding-top:4px}h2{font-size:25px}
+}

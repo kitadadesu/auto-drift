@@ -36,7 +36,7 @@ try {
   const page = await browser.newPage(),
     errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto(`http://127.0.0.1:${port}`);
+  await page.goto(`http://127.0.0.1:${server.address().port}`);
   const result = await page.evaluate(async () => {
     const { Drone } = await import("./audio.js");
     let duration = 28;

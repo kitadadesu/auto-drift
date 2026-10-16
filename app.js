@@ -1,16 +1,19 @@
 import { Drone, defaults } from './audio.js';
 import { parse, note, analyze } from './music.js';
 import { centerKey, keyLabel } from './harmony.js';
+import { History } from './history.js';
 import { Journey } from './journey.js';
 import { TextureDrift, textureKeys, textureBounds } from './texture.js';
 const $ = id => document.getElementById(id);
 const engine = new Drone();
 // Keep AutoDrift's starting sound clear; the autonomous timeline can travel much farther.
 const initialSettings = {...defaults, shimmer:.20, reverb:.24, wetDrift:.23,
-  diffusion:.50, drive:.16, saturationMix:.28, delay:.11};
+  inharmonicity:.01, diffusion:.50, drive:.16, saturationMix:.28, delay:.11};
 engine.update(initialSettings);
 let journey, texture, requested = false, generation = 0, last = null, timer = null, applied = 0;
 let lastVoicing = null;
+const history = new History();
+let historyRevision = -1;
 const labels = {bloom:'Bloom', harmonics:'Harmonics', inharmonicity:'Inharmonicity', drift:'Spectral Drift',dryDrift:'Dry Tape',wetDrift:'Wet Tape',shimmer:'Shimmer',shimmerDecay:'Shimmer Decay',diffusion:'Diffusion',drive:'Saturation Drive',character:'Character',saturationMix:'Saturation Mix',reverb:'Reverb',delay:'Delay',detune:'Detune',saturationPost:'PRE → POST',glide:'Glide',attack:'Attack',decay:'Decay',sustain:'Sustain',release:'Release',time:'Delay Time',feedback:'Delay Feedback'};
 for (const k of textureKeys) {
   const [lo,hi] = textureBounds[k];
@@ -31,6 +34,7 @@ function ensureJourney() {
   if (tokens.length !== 6 || tokens.some((t,i) => notes[i] === null && !/^x$/i.test(t)) || notes.every(n => n === null)) throw new Error('音名を6つ入力してください（例 E2 B2 E3 G3 B3 E4）。休符は x。');
   journey = new Journey(notes, Math.random, {wander:+$('wander').value, edge:+$('edge').value});
   texture = new TextureDrift(initialSettings); texture.start(0);
+  history.harmony(journey); history.texture(texture, journey.elapsed);
   transitionPitch(null, notes); if (+$('depth').value !== 1) texture.setDepth(+$('depth').value);
 }
 function cancelTimer() { if (timer !== null) clearTimeout(timer); timer = null; last = null; }
@@ -62,8 +66,9 @@ function tick() {
     const v = texture.values;
     const complexity = (v.harmonics + v.drive + v.shimmer) / 3;
     const changed = journey.step(dt,+$('pace').value,complexity);
-    if (changed) { transitionPitch(lastVoicing, journey.current); engine.move(journey.current); }
+    if (changed) { transitionPitch(lastVoicing, journey.current); engine.move(journey.current); history.harmony(journey); }
     texture.step(journey.elapsed, $('auto-texture').checked);
+    history.texture(texture, journey.elapsed);
     applied += dt;
     // At most 1 Hz for expensive Bloom/spectrum scheduling; AudioParams smooth between updates.
     if (applied >= 1000) { engine.update({...engine.settings,...texture.values}); applied = 0; }
@@ -72,6 +77,7 @@ function tick() {
 }
 function render() {
   const values = texture?.values ?? initialSettings;
+  renderHistory();
   for (const k of textureKeys) {
     const [lo,hi] = textureBounds[k]; const n = values[k];
     $('dial-'+k).style.setProperty('--angle',`${270*(n-lo)/(hi-lo)}deg`);
@@ -94,7 +100,7 @@ function render() {
   $('start').textContent = journey ? 'RESUME ↗' : 'START ↗'; $('stop').disabled = !requested;
 }
 $('start').onclick = start; $('stop').onclick = stop;
-$('reset').onclick = () => { stop(); journey = null; texture = null; engine.update(initialSettings); $('elapsed').textContent='00:00:00'; $('scene').textContent='ORIGIN → …'; $('key').textContent='—'; $('chord').textContent='新しい出発点'; $('voices').textContent=''; $('progress').value=0; $('migration').textContent='主音と和声の定着を待って到着します'; $('status').textContent='新しい旅 · 出発点を入力してSTART'; render(); };
+$('reset').onclick = () => { stop(); journey = null; texture = null; history.reset(); motions.fill(null); lastVoicing = null; engine.update(initialSettings); $('elapsed').textContent='00:00:00'; $('scene').textContent='ORIGIN → …'; $('key').textContent='—'; $('chord').textContent='新しい出発点'; $('voices').textContent=''; $('progress').value=0; $('migration').textContent='主音と和声の定着を待って到着します'; $('status').textContent='新しい旅 · 出発点を入力してSTART'; render(); };
 $('depth').oninput = () => { texture?.setDepth(+$('depth').value); $('depth-value').value = Math.round(+$('depth').value*100)+'%'; };
 $('pace').oninput = () => $('pace-value').value = $('pace').value+' s';
 for (const k of ['wander','edge']) {
@@ -104,7 +110,7 @@ for (const k of ['wander','edge']) {
     render();
   };
 }
-$('auto-texture').onchange = () => { texture?.freeze(journey.elapsed); render(); };
+$('auto-texture').onchange = () => { if (texture) texture.freeze(journey.elapsed); render(); };
 document.addEventListener('visibilitychange', () => {
   cancelTimer();
   if (document.hidden) { if (requested) { ++generation; engine.stop(); $('status').textContent='タブ非表示 · 音声と旅を一時停止'; render(); } }
@@ -188,3 +194,25 @@ function drawField(at) {
 }
 requestAnimationFrame(drawField);
 render();
+
+function renderHistory() {
+  $('history-count').textContent = `${history.events.length} EVENTS${history.dropped ? ' · 古い記録は省略' : ''}`;
+  if (!$('history').open || historyRevision === history.revision) return;
+  historyRevision = history.revision;
+  const rows = history.events.slice().reverse().map(e => {
+    const row = document.createElement('li');
+    const stamp = new Date(e.at).toISOString().slice(11,19);
+    row.textContent = e.type === 'harmony' ? `${stamp} · ${e.chord} · ${e.notes.map(n => n === null ? '—' : note(n)).join(' / ')} · ${e.mode} · ${e.key}${e.target ? ' → '+e.target : ''}` : `${stamp} · ${e.origin} → ${e.scene} · ${e.phase} ${Math.round(e.progress*100)}% · Inharm ${Math.round(e.values.inharmonicity*1000)/10}% / Bloom ${Math.round(e.values.bloom*100)}% / Harm ${Math.round(e.values.harmonics*100)}% / Drive ${Math.round(e.values.drive*100)}% / Shimmer ${Math.round(e.values.shimmer*100)}%`;
+    return row;
+  });
+  $('history-list').replaceChildren(...rows);
+}
+for (const panel of document.querySelectorAll('.sound-details')) panel.addEventListener('toggle', () => {
+  if (panel.open) for (const other of document.querySelectorAll('.sound-details')) if (other !== panel) other.open = false;
+  renderHistory();
+});
+$('export-history').onclick = () => {
+  const url = URL.createObjectURL(new Blob([JSON.stringify(history.toJSON(), null, 2)], {type:'application/json'}));
+  const a = document.createElement('a'); a.href = url; a.download = 'autodrift-history.json'; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+};
