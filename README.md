@@ -42,3 +42,12 @@ GitHub Settings → Pages → Source を **GitHub Actions** に設定。mainへ�
 独立プロジェクトとして、リポジトリ所有者の明示的な依頼に基づき `kitadadesu/fret-drift` のエンジンと回帰テストを再利用しています。取得時点のFret Driftにライセンスファイルはありません。ここで新たなオープンソースライセンスは付与していません。第三者による再配布・利用条件は所有者に確認してください。`kitadadesu/fret-drift` のmain・既存ブランチ、および `kitadadesu/chord-atlas` に本プロジェクトからの変更はありません。
 
 検証結果・制約は [VALIDATION.md](VALIDATION.md) を参照。
+
+
+## Background performance / バックグラウンド演奏
+
+別タブ・別ウィンドウへの切替では、演奏・和声・Texture・旅の時間を停止しません。停止はSTOP、終了はページ離脱です。Canvasのみ非表示時に休止し、復帰時は最新音高・時間へ追従します。
+
+進行時間はAudioContext.currentTimeを使用します。500msのDedicated Worker通知は未処理1件に制限し、停止・再開・AudioContextのsuspendでは時計の基点を更新します。通知が遅れた場合は実際の音声クロック差を反映し、1回につき和声変更とTexture次計画を各1回までに抑制します。失われた和声を大量に再生することはなく、実際に採用した状態をHISTORYに記録します。23音色操作はSPECTRUM / SPACE / COLOR / ENVELOPEの4タブで開きます。Escapeまたは×で閉じられます。
+
+ブラウザによるWorker停止・タブ破棄、端末のスリープや省電力、iOS/Androidの画面ロック時にはOSがWebAudioを停止・中断する場合があります。この状態での無停止演奏は保証できません。AudioContextが中断した場合、音声クロックも止まり、必要に応じてSTART/RESUMEから再開してください。中断時間を無音の演奏時間として加算しません。自動操作下のnative visibility試験の制約はREDESIGN-VALIDATION.mdに記載しています。
