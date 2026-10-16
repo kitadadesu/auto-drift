@@ -74,10 +74,10 @@ export function migrationBias(candidate, current, state) {
   const bass = Math.min(...current.filter((n) => n !== null)) % 12;
   const resolution = tonicBass && bass === (k.tonic + 7) % 12;
   return (
-    Math.min(1, state.elapsed / 120000) *
+    Math.min(1, state.elapsed / 180000) *
     (inside * 1.5 +
       Number(triad) * 1.5 +
-      Number(tonicBass) * (2.5 + 4 * Math.min(1, state.elapsed / 120000)) +
+      Number(tonicBass) * (2.5 + 4 * Math.min(1, state.elapsed / 180000)) +
       Number(resolution) * 0.5)
   );
 }
@@ -113,10 +113,10 @@ export function advanceMigration(state, context, current, previous, elapsed) {
   const visits = state.visits + Number(tonic && supported);
   const total = state.elapsed + elapsed;
   const arrived = Boolean(
-    tonic && supported && total >= 120000 && stable >= 18000 && visits >= 2,
+    tonic && supported && total >= 180000 && stable >= 18000 && visits >= 2,
   );
   // If the available voicings never establish a center, abandon without relabeling.
-  if (total > 300000 && !arrived)
+  if (total > 420000 && !arrived)
     return {
       ...initialMigration(),
       recent: [...state.recent, keyId(k)].slice(-3),
