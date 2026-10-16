@@ -30,18 +30,18 @@ export const textureScenes = {
     dryDrift: .07, wetDrift: .12, shimmer: .13, shimmerDecay: 4,
     diffusion: .25, drive: .09, character: .04, saturationMix: .16,
     reverb: .26, delay: .08, detune: 4 },
-  HAZE: { bloom: .84, harmonics: .38, inharmonicity: .18, drift: .55,
-    dryDrift: .33, wetDrift: .83, shimmer: .72, shimmerDecay: 9.4,
-    diffusion: .94, drive: .23, character: .11, saturationMix: .35,
-    reverb: .81, delay: .38, detune: 18 },
-  GLOW: { bloom: 1, harmonics: .94, inharmonicity: .32, drift: .80,
-    dryDrift: .21, wetDrift: .52, shimmer: .59, shimmerDecay: 7.5,
-    diffusion: .62, drive: .61, character: .34, saturationMix: .65,
-    reverb: .45, delay: .19, detune: 13 },
-  DISSOLVE: { bloom: .93, harmonics: .88, inharmonicity: .77, drift: .97,
-    dryDrift: .60, wetDrift: .95, shimmer: .78, shimmerDecay: 10.2,
-    diffusion: .98, drive: .86, character: .95, saturationMix: .74,
-    reverb: .83, delay: .49, detune: 24 },
+  HAZE: { bloom: .92, harmonics: .16, inharmonicity: .12, drift: .47,
+    dryDrift: .27, wetDrift: .73, shimmer: .63, shimmerDecay: 8.2,
+    diffusion: .86, drive: .09, character: .08, saturationMix: .23,
+    reverb: .55, delay: .25, detune: 14 },
+  GLOW: { bloom: .98, harmonics: .93, inharmonicity: .23, drift: .72,
+    dryDrift: .19, wetDrift: .38, shimmer: .30, shimmerDecay: 6.2,
+    diffusion: .57, drive: .46, character: .27, saturationMix: .45,
+    reverb: .25, delay: .13, detune: 11 },
+  DISSOLVE: { bloom: .65, harmonics: .77, inharmonicity: .82, drift: .94,
+    dryDrift: .53, wetDrift: .87, shimmer: .31, shimmerDecay: 6.5,
+    diffusion: .85, drive: .82, character: .93, saturationMix: .52,
+    reverb: .38, delay: .23, detune: 21 },
 };
 for (const [i, scene] of Object.values(textureScenes).entries()) Object.assign(scene, {
   saturationPost: i % 2, glide: [7,3,6,4,8][i], attack: [3,1,4,2,3.5][i], decay: [1,2,3,2.5,4][i],
@@ -73,8 +73,17 @@ export function safeTextureValues(values) {
   }
   // An aggressive folded spectrum and a very loud shimmer return should not
   // reach maximum level together, regardless of random target variation.
-  if (out.drive > .65 && out.character > .65)
-    { out.shimmer = Math.min(out.shimmer, .65); out.shimmerDecay = Math.min(out.shimmerDecay, 8); }
+  // Prevent simultaneous full-spectrum partials, smeared wet tails and
+  // intermodulation distortion from burying the six-note harmony. Keep the
+  // contrast between *dry bright* and *wet soft* scenes pronounced.
+  const density = clamp((out.harmonics*.57 + out.drive*.46 + out.saturationMix*.28 + out.bloom*.18 - .56)/.65);
+  out.shimmer *= 1 - density*.43;
+  out.reverb *= 1 - density*.38;
+  out.delay *= 1 - density*.27;
+  if (out.drive > .65 && out.character > .65) {
+    out.shimmer = Math.min(out.shimmer, .42);
+    out.shimmerDecay = Math.min(out.shimmerDecay, 7.5);
+  }
   return out;
 }
 export function textureDistance(a, b) {
@@ -126,9 +135,10 @@ export class TextureDrift {
     const targetName = chooseTextureScene(prior, this.previous, this.rng);
     const target = destination(targetName, this.rng);
     const far = prior && !(nearby[prior] || []).includes(targetName);
-    const duration = first ? 40000 + this.rng() * 40000 :
-      far ? 55000 + this.rng() * 52000 : 65000 + this.rng() * 60000;
-    const hold = first ? 5000 : 8000 + this.rng() * 23000;
+    // Around 2–3 active minutes per full scene, with nonperiodic holds.
+    const duration = first ? 78000 + this.rng() * 52000 :
+      far ? 80000 + this.rng() * 60000 : 100000 + this.rng() * 50000;
+    const hold = first ? 5000 : 8000 + this.rng() * 24000;
     // A continuously varying 15–60 minute arc biases, but never fixes, scene order.
     const macro = .5 + .5 * Math.sin(this.elapsed / 1500000 * Math.PI * 2 + .8);
     const anchor = textureScenes[macro > .5 ? "HAZE" : "HOLLOW"];
