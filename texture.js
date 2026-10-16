@@ -19,7 +19,8 @@ const smooth = (v) => { const x = clamp(v); return x * x * (3 - 2 * x); };
 
 // Unlike a sequence of fixed presets, these are probabilistic destinations.
 // Each visit is varied within a safe range; individual controls approach their
-// destinations with different delayed envelopes over several minutes.
+// destinations with different delayed envelopes. Distinct characters emerge
+// every ~1–3 minutes, while the 25-minute macro arc stays slower.
 export const textureScenes = {
   HOLLOW: { bloom: .02, harmonics: .015, inharmonicity: .01, drift: .10,
     dryDrift: .01, wetDrift: .01, shimmer: .02, shimmerDecay: 2,
@@ -125,13 +126,13 @@ export class TextureDrift {
     const targetName = chooseTextureScene(prior, this.previous, this.rng);
     const target = destination(targetName, this.rng);
     const far = prior && !(nearby[prior] || []).includes(targetName);
-    const duration = first ? 65000 + this.rng() * 85000 :
-      far ? 70000 + this.rng() * 125000 : 115000 + this.rng() * 195000;
-    const hold = first ? 5000 : 15000 + this.rng() * 58000;
+    const duration = first ? 40000 + this.rng() * 40000 :
+      far ? 55000 + this.rng() * 52000 : 65000 + this.rng() * 60000;
+    const hold = first ? 5000 : 8000 + this.rng() * 23000;
     // A continuously varying 15–60 minute arc biases, but never fixes, scene order.
     const macro = .5 + .5 * Math.sin(this.elapsed / 1500000 * Math.PI * 2 + .8);
     const anchor = textureScenes[macro > .5 ? "HAZE" : "HOLLOW"];
-    for (const k of textureKeys) target[k] = lerp(target[k], anchor[k], .22);
+    for (const k of textureKeys) target[k] = lerp(target[k], anchor[k], .08);
     this.plan = {
       from: { ...this.values },
       target,
@@ -139,7 +140,7 @@ export class TextureDrift {
       duration,
       hold,
       started: this.elapsed,
-      offsets: Object.fromEntries(textureKeys.map((k) => [k, this.rng() * .33])),
+      offsets: Object.fromEntries(textureKeys.map((k) => [k, this.rng() * .20])),
       origin: prior || "ORIGIN",
     };
     this.previous = prior;
