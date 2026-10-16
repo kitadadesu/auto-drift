@@ -5,7 +5,12 @@ import { Journey } from './journey.js';
 import { TextureDrift, textureKeys, textureBounds } from './texture.js';
 const $ = id => document.getElementById(id);
 const engine = new Drone();
+// Keep AutoDrift's starting sound clear; the autonomous timeline can travel much farther.
+const initialSettings = {...defaults, shimmer:.20, reverb:.24, wetDrift:.23,
+  diffusion:.50, drive:.16, saturationMix:.28, delay:.11};
+engine.update(initialSettings);
 let journey, texture, requested = false, generation = 0, last = null, timer = null, applied = 0;
+let lastVoicing = null;
 const labels = {bloom:'Bloom', harmonics:'Harmonics', inharmonicity:'Inharmonicity', drift:'Spectral Drift',dryDrift:'Dry Tape',wetDrift:'Wet Tape',shimmer:'Shimmer',shimmerDecay:'Shimmer Decay',diffusion:'Diffusion',drive:'Saturation Drive',character:'Character',saturationMix:'Saturation Mix',reverb:'Reverb',delay:'Delay',detune:'Detune',saturationPost:'PRE → POST',glide:'Glide',attack:'Attack',decay:'Decay',sustain:'Sustain',release:'Release',time:'Delay Time',feedback:'Delay Feedback'};
 for (const k of textureKeys) {
   const [lo,hi] = textureBounds[k];
@@ -24,7 +29,9 @@ function ensureJourney() {
   const tokens = $('notes').value.trim().split(/[\s,]+/);
   const notes = tokens.map(t => /^x$/i.test(t) ? null : parse(t));
   if (tokens.length !== 6 || tokens.some((t,i) => notes[i] === null && !/^x$/i.test(t)) || notes.every(n => n === null)) throw new Error('音名を6つ入力してください（例 E2 B2 E3 G3 B3 E4）。休符は x。');
-  journey = new Journey(notes); texture = new TextureDrift(defaults); texture.start(0); if (+$('depth').value !== 1) texture.setDepth(+$('depth').value);
+  journey = new Journey(notes, Math.random, {wander:+$('wander').value, edge:+$('edge').value});
+  texture = new TextureDrift(initialSettings); texture.start(0);
+  transitionPitch(null, notes); if (+$('depth').value !== 1) texture.setDepth(+$('depth').value);
 }
 function cancelTimer() { if (timer !== null) clearTimeout(timer); timer = null; last = null; }
 function stop() {
@@ -55,7 +62,7 @@ function tick() {
     const v = texture.values;
     const complexity = (v.harmonics + v.drive + v.shimmer) / 3;
     const changed = journey.step(dt,+$('pace').value,complexity);
-    if (changed) engine.move(journey.current);
+    if (changed) { transitionPitch(lastVoicing, journey.current); engine.move(journey.current); }
     texture.step(journey.elapsed, $('auto-texture').checked);
     applied += dt;
     // At most 1 Hz for expensive Bloom/spectrum scheduling; AudioParams smooth between updates.
@@ -64,7 +71,7 @@ function tick() {
   } catch (error) { stop(); $('status').textContent = `演奏を停止しました: ${error.message}`; }
 }
 function render() {
-  const values = texture?.values ?? defaults;
+  const values = texture?.values ?? initialSettings;
   for (const k of textureKeys) {
     const [lo,hi] = textureBounds[k]; const n = values[k];
     $('dial-'+k).style.setProperty('--angle',`${270*(n-lo)/(hi-lo)}deg`);
@@ -78,17 +85,25 @@ function render() {
     $('elapsed').textContent = [Math.floor(seconds/3600),Math.floor(seconds/60)%60,seconds%60].map(n=>String(n).padStart(2,'0')).join(':');
     const m = journey.drift.migration;
     $('key').textContent = `${keyLabel(centerKey(journey.context))}${m.target ? ' → '+keyLabel(m.target) : ' · 次の調を探索'}`;
-    $('migration').textContent = `${journey.transitions} 和声遷移 · ${journey.arrivals.length} 回到着 · Wander ${Math.round(journey.drift.wander*100)}%${m.target ? ' · '+Math.floor(m.elapsed/1000)+'秒 / 主音の定着を待機' : ''}`;
+    $('migration').textContent = `${journey.transitions} 回変化 · ${journey.arrivals.length} 回到着 · Wander 現在 ${Math.round(journey.drift.wander*100)}%${m.target ? ' · '+Math.floor(m.elapsed/1000)+'秒 / 主音の定着を待機' : ''}`;
     $('scene').textContent = $('auto-texture').checked ? texture.status.label : 'TEXTURE HOLD';
     $('progress').value = texture.status.progress;
   }
+  for (const key of ['bloom','shimmer','drive','wetDrift']) $('meter-'+key).value = values[key];
   $('start').disabled = requested && engine.running && engine.ctx?.state === 'running' && !document.hidden;
   $('start').textContent = journey ? 'RESUME ↗' : 'START ↗'; $('stop').disabled = !requested;
 }
 $('start').onclick = start; $('stop').onclick = stop;
-$('reset').onclick = () => { stop(); journey = null; texture = null; engine.update(defaults); $('elapsed').textContent='00:00:00'; $('scene').textContent='ORIGIN → …'; $('key').textContent='—'; $('chord').textContent='新しい出発点'; $('voices').textContent=''; $('progress').value=0; $('migration').textContent='主音と和声の定着を待って到着します'; $('status').textContent='新しい旅 · 出発点を入力してSTART'; render(); };
+$('reset').onclick = () => { stop(); journey = null; texture = null; engine.update(initialSettings); $('elapsed').textContent='00:00:00'; $('scene').textContent='ORIGIN → …'; $('key').textContent='—'; $('chord').textContent='新しい出発点'; $('voices').textContent=''; $('progress').value=0; $('migration').textContent='主音と和声の定着を待って到着します'; $('status').textContent='新しい旅 · 出発点を入力してSTART'; render(); };
 $('depth').oninput = () => { texture?.setDepth(+$('depth').value); $('depth-value').value = Math.round(+$('depth').value*100)+'%'; };
 $('pace').oninput = () => $('pace-value').value = $('pace').value+' s';
+for (const k of ['wander','edge']) {
+  $(k).oninput = () => {
+    $(k+'-value').value = Math.round( +$(k).value*100)+'%';
+    journey?.setControls({[k]:+$(k).value});
+    render();
+  };
+}
 $('auto-texture').onchange = () => { texture?.freeze(journey.elapsed); render(); };
 document.addEventListener('visibilitychange', () => {
   cancelTimer();
@@ -96,4 +111,80 @@ document.addEventListener('visibilitychange', () => {
   else if (requested) start();
 });
 window.addEventListener('pagehide',stop);
+// Six-voice pitch field: the real accepted MIDI notes glide along six colored
+// traces. The optional waveform comes from the existing WebAudio analyser.
+const field = $('pitch-field'), fieldCtx = field.getContext('2d');
+const voiceColors = ['#d6e7ba','#a4d7c7','#8ed2db','#9dbde2','#c9b3e8','#e2b5ac'];
+let motions = Array(6).fill(null), pitchCamera = 52, pitchRange = 52, frameAt = 0;
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function currentPitch(m, at) {
+  if (!m) return null;
+  if (m.from === null) return m.to;
+  const x = Math.max(0, Math.min(1,(at - m.start)/m.duration));
+  return m.from + (m.to - m.from) * x;
+}
+function transitionPitch(previous, next) {
+  const at = performance.now();
+  for (let i=0;i<6;i++) {
+    const to = next[i], from = currentPitch(motions[i], at) ?? previous?.[i] ?? to;
+    motions[i] = to === null ? null : {from:from === null ? to : from,to,start:at,duration:reduceMotion ? 1 : Math.max(80,(engine.settings.glide||2.5)*1000)};
+  }
+  lastVoicing = [...next];
+}
+function drawField(at) {
+  requestAnimationFrame(drawField);
+  if (!field.isConnected || document.hidden || at-frameAt < (reduceMotion ? 100 : 33)) return;
+  const delta = Math.min(100, Math.max(0, at-frameAt));frameAt = at;
+  const rect = field.getBoundingClientRect(), w = rect.width, h = rect.height;
+  if (w<30 || h<30) return;
+  const d = Math.min(devicePixelRatio||1,2);
+  if (field.width !== Math.round(w*d) || field.height !== Math.round(h*d)) {
+    field.width = Math.round(w*d);field.height = Math.round(h*d);
+  }
+  const c=fieldCtx;c.setTransform(d,0,0,d,0,0);c.clearRect(0,0,w,h);
+  const ns=motions.map(m=>currentPitch(m,at)).filter(n=>n!==null);
+  const goalCenter = ns.length ? (Math.min(...ns)+Math.max(...ns))/2 : 53;
+  const goalRange = ns.length ? Math.max(38,Math.max(...ns)-Math.min(...ns)+20) : 50;
+  const cameraEase=1-Math.exp(-delta/2500);
+  pitchCamera+=(goalCenter-pitchCamera)*cameraEase;
+  pitchRange+=(goalRange-pitchRange)*cameraEase;
+  const yFor=n=>h/2 -(n-pitchCamera)*(h-42)/pitchRange;
+  const first=Math.floor((pitchCamera-pitchRange/2)/12)*12;
+  for(let midi=first;midi<pitchCamera+pitchRange/2+12;midi+=12){
+    const y=yFor(midi);if(y<6||y>h-6)continue;
+    c.strokeStyle='#a7c1b117';c.lineWidth=1;c.beginPath();c.moveTo(13,y);c.lineTo(w-13,y);c.stroke();
+    c.fillStyle='#93aaa77f';c.font='9px system-ui';c.fillText(note(midi),15,y-4);
+  }
+  // The analyser is drawn quietly underneath, not fabricated as a decorative oscillator.
+  if(engine.analyser && engine.running){
+    const samples=new Uint8Array(engine.analyser.frequencyBinCount);
+    engine.analyser.getByteTimeDomainData(samples);
+    c.beginPath();c.lineWidth=1;c.strokeStyle='#add9cd20';
+    samples.forEach((value,i)=>{const x=(i/(samples.length-1))*w;
+      const y=h*.5+(value-128)/128*h*.24; i?c.lineTo(x,y):c.moveTo(x,y);});
+    c.stroke();
+  }
+  motions.forEach((m,i)=>{
+    if (!m) return;
+    const x=43+(i+.5)*(w-86)/6;
+    const yy=yFor(currentPitch(m,at)),yTarget=yFor(m.to);
+    const sway=reduceMotion?0:Math.sin(at/3700+i*1.7)*1.7;
+    const y=yy+sway;
+    const grad=c.createLinearGradient(10,0,x+8,0);
+    grad.addColorStop(0,'#94bfc005');grad.addColorStop(.68,voiceColors[i]+'55');grad.addColorStop(1,voiceColors[i]+'c9');
+    c.strokeStyle=grad;c.lineWidth=1.4;c.beginPath();
+    c.moveTo(10,y);c.bezierCurveTo(x*.42,y+Math.sin(at/1800+i)*3,x*.73,y-2.5,x,y);c.stroke();
+    const targetY=yTarget;
+    if(Math.abs(y-targetY)>1.1){
+      c.setLineDash([2,5]);c.strokeStyle=voiceColors[i]+'66';
+      c.beginPath();c.moveTo(x,y);c.lineTo(x,targetY);c.stroke();c.setLineDash([]);
+    }
+    c.shadowColor=voiceColors[i];c.shadowBlur=reduceMotion?0:15;c.fillStyle=voiceColors[i];
+    c.beginPath();c.arc(x,y,4.3,0,Math.PI*2);c.fill();c.shadowBlur=0;
+    c.font='10px system-ui';c.fillStyle='#e0eeea';
+    const label=(6-i)+' · '+note(m.to);
+    c.fillText(label,Math.min(w-55,x+8),Math.max(14,y-9));
+  });
+}
+requestAnimationFrame(drawField);
 render();
