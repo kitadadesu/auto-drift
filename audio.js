@@ -2,6 +2,10 @@ import { frequency } from "./music.js";
 // LP/HP WebAudio Q is in dB: -3.0103 dB is the nonresonant Butterworth value (Q=1/√2).
 export const dampedQ = -3.0103;
 export const defaults = {
+  crush: 0,
+  beating: 0,
+  turbulence: 0,
+  wandering: 0,
   glide: 2.5,
   harmonics: 0,
   bloom: 0.7,
@@ -28,6 +32,7 @@ export const defaults = {
   feedback: 0.32,
 };
 const limits = {
+  crush: [0, 1], beating: [0, 1], turbulence: [0, 1], wandering: [0, 1],
   glide: [0.02, 8],
   harmonics: [0, 1],
   bloom: [0, 1],
@@ -70,8 +75,9 @@ const partials = [
   { ratio: 4, stretch: 0.17, weight: 0.14, speed: 3.2 },
   { ratio: 6, stretch: -0.08, weight: 0.09, speed: 5 },
 ];
-const oscillators = (v) => [...v.oscs, ...v.partials.map((p) => p.osc)];
+const oscillators = (v) => [...(v.howl ? [v.howl] : []), ...v.oscs, ...v.partials.map((p) => p.osc)];
 const disconnectVoice = (v) => {
+  v.textureNodes?.forEach(n => { try { n.stop?.(); } catch {} n.disconnect(); });
   v.gain.disconnect();
   v.tone.disconnect();
   v.spectralEnvelope.disconnect();
@@ -109,7 +115,7 @@ export function partialFrequencyAt(motion, time) {
 // Independent looping control signals: shallow wow/flutter plus smooth random
 // drift. Buffer sources run for the context lifetime, never on UI timers.
 function driftSignal(c, duration, wow, flutter) {
-  const rate = 8000, buffer = c.createBuffer(1, rate * duration, rate);
+  const rate = 3000, buffer = c.createBuffer(1, rate * duration, rate);
   const data = buffer.getChannelData(0);
   const knots = Array.from({ length: Math.ceil(duration / 7) + 1 }, () => Math.random() * 2 - 1);
   knots[knots.length - 1] = knots[0];
@@ -204,9 +210,10 @@ export class Drone {
       this.analyser = c.createAnalyser();
       this.analyser.fftSize = 512;
       this.master.connect(comp).connect(this.analyser).connect(c.destination);
+      this.preparing = this.prepareCrush().then(() => this.update(this.settings));
       this.update(this.settings);
     }
-    await this.ctx.resume();
+    await Promise.all([this.ctx.resume(), this.preparing]);
   }
   texture() {
     const c = this.ctx;
@@ -224,8 +231,17 @@ export class Drone {
     this.wetDelay = c.createDelay(0.03);
     this.wetDelay.delayTime.value = 0.008;
     this.wetMod.connect(this.wetDelay.delayTime);
-    this.wetInput.connect(this.wetBypass).connect(this.master);
-    this.wetInput.connect(this.wetDelay).connect(this.wetEffect).connect(this.master);
+    this.crushInput = c.createGain();
+    this.crushDry = c.createGain();
+    this.crushWet = c.createGain(); this.crushWet.gain.value = 0;
+    this.crushInput.connect(this.crushDry).connect(this.master);
+    this.crushInput.connect(this.crushWet);
+    const hpCrush = c.createBiquadFilter(), lpCrush = c.createBiquadFilter();
+    hpCrush.type = "highpass"; hpCrush.frequency.value = 80; hpCrush.Q.value = dampedQ;
+    lpCrush.type = "lowpass"; lpCrush.frequency.value = 4800; lpCrush.Q.value = dampedQ;
+    this.crushOutput = hpCrush; hpCrush.connect(lpCrush).connect(this.master);
+    this.wetInput.connect(this.wetBypass).connect(this.crushInput);
+    this.wetInput.connect(this.wetDelay).connect(this.wetEffect).connect(this.crushInput);
     this.spectralInput = c.createGain();
     const hp = c.createBiquadFilter(), lp = c.createBiquadFilter();
     hp.type = "highpass"; hp.frequency.value = 650;
@@ -274,6 +290,69 @@ export class Drone {
       return { seconds, feedback, damping, highpass, level };
     });
   }
+  async prepareCrush() {
+    const c = this.ctx;
+    try {
+      if (!c.audioWorklet) throw new Error("AudioWorklet unavailable");
+      await c.audioWorklet.addModule(new URL("./crush-worklet.js", import.meta.url));
+      this.crusher = new AudioWorkletNode(c, "drift-crush");
+      this.crushMode = "worklet";
+    } catch {
+      // Native quantizer fallback: no main-thread audio callbacks, valid on file:// too.
+      this.crusher = c.createWaveShaper();
+      this.crusher.curve = Float32Array.from({length: 65537}, (_, i) =>
+        Math.round((i / 32768 - 1) * 128) / 128);
+      this.crushMode = "quantizer fallback";
+    }
+    this.crushWet.connect(this.crusher).connect(this.crushOutput);
+  }
+  voiceTexture(v, index) {
+    if (v.motionGain) return;
+    const c = this.ctx;
+    const motion = driftSignal(c, 83 + index * 8, 3 + index, 127 + index * 10);
+    const breath = driftSignal(c, 173, 3, 41);
+    const amplitude = c.createGain(), global = c.createGain();
+    v.motionGain = c.createGain(); v.motionGain.gain.value = 1;
+    v.gain.disconnect(); v.gain.connect(v.motionGain).connect(this.input);
+    v.spectralEnvelope.disconnect(); v.spectralEnvelope.connect(v.motionGainSpectral = c.createGain()).connect(this.spectralInput);
+    v.motionGainSpectral.gain.value = 1;
+    motion.connect(amplitude); breath.connect(global);
+    for (const node of [v.motionGain, v.motionGainSpectral]) {
+      amplitude.connect(node.gain); global.connect(node.gain);
+    }
+    v.beatMod = c.createGain(); motion.connect(v.beatMod).connect(v.oscs[1].detune);
+    v.textureNodes = [motion, breath, amplitude, global, v.motionGain, v.motionGainSpectral, v.beatMod];
+    v.amplitude = amplitude; v.breath = global;
+  }
+  updateVoiceTexture(v, index) {
+    const t = this.ctx.currentTime, s = this.settings;
+    const p = (param, value) => param.setTargetAtTime(value, t, .7);
+    this.voiceTexture(v, index);
+    // Existing two fundamentals supply the beat; independent cents offsets and motion.
+    p(v.oscs[1].detune, s.detune + s.beating * (1.1 + index * .41));
+    p(v.beatMod.gain, s.beating * 1.2);
+    for (const node of [v.motionGain, v.motionGainSpectral]) p(node.gain, 1 - .32 * s.turbulence);
+    p(v.amplitude.gain, .22 * s.turbulence); p(v.breath.gain, .08 * s.turbulence);
+    if (s.wandering > 0 && !v.howl) {
+      v.howl = this.ctx.createOscillator(); v.howl.type = "sine";
+      v.howlGain = this.ctx.createGain(); v.howlGain.gain.value = 0;
+      v.howl.frequency.value = frequency(v.midi) * 3;
+      v.howl.connect(v.howlGain).connect(v.spectralEnvelope);
+      v.wanderMod = this.ctx.createGain(); v.wanderMod.gain.value = 19;
+      v.textureNodes[0].connect(v.wanderMod).connect(v.howl.detune);
+      v.howlBreath = this.ctx.createGain();
+      v.textureNodes[1].connect(v.howlBreath).connect(v.howlGain.gain);
+      v.textureNodes.push(v.howlGain, v.wanderMod, v.howlBreath);
+      v.howl.start(); this.dryMod.connect(v.howl.detune);
+    }
+    if (v.howl) {
+      const hz = Math.min(this.ctx.sampleRate * .2, 4200, frequency(v.midi) * (index % 2 ? 3 : 4));
+      p(v.howl.frequency, hz);
+      // No recursive path. Envelope bounds <= .20 of a .035 voice; six voices <= .042.
+      p(v.howlGain.gain, .11 * s.wandering);
+      p(v.howlBreath.gain, .09 * s.wandering);
+    }
+  }
   update(s) {
     const previous = this.settings;
     this.settings = sanitize(s);
@@ -281,6 +360,9 @@ export class Drone {
     const t = this.ctx.currentTime,
       p = (n, v) => n.setTargetAtTime(v, t, 0.035),
       s2 = this.settings;
+    p(this.crushDry.gain, 1 - .75 * s2.crush);
+    p(this.crushWet.gain, .75 * s2.crush);
+    this.crusher?.parameters?.get("amount")?.setTargetAtTime(s2.crush, t, .1);
     p(this.master.gain, this.running ? s2.volume : 0);
     p(this.dry.gain, 1 - s2.reverb * 0.45);
     p(this.wet.gain, s2.reverb * 0.55);
@@ -306,9 +388,10 @@ export class Drone {
     });
     this.tailLines.forEach(({ seconds, feedback }) =>
       p(feedback.gain, Math.min(0.94, 10 ** (-3 * seconds / s2.shimmerDecay))));
-    this.voices.forEach((v) => {
+    this.voices.forEach((v, i) => {
       if (!v) return;
       v.oscs.forEach((o, j) => p(o.detune, j ? s2.detune : -s2.detune));
+      this.updateVoiceTexture(v, i);
       if (previous.bloom === 0 && s2.bloom > 0) v.bloomStart = t;
       if (["harmonics", "inharmonicity", "drift", "glide"].some((k) => previous[k] !== s2[k]))
         this.spectrum(v);
@@ -388,6 +471,7 @@ export class Drone {
           );
         } else envelope(v, "linearRampToValueAtTime", 0.035 * s.sustain, t + 0.08);
       }
+      this.updateVoiceTexture(v, i);
       this.spectrum(v);
     });
   }

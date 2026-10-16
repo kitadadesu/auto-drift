@@ -5,7 +5,7 @@ import { createHash } from "node:crypto";
 // reuse cached UI/audio modules from an earlier release.
 const files = [
   "clock.js", "pulse.js", "index.html", "style.css", "app.js", "autoplay.js", "hold.js", "music.js", "texture.js", "journey.js", "history.js",
-  "audio.js", "harmony.js", "chords.js", "notes.js",
+  "crush-worklet.js", "crush-dsp.js", "audio.js", "harmony.js", "chords.js", "notes.js",
 ];
 const sources = new Map(await Promise.all(files.map(async file =>
   [file, await readFile(file, "utf8")])));

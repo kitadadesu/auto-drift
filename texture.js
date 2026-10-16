@@ -1,11 +1,13 @@
 // AUTO TEXTURE is a separate, deterministic musical timeline. It owns no
 // AudioNodes, timers or DOM, and never overwrites the musician's manual values.
 export const textureKeys = [
+  "crush", "beating", "turbulence", "wandering",
   "bloom", "harmonics", "inharmonicity", "drift",
   "dryDrift", "wetDrift", "shimmer", "shimmerDecay", "diffusion",
   "drive", "character", "saturationMix", "reverb", "delay", "detune", "saturationPost", "glide", "attack", "decay", "sustain", "release", "time", "feedback",
 ];
 export const textureBounds = {
+  crush: [0, .85], beating: [0, .85], turbulence: [0, .9], wandering: [0, .65],
   bloom: [0, 1], harmonics: [0, 1], inharmonicity: [0, 1],
   drift: [0, 1], dryDrift: [0, 1], wetDrift: [0, 1],
   shimmer: [0, 0.85], shimmerDecay: [1, 10.5], diffusion: [0, 1],
@@ -45,6 +47,8 @@ export const textureScenes = {
     reverb: .38, delay: .23, detune: 21 },
 };
 for (const [i, scene] of Object.values(textureScenes).entries()) Object.assign(scene, {
+  crush: [.02,.08,.42,.12,.78][i], beating: [.12,.3,.65,.42,.24][i],
+  turbulence: [.18,.32,.76,.48,.68][i], wandering: [.04,.16,.28,.58,.14][i],
   saturationPost: i % 2, glide: [7,3,6,4,8][i], attack: [3,1,4,2,3.5][i], decay: [1,2,3,2.5,4][i],
   sustain: [.6,.8,.7,.85,.65][i], release: [2,1.5,5,3,4][i], time: [.3,.4,.8,.6,1.1][i], feedback: [.08,.15,.35,.25,.45][i]
 });
@@ -80,6 +84,7 @@ export function safeTextureValues(values, balance = true) {
   // contrast between *dry bright* and *wet soft* scenes pronounced.
   const density = clamp((out.harmonics*.57 + out.drive*.46 + out.saturationMix*.28 + out.bloom*.18 - .56)/.65);
   if (balance) {
+    out.wandering *= 1 - .55 * Math.max(out.crush, density);
     out.shimmer *= 1 - density*.43;
     out.reverb *= 1 - density*.38;
     out.delay *= 1 - density*.27;
