@@ -395,3 +395,21 @@ test('saturation boundary bypass, fixed morph nodes, passive feedback and dispos
   stages.forEach(s=>s.colors.forEach(c=>assert.equal(c.shape.oversample,'4x')));
   await d.dispose(); stages.forEach(s=>s.nodes.forEach(n=>assert.ok(n.disconnected)));
 });
+
+test('living texture fixed sources, exact zero, mute and resume cleanup', async()=>{
+ const d=new Drone(); await d.play([40,45,50,55,59,64]);
+ d.update({...d.settings,crush:1,beating:1,turbulence:1,wandering:1});
+ const voices=[...d.voices], count=d.ctx.oscs.length;
+ assert.equal(count,42);
+ for(let i=0;i<100;i++){
+  d.move([41,46,51,56,60,65]);
+  d.update({...d.settings,wandering:i%2,beating:i%2,turbulence:i%2,crush:i%2});
+ }
+ assert.equal(d.ctx.oscs.length,count);assert.deepEqual(d.voices,voices);
+ d.update({...d.settings,crush:0,beating:0,turbulence:0,wandering:0});
+ assert.equal(d.crushDry.gain.value,1);assert.equal(d.crushWet.gain.value,0);
+ for(const v of voices){assert.equal(v.howlGain.gain.value,0);assert.equal(v.howlBreath.gain.value,0);assert.equal(v.motionGain.gain.value,1);assert.equal(v.amplitude.gain.value,0);assert.equal(v.beatMod.gain.value,0);}
+ d.move(Array(6).fill(null));assert.ok(voices.every(v=>v.spectralEnvelope.gain.value===0));
+ d.stop();assert.ok(voices.every(v=>v.textureNodes.every(n=>n.disconnected)));
+ assert.ok(d.ctx.oscs.every(o=>o.stopped));await d.dispose();
+});
