@@ -6,40 +6,31 @@
 <link rel="stylesheet" href="./style.css">
 </head>
 <body><main>
-<header class="topbar">
-  <div class="brand"><a href="./">AD <span>/</span> AUTODRIFT</a><small>AN AUTONOMOUS AMBIENT INSTRUMENT</small></div>
-  <span class="header-guide">ONE CHORD. A JOURNEY WITHOUT A MAP.</span>
-  <span id="status" role="status">準備完了 · STARTで漂流を開始</span>
-</header>
-<section class="hero" aria-label="イントロダクション">
-  <div><p class="eyebrow">SET A CHORD. LET IT WANDER.</p><h1>音の、漂流。</h1></div>
-  <p class="intro">ひとつの和音から、まだ知らない響きへ。<br>和声と音色が、時間とともに変わっていく。</p>
-</section>
 <section class="transport" aria-label="出発点と再生操作">
-  <label class="origin" for="notes"><span>ORIGIN / 出発点 · 6声の音名、休符は x</span>
+  <a class="brand" href="./">AUTO<span>DRIFT</span><small>AUTONOMOUS / AMBIENT INSTRUMENT</small></a><label class="origin" for="notes"><span>ORIGIN / 出発点 · 6声の音名、休符は x</span>
     <input id="notes" value="E2 B2 E3 G3 B3 E4" spellcheck="false" autocomplete="off">
   </label>
   <div class="buttons">
     <button id="start" class="primary">START ↗</button>
     <button id="stop" disabled>STOP</button>
-    <button id="reset">新しい旅</button>
+    <button id="reset">RESET</button>
   </div>
 </section>
 <section class="landscape" aria-label="自律演奏の現在地">
   <div class="visual-pane">
-    <div class="orb" aria-hidden="true"></div>
+
     <canvas id="pitch-field" aria-label="6声の音程、音高移動と実音波形" role="img"></canvas>
     <span class="visual-caption">06 VOICES / PITCH &amp; DRIFT</span>
   </div>
-  <div class="landscape-info">
+  <div class="time-readout"><span>TIME / ELAPSED</span><time id="elapsed">00:00:00</time></div><div class="landscape-info">
     <div class="readout">
-      <p class="eyebrow">NOW DRIFTING</p>
-      <div class="chord-line"><h2 id="chord">E minor</h2><time id="elapsed">00:00:00</time></div>
+      <p class="eyebrow">HARMONIC POSITION / 06 VOICES</p>
+      <div class="chord-line"><h2 id="chord">E minor</h2></div>
       <p id="voices">E2 · B2 · E3 · G3 · B3 · E4</p>
     </div>
     <div class="journey">
       <div class="journey-row"><span>TONAL MIGRATION <small>≈ 03:00</small></span><strong id="key">—</strong><small id="migration">実際の和声から主音への到着を判定します</small></div>
-      <div class="journey-row"><span>TEXTURE MORPH <small>AUTONOMOUS</small></span><strong id="scene">ORIGIN → …</strong><progress aria-label="音色遷移の進捗" id="progress" value="0" max="1"></progress></div>
+      <div class="journey-row"><span>TEXTURE <small>AUTONOMOUS</small></span><strong id="scene">ORIGIN → …</strong><span id="texture-state">ORIGIN</span><progress aria-label="音色遷移の進捗" id="progress" value="0" max="1"></progress></div>
       <div class="texture-meter" aria-label="現在の音色の強さ">
         <label>Bloom <meter id="meter-bloom" min="0" max="1" value="0.7"></meter></label>
         <label>Shimmer <meter id="meter-shimmer" min="0" max="1" value="0.35"></meter></label>
@@ -49,17 +40,17 @@
     </div>
   </div>
 </section>
-<section class="settings" aria-label="漂流設定">
+<div class="instrument-bottom"><section class="settings" aria-label="漂流設定">
   <label>Depth <input id="depth" aria-label="音色変化の振れ幅" type="range" min="0" max="1" step=".01" value="1"><output id="depth-value">100%</output></label>
   <label>Pace <input id="pace" aria-label="コードの平均間隔" type="range" min="6" max="30" step="1" value="12"><output id="pace-value">12 s</output></label>
   <label>Wander <input id="wander" aria-label="Wanderの積極性" type="range" min="0" max="1" step=".01" value=".25"><output id="wander-value">25%</output></label>
   <label>Edge <input id="edge" aria-label="キワキワを選ぶ頻度" type="range" min="0" max="1" step=".01" value=".08"><output id="edge-value">8%</output></label>
   <label class="toggle"><input id="auto-texture" type="checkbox" checked> AUTO TEXTURE</label>
 </section>
-<details class="sound-details">
+<span id="status" role="status">準備完了 · STARTで漂流を開始</span></div><details class="sound-details" id="texture-panel">
   <summary><span>THE LIVING TEXTURE <small>音色パラメーターを見る / 調整する</small></span><span class="details-hint">23 PARAMS ↗</span></summary>
-  <div class="detail-inner"><p>ノブは現在の実際の値に追従します。触れたパラメーターは35秒間保持され、その後、自動変化へ戻ります。</p><div id="knobs" class="knobs"></div></div>
+  <div class="detail-inner"><button class="close-panel" aria-label="音色を閉じる">×</button><h2>LIVING TEXTURE</h2><div id="texture-tabs" role="tablist" aria-label="音色グループ"></div><p>ノブは現在の実際の値に追従します。触れたパラメーターは35秒間保持され、その後、自動変化へ戻ります。</p><div id="knobs" class="knobs"></div></div>
 </details>
-<details id="history" class="sound-details history-details"><summary><span>HISTORY <small>和声と音色の旅</small></span><span id="history-count">0 EVENTS</span></summary><div class="history-inner"><button id="export-history">JSONを書き出す</button><ol id="history-list" aria-label="和声と音色の履歴"></ol></div></details>
-<footer><span>HEADPHONES / LOW VOLUME / NO TWO JOURNEYS ALIKE</span><span>STOPは余韻を残して停止。非表示タブでは音声と時間を一時停止。</span><a href="https://github.com/kitadadesu/auto-drift">SOURCE ↗</a></footer>
+<details id="history" class="sound-details history-details"><summary><span>HISTORY <small>和声と音色の旅</small></span><span id="history-count">0 EVENTS</span></summary><div class="history-inner"><button class="close-panel" aria-label="履歴を閉じる">×</button><h2>JOURNEY / HISTORY</h2><button id="export-history">JSONを書き出す</button><ol id="history-list" aria-label="和声と音色の履歴"></ol></div></details>
+<footer><span>HEADPHONES / LOW VOLUME / NO TWO JOURNEYS ALIKE</span><span>タブを切り替えても、旅は続きます。</span><a href="https://github.com/kitadadesu/auto-drift">SOURCE ↗</a></footer>
 </main><script type="module" src="./app.js"></script></body></html>

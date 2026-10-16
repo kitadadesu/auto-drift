@@ -55,7 +55,7 @@ try {
       return connect.call(this,dest,...args);
     };
   });
-  assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).backgroundColor),'rgb(12, 20, 27)');
+  assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).backgroundColor),'rgb(23, 18, 30)');
   await page.locator('#auto-texture').uncheck();
   await page.locator('#auto-texture').check();
   await page.locator('#start').click();
@@ -74,6 +74,7 @@ try {
   assert.equal(await page.evaluate(()=>audioCounts.osc),osc);
   assert.ok(await page.evaluate(async()=>{const {note}=await import('./music.js');return adoptedNotes.length===6 && pitchLabels.slice(-6).every((label,i)=>label===(6-i)+' · '+note(adoptedNotes[i]));}));
   assert.ok((await page.locator('#history-list li').count())>2);
+  await page.locator('#history .close-panel').click();
   await page.locator('#stop').click();
   const stopped = await page.locator('#elapsed').textContent();
   await page.waitForTimeout(1700);
@@ -89,15 +90,18 @@ try {
   await page.locator('#start').click();
   await page.waitForTimeout(1200);
   assert.notEqual(await page.locator('#elapsed').textContent(), paused);
+  const beforeHiddenOsc = await page.evaluate(()=>audioCounts.osc);
   await page.evaluate(() => {Object.defineProperty(document,'hidden',{configurable:true,value:true});document.dispatchEvent(new Event('visibilitychange'));});
   const hidden = await page.locator('#elapsed').textContent();
   await page.waitForTimeout(1200);
-  assert.equal(await page.locator('#elapsed').textContent(),hidden);
+  assert.equal(await page.evaluate(()=>audioCtx.state),'running');
+  assert.equal(await page.evaluate(()=>audioCounts.osc),beforeHiddenOsc);
   await page.evaluate(() => {Object.defineProperty(document,'hidden',{configurable:true,value:false});document.dispatchEvent(new Event('visibilitychange'));});
   await page.waitForTimeout(1600);
   assert.notEqual(await page.locator('#elapsed').textContent(), hidden);
   await page.locator('#stop').click();
   for(const [width,height] of [[1440,900],[1366,768],[390,844]]) {
+    await page.evaluate(()=>{for(const p of document.querySelectorAll('details'))p.open=false});
     console.log('viewport',width,height);
     await page.setViewportSize({width,height});
     assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
@@ -108,16 +112,20 @@ try {
     await page.locator('#knob-inharmonicity').evaluate(e=>{e.value='0.8';e.dispatchEvent(new Event('input',{bubbles:true}));});
     assert.equal(await page.locator('#value-inharmonicity').textContent(),'80%');
     if(width>950) assert.ok(await page.evaluate(()=>document.documentElement.scrollHeight<=innerHeight+1),'expanded scroll');
-    await page.locator('.sound-details:not(#history) summary').click();
+    await page.locator('#texture-panel .close-panel').click();
     await page.locator('#history summary').click();
     if(process.env.OUTPUT_DIR) await page.screenshot({path:`${process.env.OUTPUT_DIR}/autodrift-${width}.png`,fullPage:true});
   }
   // 1366×768 at browser 125% zoom exposes approximately 1093×614 CSS pixels.
   await page.setViewportSize({width:1093,height:614});
   assert.ok(await page.evaluate(()=>document.documentElement.scrollHeight<=innerHeight+1),'125% scroll');
+  await page.locator('#history .close-panel').click();
   await page.locator('#reset').click();
-  assert.equal(await page.locator('#history-list li').count(),0);
+  await page.locator('#history summary').click();
+  await page.waitForFunction(()=>document.querySelectorAll('#history-list li').length===0);
+  await page.locator('#history .close-panel').click();
   await page.locator('#start').click();
+  await page.locator('#history summary').click();
   await page.waitForTimeout(1000);
   assert.equal(await page.locator('#history-list li').count(),2);
   assert.deepEqual(errors, []);

@@ -187,7 +187,7 @@ export class TextureDrift {
   }
   step(now, playing = true) {
     if (this.wall === null) this.wall = now;
-    const dt = Math.max(0, Math.min(2000, now - this.wall));
+    const dt = Math.max(0, now - this.wall);
     this.wall = now;
     if (this.returning) {
       this.returnTime += dt;
