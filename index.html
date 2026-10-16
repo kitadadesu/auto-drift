@@ -1,8 +1,64 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#10151d"><title>AutoDrift — autonomous ambient instrument</title><link rel="stylesheet" href="./style.css"></head><body>
-<main><header><a href="./">AD / AUTODRIFT</a><span>AN AUTONOMOUS AMBIENT INSTRUMENT</span></header>
-<section class="hero"><p class="eyebrow">SET A CHORD. LET IT WANDER.</p><h1>音の、漂流。</h1><p class="intro">ひとつの和音から、まだ知らない響きへ。<br>和声と音色が、約1時間の風景を描き続けます。</p></section>
-<section class="transport"><div><label for="notes">出発点 · 6声の音名 / x は休符</label><input id="notes" value="E2 B2 E3 G3 B3 E4" spellcheck="false"><small>例: D2 A2 D3 F3 A3 E4 · 変更は次の新しい旅から</small></div><div class="buttons"><button id="start">START ↗</button><button id="stop" disabled>STOP</button><button id="reset">新しい旅</button></div><p id="status" role="status">準備完了 · STARTで和声と音色が動き始めます</p></section>
-<section class="landscape"><div class="orb" aria-hidden="true"></div><div class="readout"><p class="eyebrow">NOW DRIFTING</p><h2 id="chord">E minor</h2><p id="voices">E2 · B2 · E3 · G3 · B3 · E4</p><time id="elapsed">00:00:00</time></div><div class="journey"><div><span>TONAL MIGRATION</span><p id="key">—</p><small id="migration">主音と和声の定着を待って到着します</small></div><div><span>TEXTURE MORPH</span><p id="scene">ORIGIN → …</p><progress aria-label="Texture morph progress" id="progress" value="0" max="1"></progress></div></div></section>
-<section class="settings"><label>Depth <input id="depth" type="range" min="0" max="1" step=".01" value="1"><output id="depth-value">100%</output></label><label>平均Pace <input id="pace" type="range" min="6" max="30" step="1" value="12"><output id="pace-value">12 s</output></label><label class="toggle"><input id="auto-texture" type="checkbox" checked>AUTO TEXTURE</label></section>
-<section><div class="section-title"><h3>THE LIVING TEXTURE</h3><span>実際の音色を表示 · ノブに触れると35秒間介入</span></div><div id="knobs" class="knobs"></div></section>
-<footer>HEADPHONES / LOW VOLUME / NO TWO JOURNEYS ALIKE<p>STOPは余韻を残して停止。再開は同じ旅の続きから。非表示タブでは音声と時間を一時停止します。</p><a href="https://github.com/kitadadesu/auto-drift">SOURCE & GUIDE ↗</a></footer></main><script type="module" src="./app.js"></script></body></html>
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10151d"><title>AutoDrift — autonomous ambient instrument</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body><main>
+<header class="topbar">
+  <div class="brand"><a href="./">AD <span>/</span> AUTODRIFT</a><small>AN AUTONOMOUS AMBIENT INSTRUMENT</small></div>
+  <span class="header-guide">ONE CHORD. A JOURNEY WITHOUT A MAP.</span>
+  <span id="status" role="status">準備完了 · STARTで漂流を開始</span>
+</header>
+<section class="hero" aria-label="イントロダクション">
+  <div><p class="eyebrow">SET A CHORD. LET IT WANDER.</p><h1>音の、漂流。</h1></div>
+  <p class="intro">ひとつの和音から、まだ知らない響きへ。<br>和声と音色が、時間とともに変わっていく。</p>
+</section>
+<section class="transport" aria-label="出発点と再生操作">
+  <label class="origin" for="notes"><span>ORIGIN / 出発点 · 6声の音名、休符は x</span>
+    <input id="notes" value="E2 B2 E3 G3 B3 E4" spellcheck="false" autocomplete="off">
+  </label>
+  <div class="buttons">
+    <button id="start" class="primary">START ↗</button>
+    <button id="stop" disabled>STOP</button>
+    <button id="reset">新しい旅</button>
+  </div>
+</section>
+<section class="landscape" aria-label="自律演奏の現在地">
+  <div class="visual-pane">
+    <div class="orb" aria-hidden="true"></div>
+    <canvas id="pitch-field" aria-label="6声の音程、音高移動と実音波形" role="img"></canvas>
+    <span class="visual-caption">06 VOICES / PITCH &amp; DRIFT</span>
+  </div>
+  <div class="landscape-info">
+    <div class="readout">
+      <p class="eyebrow">NOW DRIFTING</p>
+      <div class="chord-line"><h2 id="chord">E minor</h2><time id="elapsed">00:00:00</time></div>
+      <p id="voices">E2 · B2 · E3 · G3 · B3 · E4</p>
+    </div>
+    <div class="journey">
+      <div class="journey-row"><span>TONAL MIGRATION <small>≈ 03:00</small></span><strong id="key">—</strong><small id="migration">実際の和声から主音への到着を判定します</small></div>
+      <div class="journey-row"><span>TEXTURE MORPH <small>AUTONOMOUS</small></span><strong id="scene">ORIGIN → …</strong><progress aria-label="音色遷移の進捗" id="progress" value="0" max="1"></progress></div>
+      <div class="texture-meter" aria-label="現在の音色の強さ">
+        <label>Bloom <meter id="meter-bloom" min="0" max="1" value="0.7"></meter></label>
+        <label>Shimmer <meter id="meter-shimmer" min="0" max="1" value="0.35"></meter></label>
+        <label>Drive <meter id="meter-drive" min="0" max="1" value="0.25"></meter></label>
+        <label>Haze <meter id="meter-wetDrift" min="0" max="1" value="0.35"></meter></label>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="settings" aria-label="漂流設定">
+  <label>Depth <input id="depth" aria-label="音色変化の振れ幅" type="range" min="0" max="1" step=".01" value="1"><output id="depth-value">100%</output></label>
+  <label>Pace <input id="pace" aria-label="コードの平均間隔" type="range" min="6" max="30" step="1" value="12"><output id="pace-value">12 s</output></label>
+  <label>Wander <input id="wander" aria-label="Wanderの積極性" type="range" min="0" max="1" step=".01" value=".25"><output id="wander-value">25%</output></label>
+  <label>Edge <input id="edge" aria-label="キワキワを選ぶ頻度" type="range" min="0" max="1" step=".01" value=".08"><output id="edge-value">8%</output></label>
+  <label class="toggle"><input id="auto-texture" type="checkbox" checked> AUTO TEXTURE</label>
+</section>
+<details class="sound-details">
+  <summary><span>THE LIVING TEXTURE <small>音色パラメーターを見る / 調整する</small></span><span class="details-hint">23 PARAMS ↗</span></summary>
+  <div class="detail-inner"><p>ノブは現在の実際の値に追従します。触れたパラメーターは35秒間保持され、その後、自動変化へ戻ります。</p><div id="knobs" class="knobs"></div></div>
+</details>
+<footer><span>HEADPHONES / LOW VOLUME / NO TWO JOURNEYS ALIKE</span><span>STOPは余韻を残して停止。非表示タブでは音声と時間を一時停止。</span><a href="https://github.com/kitadadesu/auto-drift">SOURCE ↗</a></footer>
+</main><script type="module" src="./app.js"></script></body></html>
