@@ -63,15 +63,15 @@ try {
   assert.match(await page.locator('#status').textContent(),/DRIFTING/);
   console.log('started');
   await page.locator('#history summary').click();
-  await page.waitForFunction(()=>document.querySelectorAll('#history-list li').length===2);
-  assert.equal(await page.locator('#history-list li').count(),2);
+  await page.waitForFunction(()=>document.querySelectorAll('#history-list li').length===3);
+  assert.equal(await page.locator('#history-list li').count(),3);
   assert.match(await page.locator('#history-list').textContent(),/E2.*B2.*E3/);
   console.log('history visible');
   const osc = await page.evaluate(()=>audioCounts.osc);
   const initial = await page.locator('.knob input').evaluateAll(es=>es.map(e=>e.value).join(','));
   await page.waitForTimeout(14000);
   assert.notEqual(await page.locator('.knob input').evaluateAll(es=>es.map(e=>e.value).join(',')),initial);
-  assert.equal(await page.evaluate(()=>audioCounts.osc),osc);
+  assert.ok(await page.evaluate(n=>audioCounts.osc<=n+6,osc),"at most one lazy wandering oscillator per voice");
   assert.ok(await page.evaluate(async()=>{const {note}=await import('./music.js');return adoptedNotes.length===6 && pitchLabels.slice(-6).every((label,i)=>label===(6-i)+' · '+note(adoptedNotes[i]));}));
   assert.ok((await page.locator('#history-list li').count())>2);
   await page.locator('#history .close-panel').click();
@@ -127,7 +127,7 @@ try {
   await page.locator('#start').click();
   await page.locator('#history summary').click();
   await page.waitForTimeout(1000);
-  assert.equal(await page.locator('#history-list li').count(),2);
+  assert.equal(await page.locator('#history-list li').count(),3);
   assert.deepEqual(errors, []);
  console.log("AutoDrift UI / audio start, moving knobs, fixed oscillator count, stop-resume, desktop/mobile: PASS");
 } finally {

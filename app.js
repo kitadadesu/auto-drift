@@ -4,6 +4,7 @@ import { parse, note, analyze } from './music.js';
 import { centerKey, keyLabel } from './harmony.js';
 import { History } from './history.js';
 import { Journey } from './journey.js';
+import { palette } from './palette.js';
 import { TextureDrift, textureKeys, textureBounds } from './texture.js';
 const $ = id => document.getElementById(id);
 const engine = new Drone();
@@ -12,7 +13,7 @@ const initialSettings = {...defaults, shimmer:.20, reverb:.24, wetDrift:.23,
   inharmonicity:.01, diffusion:.50, drive:.16, saturationMix:.28, delay:.11};
 engine.update(initialSettings);
 let journey, texture, requested = false, generation = 0, timer = null, applied = 0;
-let lastVoicing = null;
+let lastVoicing = null, resetting = false, paletteId = null, renderedHue = 25, targetHue = 25;
 const clock = new ActiveClock();
 const wake = new Worker(new URL('./pulse.js', import.meta.url), {type:'module'});
 wake.onmessage = () => { try { if (requested) tick(); } finally { wake.postMessage('ack'); } };
@@ -52,39 +53,54 @@ function ensureJourney() {
   if (tokens.length !== 6 || tokens.some((t,i) => notes[i] === null && !/^x$/i.test(t)) || notes.every(n => n === null)) throw new Error('音名を6つ入力してください（例 E2 B2 E3 G3 B3 E4）。休符は x。');
   journey = new Journey(notes, Math.random, {wander:+$('wander').value, edge:+$('edge').value});
   texture = new TextureDrift(initialSettings); texture.start(0);
-  history.harmony(journey); history.texture(texture, journey.elapsed);
+  history.chapters(journey); history.harmony(journey); history.texture(texture, journey.elapsed);
   transitionPitch(null, notes); if (+$('depth').value !== 1) texture.setDepth(+$('depth').value);
 }
 function cancelTimer() { timer = null; clock.pause(); wake.postMessage(false); }
-function stop() {
+function stop(account = true) {
+  if (account && requested && !resetting) tick();
   requested = false; ++generation; cancelTimer(); engine.stop();
   $('status').textContent = '停止中 · STARTで同じ旅を再開'; render();
 }
 async function start() {
+  if (resetting) return;
   if (requested && engine.running && engine.ctx?.state === 'running') return;
   try {
     ensureJourney(); requested = true; const id = ++generation;
     $('start').disabled = true; $('stop').disabled = false;
     await engine.play(journey.current);
     if (id !== generation || !requested) { if (!requested) engine.stop(); return; }
-    engine.ctx.onstatechange = () => {
-      if (engine.ctx.state !== 'running') { cancelTimer(); $('status').textContent = '音声待機中 · STARTで再開'; $('start').disabled = false; }
-      else if (requested && timer === null) schedule();
-    };
+    bindAudioState();
     texture.freeze(journey.elapsed); schedule();
     $('status').textContent = '● DRIFTING · 和声と音色が自律演奏中'; render();
-  } catch (error) { stop(); $('status').textContent = error.message; }
+  } catch (error) { stop(false); $('status').textContent = error.message; }
 }
-function schedule() { cancelTimer(); clock.resume(engine.ctx.currentTime); timer = true; wake.postMessage(true); }
-function tick() {
-  if (!requested || engine.ctx?.state !== 'running') { return; }
+function bindAudioState() {
+    engine.ctx.onstatechange = () => {
+      if (engine.ctx.state !== 'running') { if (engine.ctx.state==='suspended') tick(true); cancelTimer(); $('status').textContent = '音声待機中 · STARTで再開'; $('start').disabled = false; }
+      else if (requested && timer === null) schedule();
+    };
+}
+function schedule() { cancelTimer(); clock.resume(engine.ctx.currentTime); timer = true; engine.scheduleChapter(journey.chapterTime,journey.chapter); wake.postMessage(true); }
+function tick(allowSuspended = false) {
+  if (resetting || !requested || (engine.ctx?.state !== 'running' && !(allowSuspended && engine.ctx?.state === 'suspended'))) { return; }
   const dt = clock.advance(engine.ctx.currentTime);
   if (!dt) return;
   try {
     const v = texture.values;
     const complexity = (v.harmonics + v.drive + v.shimmer) / 3;
+    const priorChapter = journey.chapter;
     const changed = journey.step(dt,+$('pace').value,complexity);
-    if (changed) { transitionPitch(lastVoicing, journey.current); engine.move(journey.current); history.harmony(journey); }
+    history.chapters(journey);
+    if (journey.chapter !== priorChapter) {
+      resetting = true; cancelTimer(); const id = generation;
+      history.chapters(journey); transitionPitch(lastVoicing,journey.current); history.harmony(journey);
+      engine.newChapter(journey.current).then(()=>{
+        resetting = false;
+        if (!requested || generation !== id) { engine.stop(); return; }
+        bindAudioState(); schedule(); render();
+      }).catch(error=>{resetting=false;stop(false);$('status').textContent=error.message;});
+    } else if (changed) { transitionPitch(lastVoicing, journey.current); engine.move(journey.current); history.harmony(journey); }
     // Analytic scene interpolation consumes the full audio-clock gap; at most one new plan.
     texture.step(journey.elapsed, $('auto-texture').checked);
     history.texture(texture, journey.elapsed);
@@ -92,7 +108,7 @@ function tick() {
     // At most 1 Hz for expensive Bloom/spectrum scheduling; AudioParams smooth between updates.
     if (applied >= 1000) { engine.update({...engine.settings,...texture.values}); applied = 0; }
     if (!document.hidden) render();
-  } catch (error) { stop(); $('status').textContent = `演奏を停止しました: ${error.message}`; }
+  } catch (error) { stop(false); $('status').textContent = `演奏を停止しました: ${error.message}`; }
 }
 function render() {
   const values = texture?.values ?? initialSettings;
@@ -110,11 +126,17 @@ function render() {
     $('elapsed').textContent = [Math.floor(seconds/3600),Math.floor(seconds/60)%60,seconds%60].map(n=>String(n).padStart(2,'0')).join(':');
     const m = journey.drift.migration;
     $('key').textContent = `${keyLabel(centerKey(journey.context))}${m.target ? ' → '+keyLabel(m.target) : ' · 次の調を探索'}`;
-    $('migration').textContent = `${journey.transitions} 回変化 · ${journey.arrivals.length} 回到着 · Wander 現在 ${Math.round(journey.drift.wander*100)}%${m.target ? ' · '+Math.floor(m.elapsed/1000)+'秒 / 主音の定着を待機' : ''}`;
+    $('migration').textContent = `CHAPTER ${journey.chapter} · ${journey.chapterTime>=892000?'FADE OUT · ':journey.chapter>1&&journey.chapterTime<12000?'FADE IN · ':''}${journey.transitions} 回変化 · ${journey.arrivals.length} 回到着 · Wander 現在 ${Math.round(journey.drift.wander*100)}%${m.target ? ' · '+Math.floor(m.elapsed/1000)+'秒 / 主音の定着を待機' : ''}`;
     $('scene').textContent = $('auto-texture').checked ? texture.status.label : 'TEXTURE HOLD';
     $('texture-state').textContent = $('auto-texture').checked ? (texture.status.progress >= 1 ? texture.plan.name : texture.plan?.origin || 'ORIGIN') : 'HOLD';
-    document.querySelector('.landscape').style.setProperty('--scene-hue', ({HOLLOW:25,CLEAR:38,HAZE:270,GLOW:345,DISSOLVE:305}[texture.plan?.name] ?? 25));
-    document.querySelector('.landscape').style.setProperty('--scene-depth', (.12+values.bloom*.18).toFixed(3));
+    const colors = palette(centerKey(journey.context), texture.plan?.name);
+    if (paletteId !== colors.id) {
+      paletteId = colors.id;
+      const root = document.documentElement;
+      for(const k of ['accent','glow','base','surface','field']) root.style.setProperty('--'+k,colors[k]);
+      targetHue = colors.hue;
+      document.querySelector('.landscape').dataset.palette = colors.id;
+    }
     $('progress').value = texture.status.progress;
   }
   for (const key of ['bloom','shimmer','drive','wetDrift']) $('meter-'+key).value = values[key];
@@ -141,7 +163,7 @@ window.addEventListener('pagehide',stop);
 // Six-voice pitch field: the real accepted MIDI notes glide along six colored
 // traces. The optional waveform comes from the existing WebAudio analyser.
 const field = $('pitch-field'), fieldCtx = field.getContext('2d');
-const voiceColors = ['#f9cfa0','#ffae8c','#e48fbc','#bc9ef2','#e9b9d2','#f5d9b4'];
+let voiceColors = ['#f9cfa0','#ffae8c','#e48fbc','#bc9ef2','#e9b9d2','#f5d9b4'];
 let motions = Array(6).fill(null), pitchCamera = 52, pitchRange = 52, frameAt = 0;
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 function currentPitch(m, at) {
@@ -192,6 +214,9 @@ function drawField(at) {
       const y=h*.5+(value-128)/128*h*.24; i?c.lineTo(x,y):c.moveTo(x,y);});
     c.stroke();
   }
+  const hueDelta = ((targetHue-renderedHue+540)%360)-180;
+  renderedHue = (renderedHue+hueDelta*(reduceMotion?1:1-Math.exp(-delta/2500))+360)%360;
+  voiceColors = Array.from({length:6},(_,i)=>`hsl(${(renderedHue+i*27)%360} 85% 78%)`);
   motions.forEach((m,i)=>{
     if (!m) return;
     const x=43+(i+.5)*(w-86)/6;
@@ -199,12 +224,12 @@ function drawField(at) {
     const sway=0;
     const y=yy+sway;
     const grad=c.createLinearGradient(10,0,x+8,0);
-    grad.addColorStop(0,'#e5afc005');grad.addColorStop(.68,voiceColors[i]+'55');grad.addColorStop(1,voiceColors[i]+'c9');
+    grad.addColorStop(0,'#e5afc005');grad.addColorStop(.68,voiceColors[i].replace(')', ' / .33)'));grad.addColorStop(1,voiceColors[i].replace(')', ' / .79)'));
     c.strokeStyle=grad;c.lineWidth=1.4;c.beginPath();
     c.moveTo(10,y);c.bezierCurveTo(x*.42,y+Math.sin(at/1800+i)*3,x*.73,y-2.5,x,y);c.stroke();
     const targetY=yTarget;
     if(Math.abs(y-targetY)>1.1){
-      c.setLineDash([2,5]);c.strokeStyle=voiceColors[i]+'66';
+      c.setLineDash([2,5]);c.strokeStyle=voiceColors[i].replace(')', ' / .4)');
       c.beginPath();c.moveTo(x,y);c.lineTo(x,targetY);c.stroke();c.setLineDash([]);
     }
     c.shadowColor=voiceColors[i];c.shadowBlur=reduceMotion?0:15;c.fillStyle=voiceColors[i];
@@ -224,7 +249,7 @@ function renderHistory() {
   const rows = history.events.slice().reverse().map(e => {
     const row = document.createElement('li');
     const stamp = new Date(e.at).toISOString().slice(11,19);
-    row.textContent = e.type === 'harmony' ? `${stamp} · ${e.chord} · ${e.notes.map(n => n === null ? '—' : note(n)).join(' / ')} · ${e.mode} · ${e.key}${e.target ? ' → '+e.target : ''}` : `${stamp} · ${e.origin} → ${e.scene} · ${e.phase} ${Math.round(e.progress*100)}% · Inharm ${Math.round(e.values.inharmonicity*1000)/10}% / Bloom ${Math.round(e.values.bloom*100)}% / Harm ${Math.round(e.values.harmonics*100)}% / Drive ${Math.round(e.values.drive*100)}% / Shimmer ${Math.round(e.values.shimmer*100)}%`;
+    row.textContent = e.type === 'chapter' ? `${stamp} · CHAPTER ${e.chapter} · ${e.phase} · ${e.from || 'START'} → ${e.key} · fade ${e.fadeOut || 0}/${e.fadeIn || 0} ms` : e.type === 'harmony' ? `${stamp} · ${e.chord} · ${e.notes.map(n => n === null ? '—' : note(n)).join(' / ')} · ${e.mode} · ${e.key}${e.target ? ' → '+e.target : ''}` : `${stamp} · ${e.origin} → ${e.scene} · ${e.phase} ${Math.round(e.progress*100)}% · Inharm ${Math.round(e.values.inharmonicity*1000)/10}% / Bloom ${Math.round(e.values.bloom*100)}% / Harm ${Math.round(e.values.harmonics*100)}% / Drive ${Math.round(e.values.drive*100)}% / Shimmer ${Math.round(e.values.shimmer*100)}%`;
     return row;
   });
   $('history-list').replaceChildren(...rows);

@@ -1,7 +1,7 @@
 import { CrushDSP } from './crush-dsp.js';
 class DriftCrush extends AudioWorkletProcessor {
   static get parameterDescriptors() {
-    return [{name:'amount',defaultValue:0,minValue:0,maxValue:1,automationRate:'k-rate'}];
+    return [{name:'amount',defaultValue:0,minValue:0,maxValue:1.7,automationRate:'k-rate'}];
   }
   constructor() { super(); this.dsp = new CrushDSP(sampleRate); }
   process(inputs, outputs, parameters) {

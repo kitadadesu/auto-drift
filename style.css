@@ -371,3 +371,20 @@ footer a{display:block}
 details[open] .detail-inner,details[open] .history-inner{animation:slide-in .28s ease-out}
 @keyframes slide-in{from{transform:translateX(100%)}to{transform:translateX(0)}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important}}
+
+/* AutoDrift chromatic plug-in skin: bright text on bounded dark surfaces. */
+@property --base {syntax:'<color>';inherits:true;initial-value:#17121e}
+@property --surface {syntax:'<color>';inherits:true;initial-value:#241d2c}
+@property --field {syntax:'<color>';inherits:true;initial-value:#44314d}
+@property --accent {syntax:'<color>';inherits:true;initial-value:#ffb693}
+@property --glow {syntax:'<color>';inherits:true;initial-value:#e48fbc}
+:root{--muted:#d3cbd7;background:var(--base);transition:--base 10s,--surface 10s,--field 10s,--accent 10s,--glow 10s}
+.landscape{background:radial-gradient(ellipse at 80% 75%,var(--field),transparent 72%),radial-gradient(ellipse at 10% 15%,var(--surface),transparent 70%),var(--base);border-color:var(--accent);box-shadow:inset 0 0 80px #0004,0 0 34px color-mix(in srgb,var(--glow) 14%,transparent)}
+#chord,time,#texture-state{color:var(--accent);transition:color 10s;text-shadow:0 2px 18px #000}
+#texture-state{color:var(--glow)}
+.detail-inner,.history-inner{background:color-mix(in srgb,var(--surface) 96%,transparent);border-color:var(--accent)}
+#voices,#history-list li{color:#f1eaf4}
+.primary,#texture-tabs [aria-selected=true]{color:#17121e}
+
+:root{--muted:#e8e3ec}
+footer{color:var(--muted)}

@@ -7,12 +7,12 @@ export const textureKeys = [
   "drive", "character", "saturationMix", "reverb", "delay", "detune", "saturationPost", "glide", "attack", "decay", "sustain", "release", "time", "feedback",
 ];
 export const textureBounds = {
-  crush: [0, .85], beating: [0, .85], turbulence: [0, .9], wandering: [0, .65],
+  crush: [0, 1.7], beating: [0, 1.7], turbulence: [0, 1.8], wandering: [0, 1.3],
   bloom: [0, 1], harmonics: [0, 1], inharmonicity: [0, 1],
-  drift: [0, 1], dryDrift: [0, 1], wetDrift: [0, 1],
-  shimmer: [0, 0.85], shimmerDecay: [1, 10.5], diffusion: [0, 1],
-  drive: [0, 0.9], character: [0, 1], saturationMix: [0, 0.76],
-  reverb: [0, 0.85], delay: [0, 0.52], detune: [0, 26],
+  drift: [0, 1], dryDrift: [0, 2], wetDrift: [0, 2],
+  shimmer: [0, 1.7], shimmerDecay: [1, 21], diffusion: [0, 2],
+  drive: [0, 1.8], character: [0, 2], saturationMix: [0, 1.52],
+  reverb: [0, 1.7], delay: [0, 1.04], detune: [0, 26],
 };
 Object.assign(textureBounds, { saturationPost: [0,1], glide: [1,8], attack: [.4,4], decay: [.5,4], sustain: [.55,.9], release: [1,5], time: [.15,1.2], feedback: [.05,.5] });
 export const autoInharmonicityMax = .08;
@@ -52,6 +52,11 @@ for (const [i, scene] of Object.values(textureScenes).entries()) Object.assign(s
   saturationPost: i % 2, glide: [7,3,6,4,8][i], attack: [3,1,4,2,3.5][i], decay: [1,2,3,2.5,4][i],
   sustain: [.6,.8,.7,.85,.65][i], release: [2,1.5,5,3,4][i], time: [.3,.4,.8,.6,1.1][i], feedback: [.08,.15,.35,.25,.45][i]
 });
+// Keep transparent scenes intact. Only destructive destinations enter overdrive.
+Object.assign(textureScenes.DISSOLVE, {crush:1.6,beating:1.35,turbulence:1.65,
+  wandering:1.15,dryDrift:1.8,drive:1.7,character:1.85,saturationMix:1.4});
+Object.assign(textureScenes.HAZE, {wetDrift:1.8,shimmer:1.5,shimmerDecay:19,
+  diffusion:1.85,reverb:1.55,delay:.95,turbulence:1.3});
 const nearby = {
   HOLLOW: ["CLEAR", "HAZE"],
   CLEAR: ["HOLLOW", "HAZE", "GLOW"],
@@ -84,7 +89,7 @@ export function safeTextureValues(values, balance = true) {
   // contrast between *dry bright* and *wet soft* scenes pronounced.
   const density = clamp((out.harmonics*.57 + out.drive*.46 + out.saturationMix*.28 + out.bloom*.18 - .56)/.65);
   if (balance) {
-    out.wandering *= 1 - .55 * Math.max(out.crush, density);
+    out.wandering *= 1 - .25 * Math.max(out.crush / 1.7, density);
     out.shimmer *= 1 - density*.43;
     out.reverb *= 1 - density*.38;
     out.delay *= 1 - density*.27;

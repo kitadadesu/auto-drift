@@ -9,9 +9,12 @@ export class History {
     if (this.events.length > this.limit) { this.events.shift(); this.dropped++; }
     this.revision++;
   }
+  chapters(journey) {
+    for (const event of journey.chapterEvents.splice(0)) this.add(event);
+  }
   harmony(journey) {
     const m = journey.drift.migration;
-    this.add({type:'harmony', at:journey.elapsed, chord:analyze(journey.current),
+    this.add({type:'harmony', chapter:journey.chapter, at:journey.elapsed, chord:analyze(journey.current),
       notes:[...journey.current], mode:journey.mode || 'normal',
       key:keyLabel(centerKey(journey.context)), target:m.target ? keyLabel(m.target) : null,
       arrivals:journey.arrivals.length});

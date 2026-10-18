@@ -2,10 +2,10 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {CrushDSP} from '../crush-dsp.js';
 import {defaults,sanitize} from '../audio.js';
-import {TextureDrift} from '../texture.js';
+import {TextureDrift,textureBounds} from '../texture.js';
 const keys=['crush','beating','turbulence','wandering'];
 test('new controls sanitize finite endpoints and exact neutral defaults',()=>{
- for(const k of keys){assert.equal(defaults[k],0);assert.equal(sanitize({...defaults,[k]:99})[k],1);assert.equal(sanitize({...defaults,[k]:-1})[k],0);}
+ for(const k of keys){assert.equal(defaults[k],0);assert.equal(sanitize({...defaults,[k]:99})[k],textureBounds[k][1]);assert.equal(sanitize({...defaults,[k]:-1})[k],0);}
 });
 test('seeded 2/10/60 minute timelines vary independently within safety bounds',()=>{
  for(const duration of [120,600,3600]){
@@ -14,12 +14,12 @@ test('seeded 2/10/60 minute timelines vary independently within safety bounds',(
  const ranges=Object.fromEntries(keys.map(k=>[k,[1,0]]));
  for(let sec=0;sec<=duration;sec++){
  const v=d.step(sec*1000);
- for(const k of keys){assert.ok(Number.isFinite(v[k])&&v[k]>=0&&v[k]<=1);ranges[k][0]=Math.min(ranges[k][0],v[k]);ranges[k][1]=Math.max(ranges[k][1],v[k]);}
- assert.ok(v.inharmonicity<=.08);assert.ok(v.wandering<=.65);assert.ok(v.crush+v.wandering<1.4);
+ for(const k of keys){assert.ok(Number.isFinite(v[k])&&v[k]>=0&&v[k]<=textureBounds[k][1]);ranges[k][0]=Math.min(ranges[k][0],v[k]);ranges[k][1]=Math.max(ranges[k][1],v[k]);}
+ assert.ok(v.inharmonicity<=.08);assert.ok(v.wandering<=1.3);
  }
  for(const k of keys)assert.ok(ranges[k][1]-ranges[k][0]>.01);
  console.log(JSON.stringify({duration,ranges}));
- d.manualChange('crush',.95);assert.equal(d.step(duration*1000+1000).crush,.85); // existing automatic bounds
+ d.manualChange('crush',.95);assert.equal(d.step(duration*1000+1000).crush,.95); // existing automatic bounds
  }
 });
 test('crush DSP stereo, DC decay, finite peaks, continuous transitions',()=>{

@@ -32,18 +32,18 @@ export const defaults = {
   feedback: 0.32,
 };
 const limits = {
-  crush: [0, 1], beating: [0, 1], turbulence: [0, 1], wandering: [0, 1],
+  crush: [0, 1.7], beating: [0, 1.7], turbulence: [0, 1.8], wandering: [0, 1.3],
   glide: [0.02, 8],
   harmonics: [0, 1],
   bloom: [0, 1],
-  dryDrift: [0, 1],
-  wetDrift: [0, 1],
-  shimmer: [0, 1],
-  shimmerDecay: [1, 12],
-  diffusion: [0, 1],
-  drive: [0, 1],
-  character: [0, 1],
-  saturationMix: [0, 1],
+  dryDrift: [0, 2],
+  wetDrift: [0, 2],
+  shimmer: [0, 1.7],
+  shimmerDecay: [1, 21],
+  diffusion: [0, 2],
+  drive: [0, 1.8],
+  character: [0, 2],
+  saturationMix: [0, 1.52],
   saturationPost: [0, 1],
   inharmonicity: [0, 1],
   drift: [0, 1],
@@ -53,8 +53,8 @@ const limits = {
   sustain: [0, 1],
   release: [0.03, 5],
   volume: [0, 1],
-  reverb: [0, 1],
-  delay: [0, 0.7],
+  reverb: [0, 1.7],
+  delay: [0, 1.04],
   time: [0.05, 1.5],
   feedback: [0, 0.65],
 };
@@ -209,7 +209,14 @@ export class Drone {
       comp.ratio.value = 12;
       this.analyser = c.createAnalyser();
       this.analyser.fftSize = 512;
-      this.master.connect(comp).connect(this.analyser).connect(c.destination);
+      // Dedicated final chapter gate includes every dry/wet/feedback tail.
+      this.chapterGate = c.createGain();
+      this.outputDC = c.createBiquadFilter(); this.outputDC.type = 'highpass';
+      this.outputDC.frequency.value = 25; this.outputDC.Q.value = dampedQ;
+      this.safety = c.createWaveShaper();
+      this.safety.curve = Float32Array.from({length:8193},(_,i)=>.8*Math.tanh((i/4096-1)/.8));
+      this.safety.oversample = '4x';
+      this.master.connect(this.outputDC).connect(comp).connect(this.safety).connect(this.chapterGate).connect(this.analyser).connect(c.destination);
       this.preparing = this.prepareCrush().then(() => this.update(this.settings));
       this.update(this.settings);
     }
@@ -224,6 +231,9 @@ export class Drone {
     this.modulators = [driftSignal(c, 97, 17, 397), driftSignal(c, 109, 23, 503)];
     this.modulators[0].connect(this.dryMod);
     this.modulators[1].connect(this.wetMod);
+    // Over-range delay becomes unstable tape time, never extra loop gain.
+    this.echoMod = c.createGain(); this.echoMod.gain.value = 0;
+    this.modulators[0].connect(this.echoMod).connect(this.delay.delayTime);
     this.wetInput = c.createGain();
     this.wetBypass = c.createGain();
     this.wetEffect = c.createGain();
@@ -304,7 +314,14 @@ export class Drone {
         Math.round((i / 32768 - 1) * 128) / 128);
       this.crushMode = "quantizer fallback";
     }
-    this.crushWet.connect(this.crusher).connect(this.crushOutput);
+    if (this.crushMode === 'quantizer fallback') {
+      this.fallbackDry = c.createGain(); this.fallbackWet = c.createGain();
+      this.fallbackWet.gain.value = 0;
+      const coarse = c.createWaveShaper(); coarse.oversample = '4x';
+      coarse.curve = Float32Array.from({length:65537},(_,i)=>Math.round((i/32768-1)*4)/4);
+      this.crushWet.connect(this.crusher).connect(this.fallbackDry).connect(this.crushOutput);
+      this.crushWet.connect(coarse).connect(this.fallbackWet).connect(this.crushOutput);
+    } else this.crushWet.connect(this.crusher).connect(this.crushOutput);
   }
   voiceTexture(v, index) {
     if (v.motionGain) return;
@@ -331,7 +348,7 @@ export class Drone {
     // Existing two fundamentals supply the beat; independent cents offsets and motion.
     p(v.oscs[1].detune, s.detune + s.beating * (1.1 + index * .41));
     p(v.beatMod.gain, s.beating * 1.2);
-    for (const node of [v.motionGain, v.motionGainSpectral]) p(node.gain, 1 - .32 * s.turbulence);
+    for (const node of [v.motionGain, v.motionGainSpectral]) p(node.gain, 1 - .32 * Math.min(1.8,s.turbulence));
     p(v.amplitude.gain, .22 * s.turbulence); p(v.breath.gain, .08 * s.turbulence);
     if (s.wandering > 0 && !v.howl) {
       v.howl = this.ctx.createOscillator(); v.howl.type = "sine";
@@ -348,9 +365,10 @@ export class Drone {
     if (v.howl) {
       const hz = Math.min(this.ctx.sampleRate * .2, 4200, frequency(v.midi) * (index % 2 ? 3 : 4));
       p(v.howl.frequency, hz);
+      p(v.wanderMod.gain, 19 * (1 + Math.max(0,s.wandering-0.65)*2));
       // No recursive path. Envelope bounds <= .20 of a .035 voice; six voices <= .042.
-      p(v.howlGain.gain, .11 * s.wandering);
-      p(v.howlBreath.gain, .09 * s.wandering);
+      p(v.howlGain.gain, .11 * Math.min(1,s.wandering));
+      p(v.howlBreath.gain, .09 * Math.min(1,s.wandering));
     }
   }
   update(s) {
@@ -360,34 +378,41 @@ export class Drone {
     const t = this.ctx.currentTime,
       p = (n, v) => n.setTargetAtTime(v, t, 0.035),
       s2 = this.settings;
-    p(this.crushDry.gain, 1 - .75 * s2.crush);
-    p(this.crushWet.gain, .75 * s2.crush);
+    p(this.crushDry.gain, 1 - .75 * Math.min(1,s2.crush));
+    p(this.crushWet.gain, .75 * Math.min(1,s2.crush));
     this.crusher?.parameters?.get("amount")?.setTargetAtTime(s2.crush, t, .1);
+    if (this.fallbackWet) {
+      const harsh = Math.max(0,Math.min(1,(s2.crush-.85)/.85));
+      p(this.fallbackDry.gain,1-harsh); p(this.fallbackWet.gain,harsh);
+    }
     p(this.master.gain, this.running ? s2.volume : 0);
-    p(this.dry.gain, 1 - s2.reverb * 0.45);
-    p(this.wet.gain, s2.reverb * 0.55);
-    p(this.echo.gain, s2.delay);
+    p(this.dry.gain, 1 - Math.min(1,s2.reverb) * 0.45);
+    p(this.wet.gain, Math.min(.85,s2.reverb * 0.55));
+    p(this.echo.gain, Math.min(.65,s2.delay));
     p(this.delay.delayTime, s2.time);
     p(this.feedback.gain, s2.feedback);
-    p(this.dryMod.gain, s2.dryDrift * 4); // maximum ±4 cents, additive to Detune
-    p(this.wetMod.gain, s2.wetDrift * 0.0006);
+    p(this.dryMod.gain, s2.dryDrift * 4); // maximum ±8 cents, additive to Detune
+    p(this.wetMod.gain, s2.wetDrift * 0.0006 + Math.max(0,s2.shimmer-.85)*.001);
+    p(this.echoMod.gain, Math.max(0,s2.delay-.52)/.52*.04);
     p(this.wetBypass.gain, s2.wetDrift === 0 ? 1 : 0);
     p(this.wetEffect.gain, s2.wetDrift === 0 ? 0 : 1);
-    p(this.spectralWet.gain, s2.shimmer);
-    p(this.diffuseBypass.gain, 1 - s2.diffusion);
-    p(this.diffuseWet.gain, s2.diffusion);
+    p(this.spectralWet.gain, Math.min(1,s2.shimmer));
+    p(this.diffuseBypass.gain, 1 - Math.min(1,s2.diffusion));
+    p(this.diffuseWet.gain, Math.min(1,s2.diffusion));
     [this.preSaturation, this.postSaturation].forEach((stage, i) => {
       const placement = i ? s2.saturationPost : 1 - s2.saturationPost;
-      const mix = s2.drive === 0 ? 0 : s2.saturationMix * placement;
+      const mix = s2.drive === 0 ? 0 : Math.min(.95,s2.saturationMix) * placement;
       p(stage.dry.gain, 1 - mix);
       p(stage.wet.gain, mix);
       // Voices are deliberately quiet; excite the curves then compensate drive.
-      p(stage.drive.gain, 1 + s2.drive * 12);
-      characterWeights(s2.character).forEach((weight, j) =>
+      p(stage.drive.gain, 1 + s2.drive * 12 + Math.max(0,s2.character-1)*16 + Math.max(0,s2.saturationMix-.76)*8);
+      characterWeights(Math.min(1,s2.character)).forEach((weight, j) =>
         p(stage.colors[j].gain.gain, weight / (1 + s2.drive * 6)));
     });
-    this.tailLines.forEach(({ seconds, feedback }) =>
-      p(feedback.gain, Math.min(0.94, 10 ** (-3 * seconds / s2.shimmerDecay))));
+    this.tailLines.forEach(({ seconds, feedback, damping }) => {
+      p(feedback.gain, Math.min(0.94, 10 ** (-3 * seconds / s2.shimmerDecay)));
+      p(damping.frequency, 4200 / (1 + Math.max(0,s2.reverb-.85)*2 + Math.max(0,s2.diffusion-1)*3));
+    });
     this.voices.forEach((v, i) => {
       if (!v) return;
       v.oscs.forEach((o, j) => p(o.detune, j ? s2.detune : -s2.detune));
@@ -399,6 +424,27 @@ export class Drone {
         this.spectrum(v, false);
       }
     });
+  }
+  scheduleChapter(position, number) {
+    if (!this.ctx || !this.chapterGate) return;
+    const t=this.ctx.currentTime, p=this.chapterGate.gain;
+    const gain = number>1 && position<12000 ? Math.sin(position/12000*Math.PI/2)**2 :
+      position>892000 ? Math.cos(Math.min(1,(position-892000)/8000)*Math.PI/2)**2 : 1;
+    p.cancelScheduledValues(t); p.setValueAtTime(gain,t);
+    if(number>1 && position<12000) p.linearRampToValueAtTime(1,t+(12000-position)/1000);
+    p.setValueAtTime(1,t+Math.max(0,(892000-position)/1000));
+    if(position>=892000) { p.cancelScheduledValues(t); p.setValueAtTime(gain,t); }
+    p.linearRampToValueAtTime(0,t+Math.max(.001,(900000-position)/1000));
+  }
+  async newChapter(notes) {
+    // At zero output, discard all delay/convolution state and old oscillators.
+    // Closing also releases worklets and modulators; graph size stays bounded.
+    if (this.ctx) this.ctx.onstatechange = null;
+    await this.dispose();
+    await this.ready();
+    this.chapterGate.gain.value = 0;
+    this.running = true; this.master.gain.value = this.settings.volume;
+    this.move(notes);
   }
   async play(notes) {
     const id = ++this.generation;
@@ -582,6 +628,6 @@ export class Drone {
     [this.preSaturation, this.postSaturation].forEach(stage => stage?.nodes.forEach(n => n.disconnect()));
     await this.ctx?.close();
     this.clearRetiring();
-    this.ctx = null;
+    this.ctx = null; this.fallbackDry = this.fallbackWet = null;
   }
 }

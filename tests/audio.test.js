@@ -355,14 +355,14 @@ test("Dream sends contain only Bloom high partials, mirror mute ADSR, and preser
 test("Dream independent modulation routes and settings bounds", async () => {
   const settings = sanitize({...defaults, bloom:0, dryDrift:9, wetDrift:-1, shimmerDecay:99, diffusion:NaN});
   assert.equal(settings.bloom,0);
-  assert.equal(settings.dryDrift,1);
+  assert.equal(settings.dryDrift,2);
   assert.equal(settings.wetDrift,0);
-  assert.equal(settings.shimmerDecay,12);
+  assert.equal(settings.shimmerDecay,21);
   assert.equal(settings.diffusion,defaults.diffusion);
   const d = new Drone();
   await d.play([40,45,50,55,59,64]);
   assert.notEqual(d.modulators[0],d.modulators[1]);
-  assert.deepEqual(d.modulators[0].connections,[d.dryMod]);
+  assert.deepEqual(d.modulators[0].connections,[d.dryMod,d.echoMod]);
   assert.deepEqual(d.modulators[1].connections,[d.wetMod]);
   assert.ok(d.dryMod.connections.includes(d.voices[0].oscs[0].detune));
   assert.ok(d.dryMod.connections.includes(d.voices[0].partials[2].osc.detune));
