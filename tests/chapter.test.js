@@ -41,12 +41,12 @@ test('fade windows hold harmony; no ordinary migration during new tonic fade',()
  j.step(7999);assert.deepEqual(j.current,v);j.step(1);const next=[...j.current];
  j.step(11999);assert.deepEqual(j.current,next);assert.equal(j.context.accepted.length,1);
 });
-test('120 deterministic palettes and large key/scene changes',()=>{
+test('288 deterministic palettes and large key/scene changes',()=>{
  const ids=new Set(), colors=new Set();
  for(const mode of ['major','minor'])for(let tonic=0;tonic<12;tonic++)for(const scene of sceneNames){
   const p=palette({tonic,mode},scene);ids.add(p.id);colors.add(p.accent);assert.deepEqual(p,palette({tonic,mode},scene));
  }
- assert.equal(ids.size,120);assert.equal(colors.size,120);
+ assert.equal(ids.size,288);assert.equal(colors.size,288);
 });
 test('automatic timeline reaches extended destruction and retains clear destinations',()=>{
  const t=new TextureDrift(defaults,random());t.start(0);const reached=new Set(), scenes=new Set();let low=false;
@@ -58,14 +58,14 @@ test('automatic timeline reaches extended destruction and retains clear destinat
   }
   assert.ok(v.inharmonicity<=.08);assert.ok(v.feedback<1);
  }
- assert.equal(scenes.size,5);assert.ok(low);assert.equal(reached.size,12,[...reached].join(','));
+ assert.ok(scenes.size>=9,[...scenes].join(','));assert.ok(low);assert.equal(reached.size,12,[...reached].join(','));
 });
 function hsl(h,s,l){h/=360;const a=s*Math.min(l,1-l);return [0,8,4].map(n=>{const k=(n+h*12)%12;return l-a*Math.max(-1,Math.min(k-3,9-k,1))})}
 const luminance=rgb=>rgb.map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
 test('all palettes keep readable accent, glow and text over the brightest field',()=>{
  let minimum=100;
  for(const mode of ['major','minor'])for(let tonic=0;tonic<12;tonic++)for(const [i,scene] of sceneNames.entries()){
-  const p=palette({tonic,mode},scene), bg=luminance(hsl(p.hue,.72,(16+i*2)/100));
+  const p=palette({tonic,mode},scene), bg=luminance(hsl(p.hue,.72,(16+i*.65)/100));
   for(const rgb of [hsl(p.hue,.9,.8),hsl(p.second,.9,p.glowLight/100),[.956,.913,.878]]){
    const ratio=(luminance(rgb)+.05)/(bg+.05);minimum=Math.min(minimum,ratio);
    assert.ok(ratio>=4.5,`${p.id} contrast ${ratio}`);

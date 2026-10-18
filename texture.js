@@ -1,12 +1,15 @@
+import { sourceDefaults, sourceBounds } from "./synthesis-dsp.js";
 // AUTO TEXTURE is a separate, deterministic musical timeline. It owns no
 // AudioNodes, timers or DOM, and never overwrites the musician's manual values.
 export const textureKeys = [
+  ...Object.keys(sourceDefaults),
   "crush", "beating", "turbulence", "wandering",
   "bloom", "harmonics", "inharmonicity", "drift",
   "dryDrift", "wetDrift", "shimmer", "shimmerDecay", "diffusion",
   "drive", "character", "saturationMix", "reverb", "delay", "detune", "saturationPost", "glide", "attack", "decay", "sustain", "release", "time", "feedback",
 ];
 export const textureBounds = {
+  ...sourceBounds,
   crush: [0, 1.7], beating: [0, 1.7], turbulence: [0, 1.8], wandering: [0, 1.3],
   bloom: [0, 1], harmonics: [0, 1], inharmonicity: [0, 1],
   drift: [0, 1], dryDrift: [0, 2], wetDrift: [0, 2],
@@ -57,13 +60,24 @@ Object.assign(textureScenes.DISSOLVE, {crush:1.6,beating:1.35,turbulence:1.65,
   wandering:1.15,dryDrift:1.8,drive:1.7,character:1.85,saturationMix:1.4});
 Object.assign(textureScenes.HAZE, {wetDrift:1.8,shimmer:1.5,shimmerDecay:19,
   diffusion:1.85,reverb:1.55,delay:.95,turbulence:1.3});
-const nearby = {
-  HOLLOW: ["CLEAR", "HAZE"],
-  CLEAR: ["HOLLOW", "HAZE", "GLOW"],
-  HAZE: ["CLEAR", "GLOW", "DISSOLVE"],
-  GLOW: ["HAZE", "DISSOLVE", "CLEAR"],
-  DISSOLVE: ["GLOW", "HAZE", "HOLLOW"],
-};
+// Inherit proven effect ranges, then assign a distinct source phenomenon.
+const old = structuredClone(textureScenes);
+for (const name of Object.keys(textureScenes)) delete textureScenes[name];
+const definitions = [
+ ['HOLLOW','HOLLOW',{}], ['GLASS','CLEAR',{fm:.85,fmRatio:3.5}],
+ ['AURORA','HAZE',{wave:.32}], ['CHOIR','CLEAR',{wave:.15,beating:1.1}],
+ ['TIDAL','HAZE',{noise:.65,material:.1,turbulence:1.6,shimmer:.18}],
+ ['TAPE','CLEAR',{wave:.55,dryDrift:1.6,crush:.3}],
+ ['HALO','HAZE',{noise:.75,material:1}],
+ ['ECHO','CLEAR',{granular:.55,delay:.85,time:1.1}],
+ ['HOWL','GLOW',{noise:.8,material:.55,wandering:1.1}],
+ ['STATIC','DISSOLVE',{noise:.9,material:.25,fm:.08,drive:.4,crush:1.7}],
+ ['EMBER','DISSOLVE',{wave:.95,fm:.65,fmRatio:1,granular:0,noise:0}],
+ ['DISSOLVE','DISSOLVE',{granular:1,freeze:.85,reverse:1,drive:.6,crush:.8}],
+];
+for(const [name,base,values] of definitions) textureScenes[name]={...sourceDefaults,...old[base],...values};
+const names=Object.keys(textureScenes);
+const nearby=Object.fromEntries(names.map((name,i)=>[name,[names[(i+1)%12],names[(i+11)%12],names[(i+3)%12]]]));
 export function chooseTextureScene(scene, previous = null, rng = Math.random) {
   const all = Object.keys(textureScenes).filter((x) => x !== scene);
   if (!all.length) return scene;
@@ -101,7 +115,7 @@ export function safeTextureValues(values, balance = true) {
   return out;
 }
 export function textureDistance(a, b) {
-  const keys = ["bloom", "harmonics", "shimmer", "wetDrift", "drive", "character", "reverb"];
+  const keys = ["fm", "wave", "noise", "granular", "bloom", "harmonics", "shimmer", "wetDrift", "drive", "character", "reverb"];
   return keys.reduce((sum, key) => {
     const [lo, hi] = textureBounds[key];
     return sum + Math.abs(a[key] - b[key]) / (hi - lo);
@@ -110,10 +124,11 @@ export function textureDistance(a, b) {
 function destination(name, rng) {
   const profile = textureScenes[name];
   const values = {};
+  const intensity = rng()<.25 ? .3+rng()*.25 : .85+rng()*.15;
   for (const k of textureKeys) {
     const [lo, hi] = textureBounds[k];
     // Vary ordinary knobs ±5%; inharmonicity only ±0.2 percentage points.
-    values[k] = clamp(profile[k] + (rng() - .5) * (k === "inharmonicity" ? .004 : (hi - lo) * .10), lo, hi);
+    values[k] = clamp((profile[k] * (Object.hasOwn(sourceDefaults,k) && textureBounds[k][0]===0 ? intensity : 1)) + (rng() - .5) * (k === "inharmonicity" ? .004 : (hi - lo) * .10), lo, hi);
   }
   return safeTextureValues(values);
 }
@@ -155,7 +170,7 @@ export class TextureDrift {
     const hold = first ? 5000 : 8000 + this.rng() * 24000;
     // A continuously varying 15–60 minute arc biases, but never fixes, scene order.
     const macro = .5 + .5 * Math.sin(this.elapsed / 1500000 * Math.PI * 2 + .8);
-    const anchor = textureScenes[macro > .5 ? "HAZE" : "HOLLOW"];
+    const anchor = textureScenes[macro > .5 ? "AURORA" : "HOLLOW"];
     for (const k of textureKeys) target[k] = lerp(target[k], anchor[k], .08);
     this.plan = {
       from: { ...this.values },

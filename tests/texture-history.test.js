@@ -8,7 +8,7 @@ const rng = seed => () => ((seed = Math.imul(seed,1664525)+1013904223>>>0)/2**32
 test('automatic inharmonicity caps cover variation, macro, depth and unsafe origins; manual remains expressive',()=>{
  assert.ok(defaults.inharmonicity<=.02);
  assert.equal(textureScenes.HOLLOW.inharmonicity,0);
- for(const n of ['CLEAR','HAZE','GLOW']) assert.ok(textureScenes[n].inharmonicity<=.03);
+ for(const n of ['GLASS','AURORA','CHOIR']) assert.ok(textureScenes[n].inharmonicity<=.03);
  assert.equal(safeTextureValues({...defaults,inharmonicity:1}).inharmonicity,.08);
  for(const depth of [0,.3,1]) for(const random of [()=>0,()=>.999999,rng(13)]) {
   const t=new TextureDrift({...defaults,inharmonicity:1},random);t.start(0);t.setDepth(depth);
