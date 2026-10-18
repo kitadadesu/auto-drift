@@ -1,7 +1,10 @@
+import { sourceDefaults, sourceBounds } from "./synthesis-dsp.js";
+import { createSynthesis } from "./synthesis.js";
 import { frequency } from "./music.js";
 // LP/HP WebAudio Q is in dB: -3.0103 dB is the nonresonant Butterworth value (Q=1/√2).
 export const dampedQ = -3.0103;
 export const defaults = {
+  ...sourceDefaults,
   crush: 0,
   beating: 0,
   turbulence: 0,
@@ -32,6 +35,7 @@ export const defaults = {
   feedback: 0.32,
 };
 const limits = {
+  ...sourceBounds,
   crush: [0, 1.7], beating: [0, 1.7], turbulence: [0, 1.8], wandering: [0, 1.3],
   glide: [0.02, 8],
   harmonics: [0, 1],
@@ -217,7 +221,7 @@ export class Drone {
       this.safety.curve = Float32Array.from({length:8193},(_,i)=>.8*Math.tanh((i/4096-1)/.8));
       this.safety.oversample = '4x';
       this.master.connect(this.outputDC).connect(comp).connect(this.safety).connect(this.chapterGate).connect(this.analyser).connect(c.destination);
-      this.preparing = this.prepareCrush().then(() => this.update(this.settings));
+      this.preparing = Promise.all([this.prepareCrush(), createSynthesis(c,this.input,this.master).then(layer=>this.synthesis=layer)]).then(() => this.update(this.settings));
       this.update(this.settings);
     }
     await Promise.all([this.ctx.resume(), this.preparing]);
@@ -378,6 +382,7 @@ export class Drone {
     const t = this.ctx.currentTime,
       p = (n, v) => n.setTargetAtTime(v, t, 0.035),
       s2 = this.settings;
+    this.synthesis?.set(s2,this.voices.map(v=>v&&!v.muted?v.midi:null),this.running);
     p(this.crushDry.gain, 1 - .75 * Math.min(1,s2.crush));
     p(this.crushWet.gain, .75 * Math.min(1,s2.crush));
     this.crusher?.parameters?.get("amount")?.setTargetAtTime(s2.crush, t, .1);
@@ -520,6 +525,7 @@ export class Drone {
       this.updateVoiceTexture(v, i);
       this.spectrum(v);
     });
+    this.synthesis?.set(this.settings,notes,true);
   }
   spectrum(v, retune = true) {
     const c = this.ctx, t = c.currentTime, s = this.settings;
@@ -613,6 +619,8 @@ export class Drone {
   stop() {
     ++this.generation;
     this.running = false;
+    this.synthesis?.set(this.settings,Array(6).fill(null),false);
+    this.synthesis?.flush();
     if (!this.ctx) return;
     this.voices.forEach((v) => v && this.retire(v));
     this.voices.fill(null);
@@ -626,6 +634,7 @@ export class Drone {
     this.stop();
     this.modulators?.forEach(source => { source.stop(); source.disconnect(); });
     [this.preSaturation, this.postSaturation].forEach(stage => stage?.nodes.forEach(n => n.disconnect()));
+    this.synthesis?.dispose(); this.synthesis=null;
     await this.ctx?.close();
     this.clearRetiring();
     this.ctx = null; this.fallbackDry = this.fallbackWet = null;

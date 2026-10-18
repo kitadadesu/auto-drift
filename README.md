@@ -21,7 +21,7 @@ Inharmonicityは起動1%、通常シーン0〜3%程度、DISSOLVE約6%、自動�
 
 - `audio.js` / `autoplay.js` / `harmony.js` / `music.js` / `chords.js` / `notes.js`: Fret Drift main `46d7c1a`から再利用。声部の共通音、Wander、Edge→通常解決、可変間隔、採用履歴と180秒以上の実証的転調を維持。
 - `journey.js`: 和声の長時間進行。到着には主音低音・主和音反復・直近履歴の調性支持・滞在が必要。未成立目標は7分で破棄し、ラベルだけの転調をしません。密な音響では和声間隔を延ばします。
-- `texture.js`: 試作コミット `453ec051893be67d5b45a54211d2337609ff5d7c`を拡張。HOLLOW / CLEAR / HAZE / GLOW / DISSOLVEを確率選択し、毎回異なる目標値・継続時間・パラメーター別オフセットでモーフ。約25分周期の緩い大局的傾向を重ね、シーン順は固定しません。
+- `texture.js`: 試作コミット `453ec051893be67d5b45a54211d2337609ff5d7c`を拡張。12の音源シーンを確率選択し、毎回異なる目標値・継続時間・パラメーター別オフセットでモーフ。約25分周期の緩い大局的傾向を重ね、シーン順は固定しません。
 - `app.js`: 共有のアクティブ時間。500msごとの軽いUI/進行更新、`Drone.update`は最大1Hz。既存AudioParam平滑化、最大36発振器、固定エフェクト網を維持。Volumeは初期55%で固定し、無音シーンを作りません。
 - Shimmerの非共振LP/HP、feedback上限0.94、固定PRE/POST Saturation、DC除去を保持。自動制御のDecayは最大10.5秒で、高Drive・高Character時はDecay≤8秒、Shimmer≤65%。人工Feedback演奏は未実装。
 
@@ -57,6 +57,10 @@ GitHub Settings → Pages → Source を **GitHub Actions** に設定。mainへ�
 
 アクティブ音声時間で15分ごとに章が切り替わります。14:52から全残響ごと8秒かけてフェードアウトし、無音で旧音声経路を破棄。遠隔調の新しい主和音から12秒でフェードインします。章内の従来のMigrationは継続し、章番号と転調はHISTORYへ記録します。
 
-既存5シーンを維持し、DISSOLVEは強い破壊、HAZEは空間の崩壊へ拡張。TEXTURE / SPACE / COLORは概ね旧上限の200%まで進みます。音量や循環利得は増幅せず、強度の超過分を量子化・変調・波形の折り返し・空間の減衰へ割り当てます。キー24種類×5シーンの120配色でUI全体が滑らかに変化します。
+12シーンへ拡張し、EMBER/STATIC/DISSOLVEは破壊的な音源、AURORA/HALOは広い空間を担当。TEXTURE / SPACE / COLORは概ね旧上限の200%まで進みます。音量や循環利得は増幅せず、強度の超過分を量子化・変調・波形の折り返し・空間の減衰へ割り当てます。キー24種類×12シーンの288配色でUI全体が滑らかに変化します。
 
 上限の例外、音声安全設計、章境界と検証方法は [詳細](docs/chapter-rupture.md) を参照してください。
+
+## 新音源と12シーン
+
+SOURCEタブからFM、波形モーフ、和声追従ノイズ共振、Live Grains / Freeze / Reverseを操作できます。既存の音源と和声を維持し、各シーンが異なる音の生成現象を主役にします。設計・全シーン中心値・互換経路・検証制約は [SYNTHESIS-SCENES](docs/SYNTHESIS-SCENES.md) を参照してください。

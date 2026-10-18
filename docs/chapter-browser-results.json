@@ -2,43 +2,43 @@
   "chapters": [
     {
       "chapter": 2,
-      "key": "3:minor",
-      "oldClosed": true,
-      "accepted": 1,
-      "voices": 6,
-      "palette": "35"
-    },
-    {
-      "chapter": 3,
       "key": "7:minor",
       "oldClosed": true,
       "accepted": 1,
       "voices": 6,
-      "palette": "76"
+      "palette": "185"
+    },
+    {
+      "chapter": 3,
+      "key": "10:minor",
+      "oldClosed": true,
+      "accepted": 1,
+      "voices": 6,
+      "palette": "260"
     },
     {
       "chapter": 4,
-      "key": "1:major",
+      "key": "2:minor",
       "oldClosed": true,
       "accepted": 1,
       "voices": 6,
-      "palette": "12"
+      "palette": "61"
     },
     {
       "chapter": 5,
-      "key": "0:major",
+      "key": "6:minor",
       "oldClosed": true,
       "accepted": 1,
       "voices": 6,
-      "palette": "0"
+      "palette": "166"
     },
     {
       "chapter": 6,
-      "key": "5:minor",
+      "key": "10:major",
       "oldClosed": true,
       "accepted": 1,
       "voices": 6,
-      "palette": "56"
+      "palette": "249"
     }
   ],
   "errors": []

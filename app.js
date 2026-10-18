@@ -17,7 +17,7 @@ let lastVoicing = null, resetting = false, paletteId = null, renderedHue = 25, t
 const clock = new ActiveClock();
 const wake = new Worker(new URL('./pulse.js', import.meta.url), {type:'module'});
 wake.onmessage = () => { try { if (requested) tick(); } finally { wake.postMessage('ack'); } };
-const groups = {TEXTURE:['crush','beating','turbulence','wandering'],SPECTRUM:['bloom','harmonics','inharmonicity','drift','detune'], SPACE:['wetDrift','shimmer','shimmerDecay','diffusion','reverb','delay'], COLOR:['dryDrift','drive','character','saturationMix','saturationPost'], ENVELOPE:['glide','attack','decay','sustain','release','time','feedback']};
+const groups = {SOURCE:['fm','fmRatio','wave','noise','material','granular','freeze','reverse'],TEXTURE:['crush','beating','turbulence','wandering'],SPECTRUM:['bloom','harmonics','inharmonicity','drift','detune'], SPACE:['wetDrift','shimmer','shimmerDecay','diffusion','reverb','delay'], COLOR:['dryDrift','drive','character','saturationMix','saturationPost'], ENVELOPE:['glide','attack','decay','sustain','release','time','feedback']};
 let activeGroup = 'SPECTRUM';
 for (const group of Object.keys(groups)) {
  const tab = document.createElement('button'); tab.textContent=group; tab.id='tab-'+group; tab.setAttribute('role','tab');
@@ -32,7 +32,7 @@ function showGroup(){
 
 const history = new History();
 let historyRevision = -1;
-const labels = {crush:'Digital Crush',beating:'Beating',turbulence:'Turbulence',wandering:'Wandering Feedback',bloom:'Bloom', harmonics:'Harmonics', inharmonicity:'Inharmonicity', drift:'Spectral Drift',dryDrift:'Dry Tape',wetDrift:'Wet Tape',shimmer:'Shimmer',shimmerDecay:'Shimmer Decay',diffusion:'Diffusion',drive:'Saturation Drive',character:'Character',saturationMix:'Saturation Mix',reverb:'Reverb',delay:'Delay',detune:'Detune',saturationPost:'PRE → POST',glide:'Glide',attack:'Attack',decay:'Decay',sustain:'Sustain',release:'Release',time:'Delay Time',feedback:'Delay Feedback'};
+const labels = {fm:'FM Amount',fmRatio:'FM Ratio',wave:'Wave Morph',noise:'Resonant Noise',material:'String → Cavity',granular:'Live Grains',freeze:'Live Freeze',reverse:'Grain Reverse',crush:'Digital Crush',beating:'Beating',turbulence:'Turbulence',wandering:'Wandering Feedback',bloom:'Bloom', harmonics:'Harmonics', inharmonicity:'Inharmonicity', drift:'Spectral Drift',dryDrift:'Dry Tape',wetDrift:'Wet Tape',shimmer:'Shimmer',shimmerDecay:'Shimmer Decay',diffusion:'Diffusion',drive:'Saturation Drive',character:'Character',saturationMix:'Saturation Mix',reverb:'Reverb',delay:'Delay',detune:'Detune',saturationPost:'PRE → POST',glide:'Glide',attack:'Attack',decay:'Decay',sustain:'Sustain',release:'Release',time:'Delay Time',feedback:'Delay Feedback'};
 for (const k of textureKeys) {
   const [lo,hi] = textureBounds[k];
   const el = document.createElement('label'); el.className = 'knob';
