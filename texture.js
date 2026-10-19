@@ -1,5 +1,8 @@
 import { effectDefaults, effectBounds, migrateEffects } from './effects.js';
 import { sourceDefaults, sourceBounds } from "./synthesis-dsp.js";
+import { chapterDuration } from "./journey.js";
+
+export const sceneSlotDuration = chapterDuration / 6;
 // AUTO TEXTURE is a separate, deterministic musical timeline. It owns no
 // AudioNodes, timers or DOM, and never overwrites the musician's manual values.
 export const textureKeys = [
@@ -28,7 +31,7 @@ const smooth = (v) => { const x = clamp(v); return x * x * (3 - 2 * x); };
 // Unlike a sequence of fixed presets, these are probabilistic destinations.
 // Each visit is varied within a safe range; individual controls approach their
 // destinations with different delayed envelopes. Distinct characters emerge
-// every ~1–3 minutes, while the 25-minute macro arc stays slower.
+// within 150-second slots, while the 25-minute macro arc stays slower.
 export const textureScenes = {
   HOLLOW: { bloom: .02, harmonics: .015, inharmonicity: 0, drift: .10,
     dryDrift: .01, wetDrift: .01, shimmer: .02, shimmerDecay: 2,
@@ -153,6 +156,8 @@ export class TextureDrift {
     this.previous = null;
     this.plan = null;
     this.overrides = new Map();
+    this.order = [];
+    this.slot = 0;
   }
   freeze(now) { this.wall = now; }
   start(now = 0) {
@@ -164,17 +169,28 @@ export class TextureDrift {
     this.scene = null;
     this.previous = null;
     this.overrides.clear();
+    this.order = [];
+    this.slot = Math.floor(now / sceneSlotDuration);
+    this.elapsed = now;
     this.nextPlan(true);
   }
   nextPlan(first = false) {
     const prior = this.scene;
-    const targetName = chooseTextureScene(prior, this.previous, this.rng);
+    if (!this.order.length || this.slot % names.length === 0) {
+      this.order = [...names];
+      for (let i = this.order.length - 1; i > 0; i--) {
+        const j = Math.min(i, Math.floor(this.rng() * (i + 1)));
+        [this.order[i], this.order[j]] = [this.order[j], this.order[i]];
+      }
+    }
+    const targetName = this.order[this.slot % names.length];
     const target = destination(targetName, this.rng);
     const far = prior && !(nearby[prior] || []).includes(targetName);
-    // Around 2–3 active minutes per full scene, with nonperiodic holds.
-    const duration = first ? 78000 + this.rng() * 52000 :
-      far ? 80000 + this.rng() * 60000 : 100000 + this.rng() * 50000;
-    const hold = first ? 5000 : 8000 + this.rng() * 24000;
+    // Preserve slow, varied morphs, leaving >=50s at the destination in each
+    // 150s slot (>=42s before the existing 8s chapter fade-out).
+    const duration = first ? 78000 + this.rng() * 22000 :
+      far ? 80000 + this.rng() * 20000 : 90000 + this.rng() * 10000;
+    const hold = sceneSlotDuration - duration;
     // A continuously varying 15–60 minute arc biases, but never fixes, scene order.
     const macro = .5 + .5 * Math.sin(this.elapsed / 1500000 * Math.PI * 2 + .8);
     const anchor = textureScenes[macro > .5 ? "AURORA" : "HOLLOW"];
@@ -185,7 +201,7 @@ export class TextureDrift {
       name: targetName,
       duration,
       hold,
-      started: this.elapsed,
+      started: this.slot * sceneSlotDuration,
       offsets: Object.fromEntries(textureKeys.map((k) => [k, this.rng() * .20])),
       origin: prior || "ORIGIN",
     };
@@ -198,7 +214,7 @@ export class TextureDrift {
       const p = this.plan;
       // Smoothly retarget the active scene rather than jumping to a new depth.
       this.plan = { ...p, from: { ...this.values }, started: this.elapsed,
-        duration: 12000, hold: 20000, offsets: Object.fromEntries(textureKeys.map(k => [k, 0])) };
+        duration: Math.min(12000, Math.max(1, (this.slot + 1) * sceneSlotDuration - this.elapsed)), hold: 0, offsets: Object.fromEntries(textureKeys.map(k => [k, 0])) };
     }
   }
   manualChange(key, value) {
@@ -230,9 +246,14 @@ export class TextureDrift {
       return this.values;
     }
     if (!this.enabled || !playing) return null;
-    this.elapsed += dt;
-    if (this.elapsed > this.plan.started + this.plan.duration + this.plan.hold)
+    this.elapsed = now;
+    // Advance the fixed schedule, never extending a slot with a late callback
+    // or a depth edit. No replay of missed audio is attempted after a worker gap.
+    const slot = Math.floor(this.elapsed / sceneSlotDuration);
+    while (this.slot < slot) {
+      this.slot++;
       this.nextPlan();
+    }
     const p = this.plan;
     const raw = clamp((this.elapsed - p.started) / p.duration);
     const desired = {};

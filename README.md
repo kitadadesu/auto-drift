@@ -68,3 +68,22 @@ SOURCEタブからFM、波形モーフ、和声追従ノイズ共振、Live Grai
 ## エフェクト再設計と負荷比較
 
 5音源を維持し、INSTABILITY / BLOOM / TURBULENCE / FEEDBACK / SATURATION / CRUSH / DELAY / REVERBへ整理。旧HISTORYの音色値は `migrateHistory` でv2へ変換できます（和声イベントは変更しません）。再現手順・生ログ・測定限界は [EFFECTS-REDESIGN](docs/EFFECTS-REDESIGN.md) を参照。過去の検証文書は当時の構成を記録したものです。
+
+### Automatic scene coverage
+
+With AUTO TEXTURE enabled continuously at full Depth, each 30-minute cycle
+shuffles all twelve existing scenes once. Each 15-minute chapter gets six
+non-repeating scenes in 150-second slots. Morphs take 78–100 seconds, leaving
+at least 50 seconds at each varied destination, or 42 seconds before the
+chapter's existing eight-second fade-out. The next chapter's twelve-second
+fade-in completes well before its first scene arrives. The macro arc and
+per-parameter morph envelopes remain active.
+
+Cycles are aligned to the journey's active audio time (0–30, 30–60 minutes,
+etc.); arbitrary sliding 30-minute windows across separate shuffles need not
+contain all twelve. STOP/audio suspension freezes this time. AUTO TEXTURE HOLD,
+Depth and manual knob overrides remain user controls; reduced Depth or overrides
+can intentionally mask a scene. Re-enabling AUTO TEXTURE rejoins the current
+journey slot. A delayed worker catches up to that slot without replaying missed
+scenes; audible coverage assumes regular audio/control updates, since a browser
+that suspends updates cannot render unheard transitions retroactively.
