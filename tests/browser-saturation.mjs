@@ -47,7 +47,7 @@ try {
       async resume() {}
     };
     const render = async (settings, stress = false) => {
-      // Reproducible convolution and drift for sample-by-sample bypass comparisons.
+      // Reproducible control motion for sample-by-sample bypass comparisons.
       let seed = 11;
       Math.random = () =>
         (seed = (1664525 * seed + 1013904223) >>> 0) / 2 ** 32;
@@ -55,8 +55,8 @@ try {
       d.update({
         ...d.settings,
         detune: 0,
-        dryDrift: 0,
-        wetDrift: 0,
+        instability: 0,
+        reverbMotion: 0,
         reverb: 0,
         delay: 0,
         attack: 0.01,
@@ -65,11 +65,11 @@ try {
         volume: 1,
         bloom: 1,
         shimmer: 1,
-        shimmerDecay: 12,
+        reverbDecay: 12,
         ...settings,
       });
       await d.play([40, 45, 50, 55, 59, 64]);
-      // Capture spectral return before POST saturation and master compression in R.
+      // Capture the high-partial Shimmer feed before the shared reverb in R.
       const meter = d.ctx.createChannelMerger(2);
       d.analyser.disconnect();
       d.analyser.connect(meter, 0, 0);
@@ -81,8 +81,8 @@ try {
       );
       const magnitude = new Float32Array(4096),
         phase = new Float32Array(4096);
-      for (const line of d.tailLines)
-        for (const filter of [line.damping, line.highpass]) {
+      for (const line of d.space.lines)
+        for (const filter of [line.low, line.high]) {
           filter.getFrequencyResponse(frequencies, magnitude, phase);
           if (Math.max(...magnitude) > 1.000001)
             throw Error("resonant feedback filter");
@@ -99,8 +99,8 @@ try {
               character: (t % 24) / 24,
               saturationMix: t % 12 ? 1 : 0,
               saturationPost: t % 8 ? 1 : 0,
-              diffusion: t % 12 ? 1 : 0,
-              shimmerDecay: t % 8 ? 12 : 1,
+              reverbDensity: t % 12 ? 1 : 0,
+              reverbDecay: t % 8 ? 12 : 1,
             });
             OfflineAudioContext.prototype.resume.call(d.ctx);
           });
@@ -210,7 +210,7 @@ try {
   console.log(JSON.stringify(result, null, 2));
   assert.ok(result.bypassDifference < 1e-5);
   assert.ok(result.positionBypassDifference < 1e-5);
-  assert.ok(result.bloomZeroDifference < 1e-5);
+  assert.ok(result.bloomZeroDifference > 1e-5, "saturation now colors the full signal even with Bloom off");
   assert.ok(result.characterDifference > 1e-5);
   for (const k of ["warm", "fold", "stable", "stress"]) {
     assert.ok(result[k].peak < 0.9, k);

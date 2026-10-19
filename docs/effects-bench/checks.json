@@ -1,0 +1,24 @@
+{
+  "node": {
+    "baseline": 70,
+    "new": 73,
+    "failures": 0
+  },
+  "build": "pass",
+  "browser": {
+    "effects": "pass",
+    "synthesis-worklet": "pass",
+    "synthesis-compatibility": "pass",
+    "chapters": "pass",
+    "layout": "pass",
+    "ui": "pass",
+    "rupture-audio": "pass",
+    "living": "pass",
+    "saturation": "pass",
+    "background": "pass (synthetic visibility; native hidden unavailable)"
+  },
+  "notes": [
+    "Early layout, probe-startup, lazy-Howl-count and asynchronous-history assertions were corrected; see retained final logs.",
+    "Offline audio is separate from CPU comparison."
+  ]
+}

@@ -1,0 +1,1744 @@
+{
+  "baseline-final": {
+    "chrome": "155.0.8059.80",
+    "rows": {
+      "HOLLOW": {
+        "seconds": 7.211900999999999,
+        "render": {
+          "cpuMs": 2344.206,
+          "cpuPercent": 32.504689124268346,
+          "cpuUs": {
+            "count": 1500,
+            "mean": 1562.804,
+            "p95": 2282,
+            "max": 3134
+          },
+          "wallUs": {
+            "count": 1500,
+            "mean": 1570.732,
+            "p95": 2282,
+            "max": 2912
+          }
+        },
+        "transport": {
+          "cpuMs": 30.132,
+          "cpuPercent": 0.41780939588605004,
+          "cpuUs": {
+            "count": 1243,
+            "mean": 24.2413515687852,
+            "p95": 38,
+            "max": 125
+          },
+          "wallUs": {
+            "count": 1243,
+            "mean": 1897.5679806918745,
+            "p95": 2340,
+            "max": 2954
+          }
+        },
+        "main": {
+          "cpuMs": 496.165,
+          "cpuPercent": 6.879808804918427,
+          "cpuUs": {
+            "count": 2130,
+            "mean": 232.94131455399062,
+            "p95": 2186,
+            "max": 3061
+          },
+          "wallUs": {
+            "count": 2130,
+            "mean": 240.41784037558685,
+            "p95": 2241,
+            "max": 3346
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 707.425,
+          "cpuPercent": 9.80913354190525,
+          "cpuUs": {
+            "count": 4978,
+            "mean": 142.11028525512253,
+            "p95": 318,
+            "max": 1125
+          },
+          "wallUs": {
+            "count": 4978,
+            "mean": 142.71996785857775,
+            "p95": 318,
+            "max": 1167
+          }
+        },
+        "animationCallbacksPerSecond": 30.08915402471554,
+        "audioCpuPercent": 32.9224985201544
+      },
+      "GLASS": {
+        "seconds": 7.209407,
+        "render": {
+          "cpuMs": 2593.599,
+          "cpuPercent": 35.975205727738775,
+          "cpuUs": {
+            "count": 1498,
+            "mean": 1731.3744993324433,
+            "p95": 2703,
+            "max": 4443
+          },
+          "wallUs": {
+            "count": 1498,
+            "mean": 1738.789052069426,
+            "p95": 2706,
+            "max": 3652
+          }
+        },
+        "transport": {
+          "cpuMs": 36.779,
+          "cpuPercent": 0.5101529154894432,
+          "cpuUs": {
+            "count": 1243,
+            "mean": 29.58889782783588,
+            "p95": 50,
+            "max": 159
+          },
+          "wallUs": {
+            "count": 1243,
+            "mean": 2114.0217216411907,
+            "p95": 2909,
+            "max": 3737
+          }
+        },
+        "main": {
+          "cpuMs": 560.041,
+          "cpuPercent": 7.768197855940163,
+          "cpuUs": {
+            "count": 1870,
+            "mean": 299.4871657754011,
+            "p95": 2463,
+            "max": 4525
+          },
+          "wallUs": {
+            "count": 1870,
+            "mean": 311.38235294117646,
+            "p95": 2526,
+            "max": 6301
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 750.375,
+          "cpuPercent": 10.40827629789801,
+          "cpuUs": {
+            "count": 4975,
+            "mean": 150.82914572864323,
+            "p95": 371,
+            "max": 430
+          },
+          "wallUs": {
+            "count": 4975,
+            "mean": 151.54150753768843,
+            "p95": 371,
+            "max": 461
+          }
+        },
+        "animationCallbacksPerSecond": 29.960855310291127,
+        "audioCpuPercent": 36.48535864322822
+      },
+      "TIDAL": {
+        "seconds": 7.209531999999999,
+        "render": {
+          "cpuMs": 2411.352,
+          "cpuPercent": 33.44672025867976,
+          "cpuUs": {
+            "count": 1497,
+            "mean": 1610.7895791583167,
+            "p95": 2628,
+            "max": 3304
+          },
+          "wallUs": {
+            "count": 1497,
+            "mean": 1617.693386773547,
+            "p95": 2630,
+            "max": 3344
+          }
+        },
+        "transport": {
+          "cpuMs": 36.452,
+          "cpuPercent": 0.5056084084237369,
+          "cpuUs": {
+            "count": 1243,
+            "mean": 29.325824617860015,
+            "p95": 48,
+            "max": 134
+          },
+          "wallUs": {
+            "count": 1243,
+            "mean": 1951.7401448109413,
+            "p95": 2724,
+            "max": 3432
+          }
+        },
+        "main": {
+          "cpuMs": 514.163,
+          "cpuPercent": 7.131711184581746,
+          "cpuUs": {
+            "count": 1559,
+            "mean": 329.80307889672866,
+            "p95": 2353,
+            "max": 3690
+          },
+          "wallUs": {
+            "count": 1559,
+            "mean": 340.6093649775497,
+            "p95": 2422,
+            "max": 3732
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 684.861,
+          "cpuPercent": 9.49938220677847,
+          "cpuUs": {
+            "count": 4974,
+            "mean": 137.6881785283474,
+            "p95": 343,
+            "max": 1148
+          },
+          "wallUs": {
+            "count": 4974,
+            "mean": 137.99899477281866,
+            "p95": 343,
+            "max": 435
+          }
+        },
+        "animationCallbacksPerSecond": 29.960335844268396,
+        "audioCpuPercent": 33.9523286671035
+      },
+      "ECHO": {
+        "seconds": 7.209703,
+        "render": {
+          "cpuMs": 2300.95,
+          "cpuPercent": 31.91462949305956,
+          "cpuUs": {
+            "count": 1505,
+            "mean": 1528.8704318936877,
+            "p95": 2323,
+            "max": 3801
+          },
+          "wallUs": {
+            "count": 1505,
+            "mean": 1536.3069767441862,
+            "p95": 2321,
+            "max": 3864
+          }
+        },
+        "transport": {
+          "cpuMs": 29.787,
+          "cpuPercent": 0.4131515542318456,
+          "cpuUs": {
+            "count": 1242,
+            "mean": 23.983091787439612,
+            "p95": 38,
+            "max": 143
+          },
+          "wallUs": {
+            "count": 1242,
+            "mean": 1862.2616747181964,
+            "p95": 2388,
+            "max": 3900
+          }
+        },
+        "main": {
+          "cpuMs": 515.852,
+          "cpuPercent": 7.154968796911606,
+          "cpuUs": {
+            "count": 2311,
+            "mean": 223.21592384249243,
+            "p95": 2147,
+            "max": 6432
+          },
+          "wallUs": {
+            "count": 2311,
+            "mean": 229.38511466897447,
+            "p95": 2178,
+            "max": 6899
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 703.104,
+          "cpuPercent": 9.752190901622438,
+          "cpuUs": {
+            "count": 4974,
+            "mean": 141.3558504221954,
+            "p95": 335,
+            "max": 1363
+          },
+          "wallUs": {
+            "count": 4974,
+            "mean": 142.09589867310012,
+            "p95": 335,
+            "max": 1472
+          }
+        },
+        "animationCallbacksPerSecond": 30.098327212646623,
+        "audioCpuPercent": 32.32778104729141
+      },
+      "DISSOLVE": {
+        "seconds": 7.208125,
+        "render": {
+          "cpuMs": 2434.391,
+          "cpuPercent": 33.77287436053065,
+          "cpuUs": {
+            "count": 1502,
+            "mean": 1620.766311584554,
+            "p95": 2348,
+            "max": 3442
+          },
+          "wallUs": {
+            "count": 1502,
+            "mean": 1627.725033288948,
+            "p95": 2352,
+            "max": 3630
+          }
+        },
+        "transport": {
+          "cpuMs": 29.102,
+          "cpuPercent": 0.4037388363825544,
+          "cpuUs": {
+            "count": 1242,
+            "mean": 23.431561996779386,
+            "p95": 35,
+            "max": 126
+          },
+          "wallUs": {
+            "count": 1242,
+            "mean": 1967.218196457327,
+            "p95": 2410,
+            "max": 3657
+          }
+        },
+        "main": {
+          "cpuMs": 494.222,
+          "cpuPercent": 6.856457123038238,
+          "cpuUs": {
+            "count": 2564,
+            "mean": 192.75429017160687,
+            "p95": 2072,
+            "max": 3040
+          },
+          "wallUs": {
+            "count": 2564,
+            "mean": 198.61895475819034,
+            "p95": 2114,
+            "max": 3199
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 795.639,
+          "cpuPercent": 11.0380854938004,
+          "cpuUs": {
+            "count": 4977,
+            "mean": 159.86317058468958,
+            "p95": 354,
+            "max": 1347
+          },
+          "wallUs": {
+            "count": 4977,
+            "mean": 160.374321880651,
+            "p95": 355,
+            "max": 1454
+          }
+        },
+        "animationCallbacksPerSecond": 29.966183993757046,
+        "audioCpuPercent": 34.1766131969132
+      },
+      "MAX": {
+        "seconds": 7.208209,
+        "render": {
+          "cpuMs": 2409.498,
+          "cpuPercent": 33.42713841954361,
+          "cpuUs": {
+            "count": 1499,
+            "mean": 1607.4036024016011,
+            "p95": 2350,
+            "max": 3599
+          },
+          "wallUs": {
+            "count": 1499,
+            "mean": 1614.2321547698466,
+            "p95": 2354,
+            "max": 2810
+          }
+        },
+        "transport": {
+          "cpuMs": 28.237,
+          "cpuPercent": 0.3917339244741655,
+          "cpuUs": {
+            "count": 1241,
+            "mean": 22.753424657534246,
+            "p95": 35,
+            "max": 124
+          },
+          "wallUs": {
+            "count": 1241,
+            "mean": 1948.1321514907333,
+            "p95": 2407,
+            "max": 2845
+          }
+        },
+        "main": {
+          "cpuMs": 497.338,
+          "cpuPercent": 6.899605713430341,
+          "cpuUs": {
+            "count": 2770,
+            "mean": 179.54440433212997,
+            "p95": 2066,
+            "max": 3067
+          },
+          "wallUs": {
+            "count": 2770,
+            "mean": 185.23971119133574,
+            "p95": 2111,
+            "max": 3265
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 793.857,
+          "cpuPercent": 11.01323504909472,
+          "cpuUs": {
+            "count": 4974,
+            "mean": 159.60132689987938,
+            "p95": 358,
+            "max": 1122
+          },
+          "wallUs": {
+            "count": 4974,
+            "mean": 159.89083232810614,
+            "p95": 359,
+            "max": 862
+          }
+        },
+        "animationCallbacksPerSecond": 29.96583478642198,
+        "audioCpuPercent": 33.81887234401778
+      },
+      "TRANSITION": {
+        "seconds": 7.208286,
+        "render": {
+          "cpuMs": 2482.863,
+          "cpuPercent": 34.44456837589408,
+          "cpuUs": {
+            "count": 1499,
+            "mean": 1656.3462308205471,
+            "p95": 2370,
+            "max": 3357
+          },
+          "wallUs": {
+            "count": 1499,
+            "mean": 1664.5650433622416,
+            "p95": 2375,
+            "max": 2798
+          }
+        },
+        "transport": {
+          "cpuMs": 28.648,
+          "cpuPercent": 0.39743151145778616,
+          "cpuUs": {
+            "count": 1242,
+            "mean": 23.066022544283413,
+            "p95": 35,
+            "max": 129
+          },
+          "wallUs": {
+            "count": 1242,
+            "mean": 2006.9259259259259,
+            "p95": 2426,
+            "max": 2840
+          }
+        },
+        "main": {
+          "cpuMs": 485.427,
+          "cpuPercent": 6.73429161939468,
+          "cpuUs": {
+            "count": 1920,
+            "mean": 252.8265625,
+            "p95": 2129,
+            "max": 3723
+          },
+          "wallUs": {
+            "count": 1920,
+            "mean": 259.1796875,
+            "p95": 2189,
+            "max": 3810
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 767.378,
+          "cpuPercent": 10.645776263594422,
+          "cpuUs": {
+            "count": 4974,
+            "mean": 154.2778447929232,
+            "p95": 332,
+            "max": 1100
+          },
+          "wallUs": {
+            "count": 4974,
+            "mean": 154.71994370727785,
+            "p95": 333,
+            "max": 396
+          }
+        },
+        "animationCallbacksPerSecond": 29.965514686847886,
+        "audioCpuPercent": 34.84199988735187
+      },
+      "CHAPTER": {
+        "seconds": 9.256851000000001,
+        "render": {
+          "cpuMs": 2949.057,
+          "cpuPercent": 31.858101637371067,
+          "cpuUs": {
+            "count": 1995,
+            "mean": 1478.2240601503759,
+            "p95": 2395,
+            "max": 3983
+          },
+          "wallUs": {
+            "count": 1995,
+            "mean": 1486.2646616541354,
+            "p95": 2393,
+            "max": 4024
+          }
+        },
+        "transport": {
+          "cpuMs": 40.468,
+          "cpuPercent": 0.4371681039264864,
+          "cpuUs": {
+            "count": 1563,
+            "mean": 25.891234804862442,
+            "p95": 38,
+            "max": 856
+          },
+          "wallUs": {
+            "count": 1563,
+            "mean": 1888.203454894434,
+            "p95": 2473,
+            "max": 4094
+          }
+        },
+        "main": {
+          "cpuMs": 685.728,
+          "cpuPercent": 7.407789106684335,
+          "cpuUs": {
+            "count": 3746,
+            "mean": 183.05605979711692,
+            "p95": 1803,
+            "max": 35908
+          },
+          "wallUs": {
+            "count": 3746,
+            "mean": 209.1575013347571,
+            "p95": 1826,
+            "max": 63691
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 902.922,
+          "cpuPercent": 9.754094561962809,
+          "cpuUs": {
+            "count": 6196,
+            "mean": 145.7265978050355,
+            "p95": 350,
+            "max": 1376
+          },
+          "wallUs": {
+            "count": 6196,
+            "mean": 146.37959974176889,
+            "p95": 351,
+            "max": 1449
+          }
+        },
+        "animationCallbacksPerSecond": 29.707726742063794,
+        "audioCpuPercent": 32.29526974129755
+      },
+      "normal": {
+        "seconds": 36.048668,
+        "render": {
+          "cpuMs": 12084.498,
+          "cpuPercent": 33.52273099244611,
+          "cpuUs": {
+            "count": 7502,
+            "mean": 1610.8368435083978,
+            "p95": 2493,
+            "max": 4443
+          },
+          "wallUs": {
+            "count": 7502,
+            "mean": 1618.1652892561983,
+            "p95": 2491,
+            "max": 3864
+          }
+        },
+        "transport": {
+          "cpuMs": 162.252,
+          "cpuPercent": 0.4500915262666571,
+          "cpuUs": {
+            "count": 6213,
+            "mean": 26.114920328343796,
+            "p95": 44,
+            "max": 159
+          },
+          "wallUs": {
+            "count": 6213,
+            "mean": 1958.5760502172864,
+            "p95": 2615,
+            "max": 3900
+          }
+        },
+        "main": {
+          "cpuMs": 2580.443,
+          "cpuPercent": 7.158220103999405,
+          "cpuUs": {
+            "count": 10434,
+            "mean": 247.31100249185354,
+            "p95": 2225,
+            "max": 6432
+          },
+          "wallUs": {
+            "count": 10434,
+            "mean": 255.39131684876367,
+            "p95": 2279,
+            "max": 6899
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 3641.404,
+          "cpuPercent": 10.101355201251819,
+          "cpuUs": {
+            "count": 24878,
+            "mean": 146.37044778519174,
+            "p95": 348,
+            "max": 1363
+          },
+          "wallUs": {
+            "count": 24878,
+            "mean": 146.94726264169145,
+            "p95": 349,
+            "max": 1472
+          }
+        },
+        "animationCallbacksPerSecond": 30.01497863943267,
+        "audioCpuPercent": 33.97282251871276
+      },
+      "all": {
+        "seconds": 59.722013999999994,
+        "render": {
+          "cpuMs": 19925.916,
+          "cpuPercent": 33.36444079062706,
+          "cpuUs": {
+            "count": 12495,
+            "mean": 1594.7111644657864,
+            "p95": 2437,
+            "max": 4443
+          },
+          "wallUs": {
+            "count": 12495,
+            "mean": 1602.2001600640256,
+            "p95": 2438,
+            "max": 4024
+          }
+        },
+        "transport": {
+          "cpuMs": 259.605,
+          "cpuPercent": 0.43468895740856967,
+          "cpuUs": {
+            "count": 10259,
+            "mean": 25.305097962764403,
+            "p95": 41,
+            "max": 856
+          },
+          "wallUs": {
+            "count": 10259,
+            "mean": 1952.4445852422264,
+            "p95": 2528,
+            "max": 4094
+          }
+        },
+        "main": {
+          "cpuMs": 4248.936,
+          "cpuPercent": 7.114522293236796,
+          "cpuUs": {
+            "count": 18870,
+            "mean": 225.16883942766296,
+            "p95": 2130,
+            "max": 35908
+          },
+          "wallUs": {
+            "count": 18870,
+            "mean": 236.3007949125596,
+            "p95": 2169,
+            "max": 63691
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 6105.561,
+          "cpuPercent": 10.223300573888887,
+          "cpuUs": {
+            "count": 41022,
+            "mean": 148.83625859295012,
+            "p95": 350,
+            "max": 1376
+          },
+          "wallUs": {
+            "count": 41022,
+            "mean": 149.37340939008337,
+            "p95": 351,
+            "max": 1472
+          }
+        },
+        "animationCallbacksPerSecond": 29.955453277245475,
+        "audioCpuPercent": 33.799129748035625
+      }
+    },
+    "updateMs": {
+      "count": 51,
+      "mean": 0.8294117567585964,
+      "p95": 1.2000000476837158,
+      "max": 1.399999976158142
+    },
+    "glitchEventNames": [],
+    "nodes": {
+      "createGain": 172,
+      "createDelay": 9,
+      "createConvolver": 1,
+      "createBuffer": 15,
+      "createBufferSource": 14,
+      "createBiquadFilter": 18,
+      "createWaveShaper": 7,
+      "createOscillator": 42
+    },
+    "heap": [
+      {
+        "scene": "HOLLOW",
+        "repeat": 0,
+        "bytes": 25999039
+      },
+      {
+        "scene": "GLASS",
+        "repeat": 0,
+        "bytes": 26654837
+      },
+      {
+        "scene": "TIDAL",
+        "repeat": 0,
+        "bytes": 26342334
+      },
+      {
+        "scene": "ECHO",
+        "repeat": 0,
+        "bytes": 25398677
+      },
+      {
+        "scene": "DISSOLVE",
+        "repeat": 0,
+        "bytes": 25340282
+      },
+      {
+        "scene": "MAX",
+        "repeat": 0,
+        "bytes": 25206379
+      },
+      {
+        "scene": "TRANSITION",
+        "repeat": 0,
+        "bytes": 25217817
+      },
+      {
+        "scene": "CHAPTER",
+        "repeat": 0,
+        "bytes": 25502116
+      },
+      {
+        "scene": "HOLLOW",
+        "repeat": 1,
+        "bytes": 25240471
+      },
+      {
+        "scene": "GLASS",
+        "repeat": 1,
+        "bytes": 25180844
+      },
+      {
+        "scene": "TIDAL",
+        "repeat": 1,
+        "bytes": 25720931
+      },
+      {
+        "scene": "ECHO",
+        "repeat": 1,
+        "bytes": 25999855
+      },
+      {
+        "scene": "DISSOLVE",
+        "repeat": 1,
+        "bytes": 25909243
+      },
+      {
+        "scene": "MAX",
+        "repeat": 1,
+        "bytes": 25793842
+      },
+      {
+        "scene": "TRANSITION",
+        "repeat": 1,
+        "bytes": 25613002
+      },
+      {
+        "scene": "CHAPTER",
+        "repeat": 1,
+        "bytes": 25942435
+      },
+      {
+        "scene": "HOLLOW",
+        "repeat": 2,
+        "bytes": 25677427
+      },
+      {
+        "scene": "GLASS",
+        "repeat": 2,
+        "bytes": 25601738
+      },
+      {
+        "scene": "TIDAL",
+        "repeat": 2,
+        "bytes": 25499023
+      },
+      {
+        "scene": "ECHO",
+        "repeat": 2,
+        "bytes": 25372728
+      },
+      {
+        "scene": "DISSOLVE",
+        "repeat": 2,
+        "bytes": 25624053
+      },
+      {
+        "scene": "MAX",
+        "repeat": 2,
+        "bytes": 25359197
+      },
+      {
+        "scene": "TRANSITION",
+        "repeat": 2,
+        "bytes": 26029018
+      },
+      {
+        "scene": "CHAPTER",
+        "repeat": 2,
+        "bytes": 25975161
+      }
+    ],
+    "finite": true
+  },
+  "new-final": {
+    "chrome": "155.0.8059.80",
+    "rows": {
+      "HOLLOW": {
+        "seconds": 7.210869,
+        "render": {
+          "cpuMs": 1420.156,
+          "cpuPercent": 19.694658161173088,
+          "cpuUs": {
+            "count": 1335,
+            "mean": 1063.787265917603,
+            "p95": 1964,
+            "max": 2810
+          },
+          "wallUs": {
+            "count": 1335,
+            "mean": 1072.098127340824,
+            "p95": 1970,
+            "max": 2832
+          }
+        },
+        "transport": {
+          "cpuMs": 38.247,
+          "cpuPercent": 0.5304076388019253,
+          "cpuUs": {
+            "count": 1242,
+            "mean": 30.794685990338163,
+            "p95": 64,
+            "max": 92
+          },
+          "wallUs": {
+            "count": 1242,
+            "mean": 1179.5821256038648,
+            "p95": 2058,
+            "max": 2927
+          }
+        },
+        "main": {
+          "cpuMs": 588.001,
+          "cpuPercent": 8.154370853221714,
+          "cpuUs": {
+            "count": 2681,
+            "mean": 219.32152182021633,
+            "p95": 2276,
+            "max": 4412
+          },
+          "wallUs": {
+            "count": 2681,
+            "mean": 227.2349869451697,
+            "p95": 2345,
+            "max": 4919
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 101.622,
+          "cpuPercent": 1.4092892271375337,
+          "cpuUs": {
+            "count": 4974,
+            "mean": 20.430639324487334,
+            "p95": 70,
+            "max": 199
+          },
+          "wallUs": {
+            "count": 4974,
+            "mean": 21.1389223964616,
+            "p95": 71,
+            "max": 200
+          }
+        },
+        "animationCallbacksPerSecond": 29.95478076220772,
+        "audioCpuPercent": 20.225065799975013
+      },
+      "GLASS": {
+        "seconds": 7.210032,
+        "render": {
+          "cpuMs": 1639.287,
+          "cpuPercent": 22.736195900378803,
+          "cpuUs": {
+            "count": 1432,
+            "mean": 1144.7534916201118,
+            "p95": 2140,
+            "max": 3038
+          },
+          "wallUs": {
+            "count": 1432,
+            "mean": 1153.2548882681565,
+            "p95": 2150,
+            "max": 3075
+          }
+        },
+        "transport": {
+          "cpuMs": 37.297,
+          "cpuPercent": 0.5172931271317519,
+          "cpuUs": {
+            "count": 1242,
+            "mean": 30.029790660225444,
+            "p95": 58,
+            "max": 153
+          },
+          "wallUs": {
+            "count": 1242,
+            "mean": 1342.3244766505636,
+            "p95": 2241,
+            "max": 3124
+          }
+        },
+        "main": {
+          "cpuMs": 608.707,
+          "cpuPercent": 8.442500671286895,
+          "cpuUs": {
+            "count": 2235,
+            "mean": 272.35212527964205,
+            "p95": 2442,
+            "max": 4493
+          },
+          "wallUs": {
+            "count": 2235,
+            "mean": 283.80850111856824,
+            "p95": 2500,
+            "max": 4966
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 355.505,
+          "cpuPercent": 4.930699336701973,
+          "cpuUs": {
+            "count": 4974,
+            "mean": 71.47265782066746,
+            "p95": 159,
+            "max": 887
+          },
+          "wallUs": {
+            "count": 4974,
+            "mean": 72.01588258946522,
+            "p95": 160,
+            "max": 801
+          }
+        },
+        "animationCallbacksPerSecond": 29.958258160296655,
+        "audioCpuPercent": 23.253489027510554
+      },
+      "TIDAL": {
+        "seconds": 7.211634,
+        "render": {
+          "cpuMs": 1546.848,
+          "cpuPercent": 21.449341439124613,
+          "cpuUs": {
+            "count": 1501,
+            "mean": 1030.5449700199867,
+            "p95": 1864,
+            "max": 3270
+          },
+          "wallUs": {
+            "count": 1501,
+            "mean": 1039.576948700866,
+            "p95": 1853,
+            "max": 3467
+          }
+        },
+        "transport": {
+          "cpuMs": 36.007,
+          "cpuPercent": 0.49929045206675765,
+          "cpuUs": {
+            "count": 1243,
+            "mean": 28.967819790828642,
+            "p95": 55,
+            "max": 135
+          },
+          "wallUs": {
+            "count": 1243,
+            "mean": 1258.2027353177796,
+            "p95": 2038,
+            "max": 3506
+          }
+        },
+        "main": {
+          "cpuMs": 593.669,
+          "cpuPercent": 8.2321010744583,
+          "cpuUs": {
+            "count": 1576,
+            "mean": 376.69352791878174,
+            "p95": 2676,
+            "max": 5316
+          },
+          "wallUs": {
+            "count": 1576,
+            "mean": 389.8845177664975,
+            "p95": 2777,
+            "max": 5478
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 282.93,
+          "cpuPercent": 3.9232440248631586,
+          "cpuUs": {
+            "count": 4975,
+            "mean": 56.87035175879397,
+            "p95": 159,
+            "max": 1073
+          },
+          "wallUs": {
+            "count": 4975,
+            "mean": 57.62854271356784,
+            "p95": 160,
+            "max": 1206
+          }
+        },
+        "animationCallbacksPerSecond": 29.95160320116079,
+        "audioCpuPercent": 21.948631891191372
+      },
+      "ECHO": {
+        "seconds": 7.210370999999999,
+        "render": {
+          "cpuMs": 1637.865,
+          "cpuPercent": 22.715405351541552,
+          "cpuUs": {
+            "count": 1432,
+            "mean": 1143.7604748603353,
+            "p95": 2174,
+            "max": 3207
+          },
+          "wallUs": {
+            "count": 1432,
+            "mean": 1152.695530726257,
+            "p95": 2186,
+            "max": 3274
+          }
+        },
+        "transport": {
+          "cpuMs": 39.066,
+          "cpuPercent": 0.5418029113897191,
+          "cpuUs": {
+            "count": 1242,
+            "mean": 31.454106280193237,
+            "p95": 65,
+            "max": 126
+          },
+          "wallUs": {
+            "count": 1242,
+            "mean": 1342.4943639291466,
+            "p95": 2293,
+            "max": 3321
+          }
+        },
+        "main": {
+          "cpuMs": 610.197,
+          "cpuPercent": 8.462768420654083,
+          "cpuUs": {
+            "count": 2003,
+            "mean": 304.64153769345984,
+            "p95": 2629,
+            "max": 4381
+          },
+          "wallUs": {
+            "count": 2003,
+            "mean": 315.1922116824763,
+            "p95": 2709,
+            "max": 5064
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 279.887,
+          "cpuPercent": 3.8817281385382256,
+          "cpuUs": {
+            "count": 4974,
+            "mean": 56.27000402090872,
+            "p95": 119,
+            "max": 951
+          },
+          "wallUs": {
+            "count": 4974,
+            "mean": 57.08866103739445,
+            "p95": 120,
+            "max": 992
+          }
+        },
+        "animationCallbacksPerSecond": 29.956849654476866,
+        "audioCpuPercent": 23.25720826293127
+      },
+      "DISSOLVE": {
+        "seconds": 7.208791,
+        "render": {
+          "cpuMs": 1516.902,
+          "cpuPercent": 21.04239115823999,
+          "cpuUs": {
+            "count": 1428,
+            "mean": 1062.2563025210084,
+            "p95": 2010,
+            "max": 2754
+          },
+          "wallUs": {
+            "count": 1428,
+            "mean": 1071.3998599439776,
+            "p95": 2021,
+            "max": 2758
+          }
+        },
+        "transport": {
+          "cpuMs": 37.782,
+          "cpuPercent": 0.5241100761556272,
+          "cpuUs": {
+            "count": 1242,
+            "mean": 30.420289855072465,
+            "p95": 58,
+            "max": 114
+          },
+          "wallUs": {
+            "count": 1242,
+            "mean": 1245.000805152979,
+            "p95": 2166,
+            "max": 2843
+          }
+        },
+        "main": {
+          "cpuMs": 587.435,
+          "cpuPercent": 8.148869900653244,
+          "cpuUs": {
+            "count": 1917,
+            "mean": 306.434533124674,
+            "p95": 2527,
+            "max": 4817
+          },
+          "wallUs": {
+            "count": 1917,
+            "mean": 318.06833594157536,
+            "p95": 2590,
+            "max": 5081
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 279.684,
+          "cpuPercent": 3.8797629172492307,
+          "cpuUs": {
+            "count": 4974,
+            "mean": 56.2291917973462,
+            "p95": 124,
+            "max": 870
+          },
+          "wallUs": {
+            "count": 4974,
+            "mean": 57.11982308001608,
+            "p95": 125,
+            "max": 1082
+          }
+        },
+        "animationCallbacksPerSecond": 30.102135018202084,
+        "audioCpuPercent": 21.566501234395616
+      },
+      "MAX": {
+        "seconds": 7.206143,
+        "render": {
+          "cpuMs": 1856.513,
+          "cpuPercent": 25.762921995858257,
+          "cpuUs": {
+            "count": 1513,
+            "mean": 1227.0409781890285,
+            "p95": 2000,
+            "max": 4710
+          },
+          "wallUs": {
+            "count": 1513,
+            "mean": 1235.4864507600794,
+            "p95": 1974,
+            "max": 4869
+          }
+        },
+        "transport": {
+          "cpuMs": 33.356,
+          "cpuPercent": 0.4628828487028359,
+          "cpuUs": {
+            "count": 1241,
+            "mean": 26.87832393231265,
+            "p95": 51,
+            "max": 160
+          },
+          "wallUs": {
+            "count": 1241,
+            "mean": 1509.5680902497986,
+            "p95": 2196,
+            "max": 4898
+          }
+        },
+        "main": {
+          "cpuMs": 523.689,
+          "cpuPercent": 7.267257949224709,
+          "cpuUs": {
+            "count": 1859,
+            "mean": 281.7046799354492,
+            "p95": 2307,
+            "max": 4393
+          },
+          "wallUs": {
+            "count": 1859,
+            "mean": 292.1877353415815,
+            "p95": 2358,
+            "max": 4807
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 726.847,
+          "cpuPercent": 10.086491483724373,
+          "cpuUs": {
+            "count": 4973,
+            "mean": 146.15865674643072,
+            "p95": 375,
+            "max": 1773
+          },
+          "wallUs": {
+            "count": 4973,
+            "mean": 146.93263623567265,
+            "p95": 375,
+            "max": 1853
+          }
+        },
+        "animationCallbacksPerSecond": 29.9744259862731,
+        "audioCpuPercent": 26.225804844561093
+      },
+      "TRANSITION": {
+        "seconds": 7.210334,
+        "render": {
+          "cpuMs": 1495.718,
+          "cpuPercent": 20.744087583182694,
+          "cpuUs": {
+            "count": 1369,
+            "mean": 1092.5624543462382,
+            "p95": 1975,
+            "max": 3026
+          },
+          "wallUs": {
+            "count": 1369,
+            "mean": 1099.1102994886778,
+            "p95": 1950,
+            "max": 3036
+          }
+        },
+        "transport": {
+          "cpuMs": 39.319,
+          "cpuPercent": 0.5453145443747821,
+          "cpuUs": {
+            "count": 1242,
+            "mean": 31.65780998389694,
+            "p95": 62,
+            "max": 181
+          },
+          "wallUs": {
+            "count": 1242,
+            "mean": 1244.9855072463768,
+            "p95": 2073,
+            "max": 3114
+          }
+        },
+        "main": {
+          "cpuMs": 626.226,
+          "cpuPercent": 8.685117776790923,
+          "cpuUs": {
+            "count": 3028,
+            "mean": 206.8117569352708,
+            "p95": 2207,
+            "max": 8231
+          },
+          "wallUs": {
+            "count": 3028,
+            "mean": 214.8939894319683,
+            "p95": 2305,
+            "max": 8867
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 178.668,
+          "cpuPercent": 2.4779434628132346,
+          "cpuUs": {
+            "count": 4977,
+            "mean": 35.89873417721519,
+            "p95": 226,
+            "max": 433
+          },
+          "wallUs": {
+            "count": 4977,
+            "mean": 36.60277275467149,
+            "p95": 226,
+            "max": 433
+          }
+        },
+        "animationCallbacksPerSecond": 29.95700337876165,
+        "audioCpuPercent": 21.289402127557477
+      },
+      "CHAPTER": {
+        "seconds": 8.958005,
+        "render": {
+          "cpuMs": 1895.525,
+          "cpuPercent": 21.16012438037264,
+          "cpuUs": {
+            "count": 1807,
+            "mean": 1048.9900387382402,
+            "p95": 2113,
+            "max": 3881
+          },
+          "wallUs": {
+            "count": 1807,
+            "mean": 1058.6762589928057,
+            "p95": 2125,
+            "max": 3971
+          }
+        },
+        "transport": {
+          "cpuMs": 45.114,
+          "cpuPercent": 0.503616597668789,
+          "cpuUs": {
+            "count": 1480,
+            "mean": 30.482432432432432,
+            "p95": 61,
+            "max": 183
+          },
+          "wallUs": {
+            "count": 1480,
+            "mean": 1295.0668918918918,
+            "p95": 2316,
+            "max": 4036
+          }
+        },
+        "main": {
+          "cpuMs": 695.465,
+          "cpuPercent": 7.763614778067214,
+          "cpuUs": {
+            "count": 2151,
+            "mean": 323.3217108321711,
+            "p95": 2383,
+            "max": 8930
+          },
+          "wallUs": {
+            "count": 2151,
+            "mean": 376.7024639702464,
+            "p95": 2429,
+            "max": 37394
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 284.466,
+          "cpuPercent": 3.1755508062342006,
+          "cpuUs": {
+            "count": 5936,
+            "mean": 47.92216981132076,
+            "p95": 110,
+            "max": 1257
+          },
+          "wallUs": {
+            "count": 5936,
+            "mean": 48.93851078167116,
+            "p95": 112,
+            "max": 1261
+          }
+        },
+        "animationCallbacksPerSecond": 29.805743577950672,
+        "audioCpuPercent": 21.663740978041428
+      },
+      "normal": {
+        "seconds": 36.051697000000004,
+        "render": {
+          "cpuMs": 7761.058,
+          "cpuPercent": 21.527580241229696,
+          "cpuUs": {
+            "count": 7128,
+            "mean": 1088.8128507295173,
+            "p95": 2062,
+            "max": 3270
+          },
+          "wallUs": {
+            "count": 7128,
+            "mean": 1097.6060606060605,
+            "p95": 2067,
+            "max": 3467
+          }
+        },
+        "transport": {
+          "cpuMs": 188.399,
+          "cpuPercent": 0.5225801159928753,
+          "cpuUs": {
+            "count": 6211,
+            "mean": 30.33311866044115,
+            "p95": 61,
+            "max": 153
+          },
+          "wallUs": {
+            "count": 6211,
+            "mean": 1273.518435034616,
+            "p95": 2188,
+            "max": 3506
+          }
+        },
+        "main": {
+          "cpuMs": 2988.009,
+          "cpuPercent": 8.288123025110302,
+          "cpuUs": {
+            "count": 10412,
+            "mean": 286.9774298885901,
+            "p95": 2506,
+            "max": 5316
+          },
+          "wallUs": {
+            "count": 10412,
+            "mean": 297.6425278524779,
+            "p95": 2585,
+            "max": 5478
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 1299.628,
+          "cpuPercent": 3.604901039748558,
+          "cpuUs": {
+            "count": 24871,
+            "mean": 52.2547545333923,
+            "p95": 142,
+            "max": 1073
+          },
+          "wallUs": {
+            "count": 24871,
+            "mean": 52.99855253106027,
+            "p95": 143,
+            "max": 1206
+          }
+        },
+        "animationCallbacksPerSecond": 29.984718888544965,
+        "audioCpuPercent": 22.050160357222573
+      },
+      "all": {
+        "seconds": 59.426179000000005,
+        "render": {
+          "cpuMs": 13008.814,
+          "cpuPercent": 21.890712509044203,
+          "cpuUs": {
+            "count": 11817,
+            "mean": 1100.8558855885587,
+            "p95": 2057,
+            "max": 4710
+          },
+          "wallUs": {
+            "count": 11817,
+            "mean": 1109.4810019463484,
+            "p95": 2063,
+            "max": 4869
+          }
+        },
+        "transport": {
+          "cpuMs": 306.188,
+          "cpuPercent": 0.5152409344709845,
+          "cpuUs": {
+            "count": 10174,
+            "mean": 30.095144485944566,
+            "p95": 60,
+            "max": 183
+          },
+          "wallUs": {
+            "count": 10174,
+            "mean": 1301.9626498918813,
+            "p95": 2185,
+            "max": 4898
+          }
+        },
+        "main": {
+          "cpuMs": 4833.389,
+          "cpuPercent": 8.133433919754458,
+          "cpuUs": {
+            "count": 17450,
+            "mean": 276.9850429799427,
+            "p95": 2425,
+            "max": 8930
+          },
+          "wallUs": {
+            "count": 17450,
+            "mean": 292.44796561604585,
+            "p95": 2487,
+            "max": 37394
+          }
+        },
+        "workletSubset": {
+          "cpuMs": 2489.609,
+          "cpuPercent": 4.189414567610009,
+          "cpuUs": {
+            "count": 40757,
+            "mean": 61.08420639399367,
+            "p95": 230,
+            "max": 1773
+          },
+          "wallUs": {
+            "count": 40757,
+            "mean": 61.86652599553451,
+            "p95": 231,
+            "max": 1853
+          }
+        },
+        "animationCallbacksPerSecond": 29.9531289063697,
+        "audioCpuPercent": 22.405953443515187
+      }
+    },
+    "updateMs": {
+      "count": 48,
+      "mean": 0.5854166621963183,
+      "p95": 0.8999999761581421,
+      "max": 1.100000023841858
+    },
+    "glitchEventNames": [],
+    "nodes": {
+      "createGain": 166,
+      "createDelay": 7,
+      "createBuffer": 13,
+      "createBufferSource": 13,
+      "createBiquadFilter": 16,
+      "createStereoPanner": 4,
+      "createWaveShaper": 4,
+      "createOscillator": 42
+    },
+    "heap": [
+      {
+        "scene": "HOLLOW",
+        "repeat": 0,
+        "bytes": 3636105
+      },
+      {
+        "scene": "GLASS",
+        "repeat": 0,
+        "bytes": 3260600
+      },
+      {
+        "scene": "TIDAL",
+        "repeat": 0,
+        "bytes": 3706682
+      },
+      {
+        "scene": "ECHO",
+        "repeat": 0,
+        "bytes": 4059824
+      },
+      {
+        "scene": "DISSOLVE",
+        "repeat": 0,
+        "bytes": 4349269
+      },
+      {
+        "scene": "MAX",
+        "repeat": 0,
+        "bytes": 3653781
+      },
+      {
+        "scene": "TRANSITION",
+        "repeat": 0,
+        "bytes": 2860434
+      },
+      {
+        "scene": "CHAPTER",
+        "repeat": 0,
+        "bytes": 2960432
+      },
+      {
+        "scene": "HOLLOW",
+        "repeat": 1,
+        "bytes": 2760152
+      },
+      {
+        "scene": "GLASS",
+        "repeat": 1,
+        "bytes": 2672750
+      },
+      {
+        "scene": "TIDAL",
+        "repeat": 1,
+        "bytes": 3056040
+      },
+      {
+        "scene": "ECHO",
+        "repeat": 1,
+        "bytes": 3467838
+      },
+      {
+        "scene": "DISSOLVE",
+        "repeat": 1,
+        "bytes": 3385111
+      },
+      {
+        "scene": "MAX",
+        "repeat": 1,
+        "bytes": 3263555
+      },
+      {
+        "scene": "TRANSITION",
+        "repeat": 1,
+        "bytes": 3069485
+      },
+      {
+        "scene": "CHAPTER",
+        "repeat": 1,
+        "bytes": 3258900
+      },
+      {
+        "scene": "HOLLOW",
+        "repeat": 2,
+        "bytes": 3062163
+      },
+      {
+        "scene": "GLASS",
+        "repeat": 2,
+        "bytes": 2955129
+      },
+      {
+        "scene": "TIDAL",
+        "repeat": 2,
+        "bytes": 2819718
+      },
+      {
+        "scene": "ECHO",
+        "repeat": 2,
+        "bytes": 3123502
+      },
+      {
+        "scene": "DISSOLVE",
+        "repeat": 2,
+        "bytes": 3601510
+      },
+      {
+        "scene": "MAX",
+        "repeat": 2,
+        "bytes": 3471308
+      },
+      {
+        "scene": "TRANSITION",
+        "repeat": 2,
+        "bytes": 3322638
+      },
+      {
+        "scene": "CHAPTER",
+        "repeat": 2,
+        "bytes": 3500354
+      }
+    ],
+    "finite": true
+  },
+  "comparison": {
+    "HOLLOW": {
+      "oldAudioCpu": 32.9224985201544,
+      "newAudioCpu": 20.225065799975013,
+      "reductionPercent": 38.56764611108209,
+      "mainReductionPercent": -18.526126007921807,
+      "workletReductionPercent": 85.6328877457223
+    },
+    "GLASS": {
+      "oldAudioCpu": 36.48535864322822,
+      "newAudioCpu": 23.253489027510554,
+      "reductionPercent": 36.26624516728859,
+      "mainReductionPercent": -8.680299187167439,
+      "workletReductionPercent": 52.627128685104694
+    },
+    "TIDAL": {
+      "oldAudioCpu": 33.9523286671035,
+      "newAudioCpu": 21.948631891191372,
+      "reductionPercent": 35.354561077698754,
+      "mainReductionPercent": -15.429535232098557,
+      "workletReductionPercent": 58.70000870094846
+    },
+    "ECHO": {
+      "oldAudioCpu": 32.32778104729141,
+      "newAudioCpu": 23.25720826293127,
+      "reductionPercent": 28.05813603813714,
+      "mainReductionPercent": -18.278201636700064,
+      "workletReductionPercent": 60.196347900732384
+    },
+    "DISSOLVE": {
+      "oldAudioCpu": 34.1766131969132,
+      "newAudioCpu": 21.566501234395616,
+      "reductionPercent": 36.89690341714878,
+      "mainReductionPercent": -18.849571351834115,
+      "workletReductionPercent": 64.85112459558027
+    },
+    "MAX": {
+      "oldAudioCpu": 33.81887234401778,
+      "newAudioCpu": 26.225804844561093,
+      "reductionPercent": 22.45216050439902,
+      "mainReductionPercent": -5.3285977643435345,
+      "workletReductionPercent": 8.414816911099376
+    },
+    "TRANSITION": {
+      "oldAudioCpu": 34.84199988735187,
+      "newAudioCpu": 21.289402127557477,
+      "reductionPercent": 38.89730154299832,
+      "mainReductionPercent": -28.968542909218353,
+      "workletReductionPercent": 76.7236939659618
+    },
+    "CHAPTER": {
+      "oldAudioCpu": 32.29526974129755,
+      "newAudioCpu": 21.663740978041428,
+      "reductionPercent": 32.9197707541085,
+      "mainReductionPercent": -4.803399047386536,
+      "workletReductionPercent": 67.44392023204678
+    },
+    "normal": {
+      "oldAudioCpu": 33.97282251871276,
+      "newAudioCpu": 22.050160357222573,
+      "reductionPercent": 35.09470593714431,
+      "mainReductionPercent": -15.784690952428292,
+      "workletReductionPercent": 64.31269896041456
+    },
+    "all": {
+      "oldAudioCpu": 33.799129748035625,
+      "newAudioCpu": 22.405953443515187,
+      "reductionPercent": 33.708490098573016,
+      "mainReductionPercent": -14.321574724507634,
+      "workletReductionPercent": 59.02091954226503
+    }
+  }
+}

@@ -1,0 +1,36 @@
+[
+  {
+    "test": "browser-effects",
+    "status": 0,
+    "seconds": 10.376
+  },
+  {
+    "test": "browser-ui",
+    "status": 0,
+    "seconds": 29.546
+  },
+  {
+    "test": "browser-layout",
+    "status": 0,
+    "seconds": 7.026
+  },
+  {
+    "test": "browser-rupture-audio",
+    "status": 0,
+    "seconds": 16.866
+  },
+  {
+    "test": "browser-saturation",
+    "status": 0,
+    "seconds": 56.685
+  },
+  {
+    "test": "all-node-tests",
+    "status": 0,
+    "seconds": 21.575
+  },
+  {
+    "test": "build",
+    "status": 0
+  }
+]

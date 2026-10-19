@@ -22,8 +22,8 @@ Inharmonicityは起動1%、通常シーン0〜3%程度、DISSOLVE約6%、自動�
 - `audio.js` / `autoplay.js` / `harmony.js` / `music.js` / `chords.js` / `notes.js`: Fret Drift main `46d7c1a`から再利用。声部の共通音、Wander、Edge→通常解決、可変間隔、採用履歴と180秒以上の実証的転調を維持。
 - `journey.js`: 和声の長時間進行。到着には主音低音・主和音反復・直近履歴の調性支持・滞在が必要。未成立目標は7分で破棄し、ラベルだけの転調をしません。密な音響では和声間隔を延ばします。
 - `texture.js`: 試作コミット `453ec051893be67d5b45a54211d2337609ff5d7c`を拡張。12の音源シーンを確率選択し、毎回異なる目標値・継続時間・パラメーター別オフセットでモーフ。約25分周期の緩い大局的傾向を重ね、シーン順は固定しません。
-- `app.js`: 共有のアクティブ時間。500msごとの軽いUI/進行更新、`Drone.update`は最大1Hz。既存AudioParam平滑化、最大36発振器、固定エフェクト網を維持。Volumeは初期55%で固定し、無音シーンを作りません。
-- Shimmerの非共振LP/HP、feedback上限0.94、固定PRE/POST Saturation、DC除去を保持。自動制御のDecayは最大10.5秒で、高Drive・高Character時はDecay≤8秒、Shimmer≤65%。人工Feedback演奏は未実装。
+- `app.js`: 共有のアクティブ時間。500msごとのUI/進行更新、`Drone.update`は最大1Hz。AudioParam平滑化、6声の基音・倍音、最大6つのHowlを維持。Volumeは初期55%。
+- `effects.js` / `reverb.js`: 8系統へ統合したエフェクトAPIと単一のアルゴリズミック残響。SIZE / DECAY / DENSITY / MOTION / MIX、同じ空間へのShimmer Feed、単一Saturation、Wet/Full選択付きCrush。設計と計測は [音響再設計](docs/EFFECTS-REDESIGN.md) を参照。
 
 ## 開発と公開
 
@@ -48,7 +48,7 @@ GitHub Settings → Pages → Source を **GitHub Actions** に設定。mainへ�
 
 別タブ・別ウィンドウへの切替では、演奏・和声・Texture・旅の時間を停止しません。停止はSTOP、終了はページ離脱です。Canvasのみ非表示時に休止し、復帰時は最新音高・時間へ追従します。
 
-進行時間はAudioContext.currentTimeを使用します。500msのDedicated Worker通知は未処理1件に制限し、停止・再開・AudioContextのsuspendでは時計の基点を更新します。通知が遅れた場合は実際の音声クロック差を反映し、1回につき和声変更とTexture次計画を各1回までに抑制します。失われた和声を大量に再生することはなく、実際に採用した状態をHISTORYに記録します。27音色操作はTEXTURE / SPECTRUM / SPACE / COLOR / ENVELOPEの5タブで開きます。Escapeまたは×で閉じられます。
+進行時間はAudioContext.currentTimeを使用します。500msのDedicated Worker通知は未処理1件に制限し、停止・再開・AudioContextのsuspendでは時計の基点を更新します。通知が遅れた場合は実際の音声クロック差を反映し、1回につき和声変更とTexture次計画を各1回までに抑制します。失われた和声を大量に再生することはなく、実際に採用した状態をHISTORYに記録します。音色操作は8つのエフェクトタブとSOURCE / ENVELOPEで開きます。サブ制御を含め34操作です。Escapeまたは×で閉じられます。
 
 ブラウザによるWorker停止・タブ破棄、端末のスリープや省電力、iOS/Androidの画面ロック時にはOSがWebAudioを停止・中断する場合があります。この状態での無停止演奏は保証できません。AudioContextが中断した場合、音声クロックも止まり、必要に応じてSTART/RESUMEから再開してください。中断時間を無音の演奏時間として加算しません。自動操作下のnative visibility試験の制約はREDESIGN-VALIDATION.mdに記載しています。
 
@@ -57,10 +57,14 @@ GitHub Settings → Pages → Source を **GitHub Actions** に設定。mainへ�
 
 アクティブ音声時間で15分ごとに章が切り替わります。14:52から全残響ごと8秒かけてフェードアウトし、無音で旧音声経路を破棄。遠隔調の新しい主和音から12秒でフェードインします。章内の従来のMigrationは継続し、章番号と転調はHISTORYへ記録します。
 
-12シーンへ拡張し、EMBER/STATIC/DISSOLVEは破壊的な音源、AURORA/HALOは広い空間を担当。TEXTURE / SPACE / COLORは概ね旧上限の200%まで進みます。音量や循環利得は増幅せず、強度の超過分を量子化・変調・波形の折り返し・空間の減衰へ割り当てます。キー24種類×12シーンの288配色でUI全体が滑らかに変化します。
+12シーンへ拡張し、EMBER/STATIC/DISSOLVEは破壊的な音源、AURORA/HALOは広い空間を担当。Crush・Instability・Turbulence・Feedback・Saturation等は破壊的な拡張レンジを維持します。Reverb MIXは0〜100%で、長いDECAY・DENSITY・MOTIONを別に制御します。音量や循環利得は増幅せず、強度の超過分を量子化・変調・波形の折り返し・空間の減衰へ割り当てます。キー24種類×12シーンの288配色でUI全体が滑らかに変化します。
 
 上限の例外、音声安全設計、章境界と検証方法は [詳細](docs/chapter-rupture.md) を参照してください。
 
 ## 新音源と12シーン
 
 SOURCEタブからFM、波形モーフ、和声追従ノイズ共振、Live Grains / Freeze / Reverseを操作できます。既存の音源と和声を維持し、各シーンが異なる音の生成現象を主役にします。設計・全シーン中心値・互換経路・検証制約は [SYNTHESIS-SCENES](docs/SYNTHESIS-SCENES.md) を参照してください。
+
+## エフェクト再設計と負荷比較
+
+5音源を維持し、INSTABILITY / BLOOM / TURBULENCE / FEEDBACK / SATURATION / CRUSH / DELAY / REVERBへ整理。旧HISTORYの音色値は `migrateHistory` でv2へ変換できます（和声イベントは変更しません）。再現手順・生ログ・測定限界は [EFFECTS-REDESIGN](docs/EFFECTS-REDESIGN.md) を参照。過去の検証文書は当時の構成を記録したものです。

@@ -41,12 +41,12 @@ try {
   if(width>950) assert.ok(await page.evaluate(()=>document.documentElement.scrollHeight<=innerHeight+1));
   await page.screenshot({path:`${process.env.OUTPUT_DIR}/main-${width}.png`,fullPage:width>950});
   await page.locator('#texture-panel summary').click();
-  for(const group of ['SPECTRUM','SPACE','COLOR','ENVELOPE']){
+  for(const group of ['SOURCE','INSTABILITY','BLOOM','TURBULENCE','FEEDBACK','SATURATION','CRUSH','DELAY','REVERB','ENVELOPE']){
    await page.locator('#tab-'+group).click();
-   assert.ok(await page.locator('.detail-inner').evaluate(e=>e.scrollHeight<=e.clientHeight+1),'drawer needs scrolling');
+   assert.ok(await page.locator('.detail-inner').evaluate(e=>e.scrollHeight<=e.clientHeight+1),`drawer needs scrolling: ${width} ${group}`);
    assert.ok(await page.locator('.knob:not([hidden]) input').evaluateAll(es=>es.every(e=>{const r=e.getBoundingClientRect();return r.bottom<=innerHeight && r.left>=0})));
   }
   await page.screenshot({path:`${process.env.OUTPUT_DIR}/texture-${width}.png`,fullPage:width>950});
  }
- console.log('Main and all four texture tabs: layout PASS');
+ console.log('Main and all ten source/effect/envelope tabs: layout PASS');
 }finally{await browser.close();await new Promise(r=>server.close(r));}

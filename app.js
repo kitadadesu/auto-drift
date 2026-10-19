@@ -9,16 +9,16 @@ import { TextureDrift, textureKeys, textureBounds } from './texture.js';
 const $ = id => document.getElementById(id);
 const engine = new Drone();
 // Keep AutoDrift's starting sound clear; the autonomous timeline can travel much farther.
-const initialSettings = {...defaults, shimmer:.20, reverb:.24, wetDrift:.23,
-  inharmonicity:.01, diffusion:.50, drive:.16, saturationMix:.28, delay:.11};
+const initialSettings = {...defaults, shimmer:.20, reverb:.24, reverbMotion:.23,
+  inharmonicity:.01, reverbDensity:.50, drive:.16, saturationMix:.28, delay:.11};
 engine.update(initialSettings);
 let journey, texture, requested = false, generation = 0, timer = null, applied = 0;
 let lastVoicing = null, resetting = false, paletteId = null, renderedHue = 25, targetHue = 25;
 const clock = new ActiveClock();
 const wake = new Worker(new URL('./pulse.js', import.meta.url), {type:'module'});
 wake.onmessage = () => { try { if (requested) tick(); } finally { wake.postMessage('ack'); } };
-const groups = {SOURCE:['fm','fmRatio','wave','noise','material','granular','freeze','reverse'],TEXTURE:['crush','beating','turbulence','wandering'],SPECTRUM:['bloom','harmonics','inharmonicity','drift','detune'], SPACE:['wetDrift','shimmer','shimmerDecay','diffusion','reverb','delay'], COLOR:['dryDrift','drive','character','saturationMix','saturationPost'], ENVELOPE:['glide','attack','decay','sustain','release','time','feedback']};
-let activeGroup = 'SPECTRUM';
+const groups = {SOURCE:['fm','fmRatio','wave','noise','material','inharmonicity','granular','freeze','reverse'],INSTABILITY:['instability','detune'],BLOOM:['bloom','harmonics'],TURBULENCE:['turbulence'],FEEDBACK:['wandering'],SATURATION:['drive','character','saturationMix'],CRUSH:['crush','crushPost'],DELAY:['delay','time','feedback'],REVERB:['reverb','reverbSize','reverbDecay','reverbDensity','reverbMotion','shimmer'],ENVELOPE:['glide','attack','decay','sustain','release']};
+let activeGroup = 'BLOOM';
 for (const group of Object.keys(groups)) {
  const tab = document.createElement('button'); tab.textContent=group; tab.id='tab-'+group; tab.setAttribute('role','tab');
  tab.onclick=()=>{activeGroup=group; showGroup();}; $('texture-tabs').append(tab);
@@ -32,7 +32,7 @@ function showGroup(){
 
 const history = new History();
 let historyRevision = -1;
-const labels = {fm:'FM Amount',fmRatio:'FM Ratio',wave:'Wave Morph',noise:'Resonant Noise',material:'String → Cavity',granular:'Live Grains',freeze:'Live Freeze',reverse:'Grain Reverse',crush:'Digital Crush',beating:'Beating',turbulence:'Turbulence',wandering:'Wandering Feedback',bloom:'Bloom', harmonics:'Harmonics', inharmonicity:'Inharmonicity', drift:'Spectral Drift',dryDrift:'Dry Tape',wetDrift:'Wet Tape',shimmer:'Shimmer',shimmerDecay:'Shimmer Decay',diffusion:'Diffusion',drive:'Saturation Drive',character:'Character',saturationMix:'Saturation Mix',reverb:'Reverb',delay:'Delay',detune:'Detune',saturationPost:'PRE → POST',glide:'Glide',attack:'Attack',decay:'Decay',sustain:'Sustain',release:'Release',time:'Delay Time',feedback:'Delay Feedback'};
+const labels = {instability:'Instability',reverbSize:'Size',reverbDecay:'Decay',reverbDensity:'Density',reverbMotion:'Motion',crushPost:'Wet only → Full signal',fm:'FM Amount',fmRatio:'FM Ratio',wave:'Wave Morph',noise:'Resonant Noise',material:'String → Cavity',granular:'Live Grains',freeze:'Live Freeze',reverse:'Grain Reverse',crush:'Crush',turbulence:'Turbulence',wandering:'Feedback / Howl',bloom:'Bloom',harmonics:'Bloom Sustain',inharmonicity:'Partial Stretch',shimmer:'Shimmer Feed',drive:'Saturation',character:'Character',saturationMix:'Saturation Mix',reverb:'Mix',delay:'Delay',detune:'Spread',glide:'Glide',attack:'Attack',decay:'Decay',sustain:'Sustain',release:'Release',time:'Time',feedback:'Repeats'};
 for (const k of textureKeys) {
   const [lo,hi] = textureBounds[k];
   const el = document.createElement('label'); el.className = 'knob';
@@ -110,14 +110,17 @@ function tick(allowSuspended = false) {
     if (!document.hidden) render();
   } catch (error) { stop(false); $('status').textContent = `演奏を停止しました: ${error.message}`; }
 }
+const renderedValues = new Map();
 function render() {
   const values = texture?.values ?? initialSettings;
   renderHistory();
   for (const k of textureKeys) {
     const [lo,hi] = textureBounds[k]; const n = values[k];
+    if (renderedValues.get(k) === n) continue;
+    renderedValues.set(k,n);
     $('dial-'+k).style.setProperty('--angle',`${270*(n-lo)/(hi-lo)}deg`);
     if (document.activeElement !== $('knob-'+k)) $('knob-'+k).value = n;
-    $('value-'+k).value = ['shimmerDecay','glide','attack','decay','release','time'].includes(k) ? `${n.toFixed(1)} s` : k === 'detune' ? `${n.toFixed(1)} ct` : `${Math.round(n*100)}%`;
+    $('value-'+k).value = ['reverbDecay','glide','attack','decay','release','time'].includes(k) ? `${n.toFixed(1)} s` : k === 'detune' ? `${n.toFixed(1)} ct` : `${Math.round(n*100)}%`;
   }
   if (journey) {
     $('chord').textContent = analyze(journey.current);
@@ -139,7 +142,7 @@ function render() {
     }
     $('progress').value = texture.status.progress;
   }
-  for (const key of ['bloom','shimmer','drive','wetDrift']) $('meter-'+key).value = values[key];
+  for (const key of ['bloom','shimmer','drive','reverbMotion']) $('meter-'+key).value = values[key];
   $('start').disabled = requested && engine.running && engine.ctx?.state === 'running';
   $('start').textContent = requested ? 'PLAYING' : journey ? 'RESUME ↗' : 'START ↗'; $('stop').disabled = !requested;
 }
@@ -162,6 +165,7 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('pagehide',stop);
 // Six-voice pitch field: the real accepted MIDI notes glide along six colored
 // traces. The optional waveform comes from the existing WebAudio analyser.
+const fieldSamples=new Uint8Array(256);
 const field = $('pitch-field'), fieldCtx = field.getContext('2d');
 let voiceColors = ['#f9cfa0','#ffae8c','#e48fbc','#bc9ef2','#e9b9d2','#f5d9b4'];
 let motions = Array(6).fill(null), pitchCamera = 52, pitchRange = 52, frameAt = 0;
@@ -207,7 +211,7 @@ function drawField(at) {
   }
   // The analyser is drawn quietly underneath, not fabricated as a decorative oscillator.
   if(engine.analyser && engine.running){
-    const samples=new Uint8Array(engine.analyser.frequencyBinCount);
+    const samples=fieldSamples;
     engine.analyser.getByteTimeDomainData(samples);
     c.beginPath();c.lineWidth=1;c.strokeStyle='#e0a6d320';
     samples.forEach((value,i)=>{const x=(i/(samples.length-1))*w;

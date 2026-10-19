@@ -1,0 +1,180 @@
+impulse {"room":{"lowPeak":1,"highPeak":1,"peak":0.016782153397798538,"rms":0.0001046825359220874,"jump":0.008919992484152317,"lateEnergy":0,"earlyEnergy":0.004208038397598382,"difference":0},"long":{"lowPeak":1,"highPeak":1,"peak":0.017649538815021515,"rms":0.00025512540235922914,"jump":0.008702759630978107,"lateEnergy":0.00005269322858519086,"earlyEnergy":0.012459128984123404,"difference":0},"sparse":{"lowPeak":1,"highPeak":1,"peak":0.04876504838466644,"rms":0.00032372406812073123,"jump":0.03265714645385742,"lateEnergy":1.408727052151891e-10,"earlyEnergy":0.035277678275513466,"difference":0},"dense":{"lowPeak":1,"highPeak":1,"peak":0.013163361698389053,"rms":0.00017112881334781476,"jump":0.005361977964639664,"lateEnergy":4.6427453808966546e-11,"earlyEnergy":0.009685461505678755,"difference":0},"motion":{"lowPeak":1,"highPeak":1,"peak":0.009021546691656113,"rms":0.0001673046865962566,"jump":0.004368386697024107,"lateEnergy":4.523347186180477e-11,"earlyEnergy":0.009233823763234835,"difference":0.02312000670977844}}
+{
+  "chrome": "155.0.8059.80",
+  "reverb": {
+    "room": {
+      "lowPeak": 1,
+      "highPeak": 1,
+      "peak": 0.016782153397798538,
+      "rms": 0.0001046825359220874,
+      "jump": 0.008919992484152317,
+      "lateEnergy": 0,
+      "earlyEnergy": 0.004208038397598382,
+      "difference": 0
+    },
+    "long": {
+      "lowPeak": 1,
+      "highPeak": 1,
+      "peak": 0.017649538815021515,
+      "rms": 0.00025512540235922914,
+      "jump": 0.008702759630978107,
+      "lateEnergy": 0.00005269322858519086,
+      "earlyEnergy": 0.012459128984123404,
+      "difference": 0
+    },
+    "sparse": {
+      "lowPeak": 1,
+      "highPeak": 1,
+      "peak": 0.04876504838466644,
+      "rms": 0.00032372406812073123,
+      "jump": 0.03265714645385742,
+      "lateEnergy": 1.408727052151891e-10,
+      "earlyEnergy": 0.035277678275513466,
+      "difference": 0
+    },
+    "dense": {
+      "lowPeak": 1,
+      "highPeak": 1,
+      "peak": 0.013163361698389053,
+      "rms": 0.00017112881334781476,
+      "jump": 0.005361977964639664,
+      "lateEnergy": 4.6427453808966546e-11,
+      "earlyEnergy": 0.009685461505678755,
+      "difference": 0
+    },
+    "motion": {
+      "lowPeak": 1,
+      "highPeak": 1,
+      "peak": 0.009021546691656113,
+      "rms": 0.0001673046865962566,
+      "jump": 0.004368386697024107,
+      "lateEnergy": 4.523347186180477e-11,
+      "earlyEnergy": 0.009233823763234835,
+      "difference": 0.02312000670977844
+    }
+  },
+  "scenes": [
+    {
+      "name": "HOLLOW",
+      "peak": 0.024667512625455856,
+      "rms": 0.0062387327075815405,
+      "finite": true
+    },
+    {
+      "name": "GLASS",
+      "peak": 0.0710003674030304,
+      "rms": 0.012840093762107123,
+      "finite": true
+    },
+    {
+      "name": "AURORA",
+      "peak": 0.047288231551647186,
+      "rms": 0.012078267816036289,
+      "finite": true
+    },
+    {
+      "name": "CHOIR",
+      "peak": 0.052786074578762054,
+      "rms": 0.01343493769432408,
+      "finite": true
+    },
+    {
+      "name": "TIDAL",
+      "peak": 0.041157014667987823,
+      "rms": 0.00949363649065958,
+      "finite": true
+    },
+    {
+      "name": "TAPE",
+      "peak": 0.028114676475524902,
+      "rms": 0.006422145056264855,
+      "finite": true
+    },
+    {
+      "name": "HALO",
+      "peak": 0.06885825097560883,
+      "rms": 0.017272547402627986,
+      "finite": true
+    },
+    {
+      "name": "ECHO",
+      "peak": 0.04416527971625328,
+      "rms": 0.008589354883484442,
+      "finite": true
+    },
+    {
+      "name": "HOWL",
+      "peak": 0.03430567681789398,
+      "rms": 0.007872653963532053,
+      "finite": true
+    },
+    {
+      "name": "STATIC",
+      "peak": 0.048263393342494965,
+      "rms": 0.012084510115932468,
+      "finite": true
+    },
+    {
+      "name": "EMBER",
+      "peak": 0.013045713305473328,
+      "rms": 0.0026824059508222323,
+      "finite": true
+    },
+    {
+      "name": "DISSOLVE",
+      "peak": 0.031015921384096146,
+      "rms": 0.006306470764102872,
+      "finite": true
+    }
+  ],
+  "latencyMs": 0.8000000715255737,
+  "layouts": [
+    {
+      "w": 1366,
+      "overflow": false
+    },
+    {
+      "w": 390,
+      "overflow": false
+    }
+  ],
+  "endurance": [
+    {
+      "chapter": 2,
+      "oldClosed": true,
+      "voices": 6,
+      "retiring": 0,
+      "history": 900000,
+      "heap": 3713646,
+      "retainedHeap": 2683192
+    },
+    {
+      "chapter": 3,
+      "oldClosed": true,
+      "voices": 6,
+      "retiring": 0,
+      "history": 1800000,
+      "heap": 3727781,
+      "retainedHeap": 2697312
+    },
+    {
+      "chapter": 4,
+      "oldClosed": true,
+      "voices": 6,
+      "retiring": 0,
+      "history": 2700000,
+      "heap": 3727781,
+      "retainedHeap": 2703216
+    },
+    {
+      "chapter": 5,
+      "oldClosed": true,
+      "voices": 6,
+      "retiring": 0,
+      "history": 3600000,
+      "heap": 3769984,
+      "retainedHeap": 2739528
+    }
+  ],
+  "errors": []
+}

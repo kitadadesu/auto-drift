@@ -53,11 +53,11 @@ try {
   const probe=new AudioWorkletNode(ctx,'probe');const mute=ctx.createGain();mute.gain.value=0;probe.connect(mute).connect(ctx.destination);
   probe.port.onmessage=e=>window.probe=e.data;
   const {Drone}=await import('./audio.js'); // connect the live output via captured node
-  window.probeNode=probe;
+  window.probeNode=probe;window.probe={windows:0,silent:0,energy:0};
  });
  // Find the live analyser by intercepting its read call from the visualizer.
  await page.evaluate(()=>{const read=AnalyserNode.prototype.getByteTimeDomainData;AnalyserNode.prototype.getByteTimeDomainData=function(a){if(!window.tapped){this.connect(probeNode);window.tapped=true;}return read.call(this,a)}});
- await page.waitForTimeout(1500);
+ await page.waitForFunction(()=>window.probe?.windows>=1,{},{timeout:15000});
  const before=await page.evaluate(()=>({elapsed,moves,textureTime,count,time:ctx.currentTime}));
  const other=await page.context().newPage();await other.goto('about:blank');await other.bringToFront();
  const cdp=await page.context().newCDPSession(page);await cdp.send('Emulation.setFocusEmulationEnabled',{enabled:false});const info=await cdp.send('Browser.getWindowForTarget');await cdp.send('Browser.setWindowBounds',{windowId:info.windowId,bounds:{windowState:'minimized'}});
@@ -67,7 +67,7 @@ try {
  const hidden=await page.evaluate(()=>({hidden:document.hidden,elapsed,moves,textureTime,count,state:ctx.state,time:ctx.currentTime,probe,inharm}));
  assert.equal(hidden.hidden,true,'real Chrome background tab');assert.equal(hidden.state,'running');
  assert.ok(hidden.elapsed-before.elapsed>18000);assert.ok(hidden.textureTime-before.textureTime>18000);
- assert.ok(hidden.moves>before.moves);assert.equal(hidden.count,before.count);assert.ok(hidden.inharm<=.08);
+ assert.ok(hidden.moves>before.moves);assert.ok(hidden.count<=before.count+6 && hidden.count<=42,'only the six bounded lazy Howl oscillators may be added');assert.ok(hidden.inharm<=.08);
  assert.ok(hidden.probe.windows>=18);assert.equal(hidden.probe.silent,0);
  await cdp.send('Browser.setWindowBounds',{windowId:info.windowId,bounds:{windowState:'normal'}});await page.bringToFront();if(!realHidden) await page.evaluate(()=>{delete document.hidden;document.dispatchEvent(new Event('visibilitychange'))});await page.waitForTimeout(1100);assert.equal(await page.evaluate(()=>document.hidden),false);
  assert.ok(await page.evaluate(()=>parseInt(document.querySelector('#elapsed').textContent.slice(-2))>=20));

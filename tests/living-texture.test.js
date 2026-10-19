@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import {CrushDSP} from '../crush-dsp.js';
 import {defaults,sanitize} from '../audio.js';
 import {TextureDrift,textureBounds} from '../texture.js';
-const keys=['crush','beating','turbulence','wandering'];
+const keys=['crush','instability','turbulence','wandering'];
 test('new controls sanitize finite endpoints and exact neutral defaults',()=>{
- for(const k of keys){assert.equal(defaults[k],0);assert.equal(sanitize({...defaults,[k]:99})[k],textureBounds[k][1]);assert.equal(sanitize({...defaults,[k]:-1})[k],0);}
+ for(const k of keys){assert.equal(defaults[k],k==='instability'?.15:0);assert.equal(sanitize({...defaults,[k]:99})[k],textureBounds[k][1]);assert.equal(sanitize({...defaults,[k]:-1})[k],0);}
 });
 test('seeded 2/10/60 minute timelines vary independently within safety bounds',()=>{
  for(const duration of [120,600,3600]){

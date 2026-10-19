@@ -30,9 +30,9 @@ try{
  if(extra.chapterFade==='in' && early/(48000*3)>=late/(48000*4))throw Error('No slow fade-in');
  return {peak,afterFade,early,late,rms:Math.sqrt(sum/data.length),jump,mode,tail,...(extra.crush===1.7&&extra.wandering===1.3 ? {pcm}: {})};
  };
- const samples={};for(const [name,extra] of Object.entries({neutral:{},fallback:{fallback:true,crush:1.7,drive:1.8,character:2,shimmer:1.7,reverb:1.7},fadeOut:{chapterFade:'out',shimmer:1.7,reverb:1.7,shimmerDecay:21,feedback:.65},fadeIn:{chapterFade:'in'},crush:{crush:1},beating:{beating:1,detune:0},turbulence:{turbulence:1},wandering:{wandering:1},legacyMax:{crush:.85,beating:.85,turbulence:.9,wandering:.65,drive:.9,character:1,saturationMix:.76,reverb:.85,delay:.52,shimmer:.85,shimmerDecay:10.5},all:{crush:1.7,beating:1.7,turbulence:1.8,wandering:1.3,dryDrift:2,wetDrift:2,drive:1.8,character:2,saturationMix:1.52,reverb:1.7,delay:1.04,shimmer:1.7,shimmerDecay:21,diffusion:2,feedback:.65}}))samples[name]=await render(extra);
+ const samples={};for(const [name,extra] of Object.entries({neutral:{},fallback:{fallback:true,crush:1.7,drive:1.8,character:2,shimmer:1.7,reverb:1.7},fadeOut:{chapterFade:'out',shimmer:1.7,reverb:1.7,reverbDecay:21,feedback:.65},fadeIn:{chapterFade:'in'},crush:{crush:1},instability:{instability:1,detune:0},turbulence:{turbulence:1},wandering:{wandering:1},legacyMax:{crush:.85,instability:.85,turbulence:.9,wandering:.65,drive:.9,character:1,saturationMix:.76,reverb:.85,delay:.52,shimmer:.85,reverbDecay:10.5},all:{crush:1.7,turbulence:1.8,wandering:1.3,instability:2,reverbMotion:1,drive:1.8,character:2,saturationMix:1.52,reverb:1.7,delay:1.04,shimmer:1.7,reverbDecay:21,reverbDensity:1,feedback:.65}}))samples[name]=await render(extra);
  window.AudioContext=Native;
- const live=new Drone();await live.play([40,45,50,55,59,64]);live.update({...live.settings,crush:.8,beating:.8,turbulence:.8,wandering:.8});
+ const live=new Drone();await live.play([40,45,50,55,59,64]);live.update({...live.settings,crush:.8,instability:.8,turbulence:.8,wandering:.8});
  const voices=[...live.voices];for(let i=0;i<100;i++){live.move([41,46,51,56,60,65]);live.update({...live.settings,wandering:i%2});}
  const reused=voices.every((v,i)=>live.voices[i]===v);
  const graphSizes=[];

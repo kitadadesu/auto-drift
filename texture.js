@@ -1,23 +1,25 @@
+import { effectDefaults, effectBounds, migrateEffects } from './effects.js';
 import { sourceDefaults, sourceBounds } from "./synthesis-dsp.js";
 // AUTO TEXTURE is a separate, deterministic musical timeline. It owns no
 // AudioNodes, timers or DOM, and never overwrites the musician's manual values.
 export const textureKeys = [
+  ...Object.keys(effectDefaults),
   ...Object.keys(sourceDefaults),
-  "crush", "beating", "turbulence", "wandering",
-  "bloom", "harmonics", "inharmonicity", "drift",
-  "dryDrift", "wetDrift", "shimmer", "shimmerDecay", "diffusion",
-  "drive", "character", "saturationMix", "reverb", "delay", "detune", "saturationPost", "glide", "attack", "decay", "sustain", "release", "time", "feedback",
+  "crush", "turbulence", "wandering",
+  "bloom", "harmonics", "inharmonicity",
+  "shimmer",
+  "drive", "character", "saturationMix", "reverb", "delay", "detune", "glide", "attack", "decay", "sustain", "release", "time", "feedback",
 ];
 export const textureBounds = {
   ...sourceBounds,
-  crush: [0, 1.7], beating: [0, 1.7], turbulence: [0, 1.8], wandering: [0, 1.3],
+  ...effectBounds,
+  crush: [0, 1.7], turbulence: [0, 1.8], wandering: [0, 1.3],
   bloom: [0, 1], harmonics: [0, 1], inharmonicity: [0, 1],
-  drift: [0, 1], dryDrift: [0, 2], wetDrift: [0, 2],
-  shimmer: [0, 1.7], shimmerDecay: [1, 21], diffusion: [0, 2],
+  shimmer: [0, 1.7],
   drive: [0, 1.8], character: [0, 2], saturationMix: [0, 1.52],
-  reverb: [0, 1.7], delay: [0, 1.04], detune: [0, 26],
+  reverb: [0, 1], delay: [0, 1.04], detune: [0, 26],
 };
-Object.assign(textureBounds, { saturationPost: [0,1], glide: [1,8], attack: [.4,4], decay: [.5,4], sustain: [.55,.9], release: [1,5], time: [.15,1.2], feedback: [.05,.5] });
+Object.assign(textureBounds, { glide: [1,8], attack: [.4,4], decay: [.5,4], sustain: [.55,.9], release: [1,5], time: [.15,1.2], feedback: [.05,.5] });
 export const autoInharmonicityMax = .08;
 const clamp = (x, lo = 0, hi = 1) => Math.max(lo, Math.min(hi, x));
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -76,6 +78,10 @@ const definitions = [
  ['DISSOLVE','DISSOLVE',{granular:1,freeze:.85,reverse:1,drive:.6,crush:.8}],
 ];
 for(const [name,base,values] of definitions) textureScenes[name]={...sourceDefaults,...old[base],...values};
+for(const [name,values] of Object.entries(textureScenes)) textureScenes[name]={...effectDefaults,...migrateEffects(values)};
+Object.assign(textureScenes.STATIC,{crushPost:.95});
+Object.assign(textureScenes.EMBER,{crushPost:.4});
+Object.assign(textureScenes.DISSOLVE,{crushPost:.2});
 const names=Object.keys(textureScenes);
 const nearby=Object.fromEntries(names.map((name,i)=>[name,[names[(i+1)%12],names[(i+11)%12],names[(i+3)%12]]]));
 export function chooseTextureScene(scene, previous = null, rng = Math.random) {
@@ -109,13 +115,13 @@ export function safeTextureValues(values, balance = true) {
     out.delay *= 1 - density*.27;
     if (out.drive > .65 && out.character > .65) {
       out.shimmer = Math.min(out.shimmer, .42);
-      out.shimmerDecay = Math.min(out.shimmerDecay, 7.5);
+      out.reverbDecay = Math.min(out.reverbDecay, 7.5);
     }
   }
   return out;
 }
 export function textureDistance(a, b) {
-  const keys = ["fm", "wave", "noise", "granular", "bloom", "harmonics", "shimmer", "wetDrift", "drive", "character", "reverb"];
+  const keys = ["fm", "wave", "noise", "granular", "bloom", "harmonics", "shimmer", "reverbMotion", "drive", "character", "reverb"];
   return keys.reduce((sum, key) => {
     const [lo, hi] = textureBounds[key];
     return sum + Math.abs(a[key] - b[key]) / (hi - lo);
@@ -134,6 +140,7 @@ function destination(name, rng) {
 }
 export class TextureDrift {
   constructor(manual, rng = Math.random) {
+    manual = {...effectDefaults,...migrateEffects(manual)};
     this.manual = { ...manual };
     this.values = { ...manual, inharmonicity: clamp(manual.inharmonicity, 0, autoInharmonicityMax) };
     this.rng = rng;

@@ -1,0 +1,30 @@
+✔ continuous string voices, unisons, mute retirement and disposal (975.695333ms)
+✔ rapid audition and mute changes reuse voices without stop/start (973.798708ms)
+✔ six independent spectra follow MIDI with shared Glide and continuous interruptions (81.052958ms)
+✔ interrupted partial motion starts from its geometric in-flight pitch (0.367834ms)
+✔ zero controls, Nyquist ceiling and absolute amplitude budget (129.703875ms)
+✔ spectral rapid holds, all-muted recovery, stop and resume stay bounded (925.719167ms)
+✔ resume and dispose disconnect delayed retiring partials before onended (271.164583ms)
+✔ stop cancels a pending AudioContext resume (144.314541ms)
+✔ Bloom unfolds in order with a bounded core and exact zero bypass (7.131625ms)
+✔ Bloom shares sources, restarts only on pitch/unmute and survives live controls (3291.064792ms)
+✔ Dream sends contain only Bloom high partials, mirror mute ADSR, and preserve glides (185.332667ms)
+✔ shared modulation routes and v2 bounds (100.478584ms)
+✔ saturation boundary bypass, fixed morph nodes, passive feedback and disposal (111.8625ms)
+✔ living texture fixed sources, exact zero, mute and resume cleanup (200.126ms)
+{ maxGrains: 6, jump: 0.00624837486976132 }
+✔ v1 presets/history translate to one v2 API without changing harmony or input objects (11.60375ms)
+✔ eight modules, twelve migrated scenes and finite controls with independent manual hold (22.465541ms)
+✔ silent source DSP sleeps while preserving pre-roll for immediate freeze/reverse (1054.755708ms)
+DSP measurements {"sine":{"rms":0,"peak":0,"delta":0,"crossings":0},"fm":{"rms":0.050790634827199074,"peak":0.1643710685686962,"delta":0.0915701382400484,"crossings":3620},"wave":{"rms":0.008973136696316155,"peak":0.0329726672101816,"delta":0.01961950772568071,"crossings":3609},"string":{"rms":0.01375633308629047,"peak":0.048408988487588206,"delta":0.004019327455736427,"crossings":573},"cavity":{"rms":0.03219324756496227,"peak":0.13193285415357214,"delta":0.01779733262115381,"crossings":1073},"grain":{"rms":0.012563756702452921,"peak":0.03598421777700865,"delta":0.002074629611268014,"crossings":441},"reverse":{"rms":0.013435527224770726,"peak":0.03195061865813194,"delta":0.0018535219950230526,"crossings":434}}
+✔ each source produces finite distinct signals and spectral zero crossing signatures (2422.212542ms)
+✔ 5s ring and 8 grains remain bounded, stop and flush remove old chapter audio (417.168625ms)
+✔ all 12 scene profiles are distinct and long clocks remain finite with manual hold (432.425334ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 12853.903083

@@ -22,9 +22,9 @@ try{
  let tail=0;if(moving)for(let i=48000*17;i<data.length;i++)tail=Math.max(tail,Math.abs(data[i]));
  return {peak,rms:Math.sqrt(sum/data.length),jump,mode,tail,...(extra.crush===1&&extra.wandering===1 ? {pcm}: {})};
  };
- const samples={};for(const [name,extra] of Object.entries({neutral:{},crush:{crush:1},beating:{beating:1,detune:0},turbulence:{turbulence:1},wandering:{wandering:1},all:{crush:1,beating:1,turbulence:1,wandering:1,reverb:1,delay:.7,shimmer:1,shimmerDecay:12}}))samples[name]=await render(extra);
+ const samples={};for(const [name,extra] of Object.entries({neutral:{},crush:{crush:1},instability:{instability:1,detune:0},turbulence:{turbulence:1},wandering:{wandering:1},all:{crush:1,instability:1,turbulence:1,wandering:1,reverb:1,delay:.7,shimmer:1,reverbDecay:12}}))samples[name]=await render(extra);
  window.AudioContext=Native;
- const live=new Drone();await live.play([40,45,50,55,59,64]);live.update({...live.settings,crush:.8,beating:.8,turbulence:.8,wandering:.8});
+ const live=new Drone();await live.play([40,45,50,55,59,64]);live.update({...live.settings,crush:.8,instability:.8,turbulence:.8,wandering:.8});
  const voices=[...live.voices];for(let i=0;i<100;i++){live.move([41,46,51,56,60,65]);live.update({...live.settings,wandering:i%2});}
  const reused=voices.every((v,i)=>live.voices[i]===v);const mode=live.crushMode;live.move(Array(6).fill(null));live.stop();await live.play([40,45,50,55,59,64]);await live.dispose();
  return {samples,reused,mode};

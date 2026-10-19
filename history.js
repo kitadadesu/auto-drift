@@ -1,3 +1,4 @@
+import { migrateEffects } from './effects.js';
 import { analyze } from './music.js';
 import { centerKey, keyLabel } from './harmony.js';
 // Detached snapshots use active time, with a bounded buffer ready for JSON.
@@ -30,5 +31,16 @@ export class History {
       phase:changed ? 'target' : bucket === 4 ? 'arrived' : 'morph', progress,
       values:{...texture.values}, target:{...p.target}, depth:texture.depth});
   }
-  toJSON() { return {version:1, timebase:'active-milliseconds', dropped:this.dropped, events:structuredClone(this.events)}; }
+  toJSON() { return {version:2, effectsVersion:2, timebase:'active-milliseconds', dropped:this.dropped, events:structuredClone(this.events)}; }
+}
+
+// Explicit import compatibility for archived v1 HISTORY exports. Harmony is untouched.
+export function migrateHistory(json) {
+ if(!json||![1,2].includes(json.version)||!Array.isArray(json.events)) throw new Error('Unsupported HISTORY');
+ const copy=structuredClone(json);copy.version=2;copy.effectsVersion=2;
+ for(const event of copy.events) if(event.type==='texture') {
+  if(event.values)event.values=migrateEffects(event.values);
+  if(event.target)event.target=migrateEffects(event.target);
+ }
+ return copy;
 }

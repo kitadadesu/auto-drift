@@ -1,0 +1,66 @@
+{
+  "mode": "compatibility",
+  "scenes": [
+    {
+      "scene": "HOLLOW",
+      "peak": 0.036899179220199585,
+      "finite": true
+    },
+    {
+      "scene": "GLASS",
+      "peak": 0.07487212121486664,
+      "finite": true
+    },
+    {
+      "scene": "AURORA",
+      "peak": 0.051628563553094864,
+      "finite": true
+    },
+    {
+      "scene": "CHOIR",
+      "peak": 0.0733141079545021,
+      "finite": true
+    },
+    {
+      "scene": "TIDAL",
+      "peak": 0.0965900868177414,
+      "finite": true
+    },
+    {
+      "scene": "TAPE",
+      "peak": 0.043780773878097534,
+      "finite": true
+    },
+    {
+      "scene": "HALO",
+      "peak": 0.06519217044115067,
+      "finite": true
+    },
+    {
+      "scene": "ECHO",
+      "peak": 0.05080912262201309,
+      "finite": true
+    },
+    {
+      "scene": "HOWL",
+      "peak": 0.05354742705821991,
+      "finite": true
+    },
+    {
+      "scene": "STATIC",
+      "peak": 0.017497174441814423,
+      "finite": true
+    },
+    {
+      "scene": "EMBER",
+      "peak": 0.041001688688993454,
+      "finite": true
+    },
+    {
+      "scene": "DISSOLVE",
+      "peak": 0.04372512549161911,
+      "finite": true
+    }
+  ],
+  "errors": []
+}

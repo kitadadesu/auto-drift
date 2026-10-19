@@ -5,6 +5,7 @@ class DriftCrush extends AudioWorkletProcessor {
   }
   constructor() { super(); this.dsp = new CrushDSP(sampleRate); }
   process(inputs, outputs, parameters) {
+    if(parameters.amount[0]<.00001) return true;
     outputs[0].forEach((out, ch) => {
       const input = inputs[0]?.[ch] || inputs[0]?.[0];
       for (let i=0;i<out.length;i++) out[i] = this.dsp.sample(input?.[i] || 0, ch, parameters.amount[0]);
