@@ -101,7 +101,7 @@ function tick(allowSuspended = false) {
         bindAudioState(); schedule(); render();
       }).catch(error=>{resetting=false;stop(false);$('status').textContent=error.message;});
     } else if (changed) { transitionPitch(lastVoicing, journey.current); engine.move(journey.current); history.harmony(journey); }
-    // Analytic scene interpolation consumes the full audio-clock gap; at most one new plan.
+    // Scene slots follow journey audio time, including chapter boundaries.
     texture.step(journey.elapsed, $('auto-texture').checked);
     history.texture(texture, journey.elapsed);
     applied += dt;
