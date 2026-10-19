@@ -1,0 +1,27 @@
+{
+  "realHidden": false,
+  "visibilityMode": "synthetic (native tab switch/minimize remained visible in automation)",
+  "before": {
+    "elapsed": 4272.471655328798,
+    "moves": 0,
+    "textureTime": 4272.471655328798,
+    "count": 36,
+    "time": 5.491519274376417
+  },
+  "hidden": {
+    "hidden": true,
+    "elapsed": 32142.22222222222,
+    "moves": 2,
+    "textureTime": 32142.22222222222,
+    "count": 42,
+    "state": "running",
+    "time": 33.053605442176874,
+    "probe": {
+      "windows": 29,
+      "silent": 0,
+      "energy": 20.228700442993997
+    },
+    "inharm": 0.009183960518524586
+  },
+  "result": "PASS"
+}
