@@ -143,13 +143,24 @@ export function saturationCurve(kind, size = 8193) {
     const x = i * 2 / (size - 1) - 1;
     if (kind === 0) return Math.tanh(x * 2) / 2;
     if (kind === 1) return (Math.tanh(x * 2 + 0.35) - Math.tanh(0.35)) / 2.3;
-    return Math.sin(x * 5) / 4;
+    // A single, bounded fold retains polarity at the clamped curve endpoints.
+    // The old sin(5*x) inverted large inputs and turned clipping into edges.
+    return Math.sin(2.4 * Math.tanh(x * 1.6)) / 3;
   });
 }
 export function characterWeights(x) {
   const asymmetric = Math.max(0, Math.min(1, (x - 0.3) / 0.4));
   const fold = Math.max(0, Math.min(1, (x - 0.7) / 0.3));
   return [1 - asymmetric, asymmetric * (1 - fold), fold];
+}
+// The full public ranges map continuously to independent circuit controls.
+export function saturationSettings({drive, character, saturationMix}) {
+  const amount = Math.max(0, Math.min(1, drive / 1.8));
+  const gain = 1 + 8 * amount * amount;
+  const mix = Math.max(0, Math.min(1, saturationMix / 1.52));
+  const active = Math.min(1, drive / .04);
+  return {gain, mix: mix * active, compensation: 1 / Math.sqrt(gain),
+    weights: characterWeights(Math.max(0, Math.min(1, character / 2)))};
 }
 function saturation(c) {
   const input = c.createGain(), output = c.createGain(), dry = c.createGain();
@@ -348,10 +359,10 @@ export class Drone {
     p(this.spectralWet.gain, Math.min(1.7,s2.shimmer)*2);
     this.space.set(s2,t);
     const stage=this.saturation;
-    const mix=s2.drive===0?0:Math.min(.95,s2.saturationMix);
+    const {gain, mix, compensation, weights}=saturationSettings(s2);
     p(stage.dry.gain,1-mix);p(stage.wet.gain,mix);
-    p(stage.drive.gain,1+s2.drive*12+Math.max(0,s2.character-1)*16+Math.max(0,s2.saturationMix-.76)*8);
-    characterWeights(Math.min(1,s2.character)).forEach((weight,j)=>p(stage.colors[j].gain.gain,weight/(1+s2.drive*6)));
+    p(stage.drive.gain,gain);
+    weights.forEach((weight,j)=>p(stage.colors[j].gain.gain,weight*compensation));
     this.voices.forEach((v, i) => {
       if (!v) return;
       v.oscs.forEach((o, j) => p(o.detune, j ? s2.detune : -s2.detune));

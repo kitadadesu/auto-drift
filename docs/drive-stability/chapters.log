@@ -1,0 +1,53 @@
+{
+  "chapters": [
+    {
+      "chapter": 2,
+      "key": "1:major",
+      "oldClosed": true,
+      "accepted": 1,
+      "voices": 6,
+      "palette": "35"
+    },
+    {
+      "chapter": 3,
+      "key": "2:minor",
+      "oldClosed": true,
+      "accepted": 1,
+      "voices": 6,
+      "palette": "62"
+    },
+    {
+      "chapter": 4,
+      "key": "10:minor",
+      "oldClosed": true,
+      "accepted": 1,
+      "voices": 6,
+      "palette": "253"
+    },
+    {
+      "chapter": 5,
+      "key": "11:minor",
+      "oldClosed": true,
+      "accepted": 1,
+      "voices": 6,
+      "palette": "276"
+    },
+    {
+      "chapter": 6,
+      "key": "3:minor",
+      "oldClosed": true,
+      "accepted": 1,
+      "voices": 6,
+      "palette": "87"
+    }
+  ],
+  "stopResume": true,
+  "suspend": true,
+  "background": true,
+  "manualExtended": true,
+  "layouts": [
+    1366,
+    390
+  ],
+  "errors": []
+}

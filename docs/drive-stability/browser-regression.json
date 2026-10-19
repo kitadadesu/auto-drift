@@ -1,0 +1,179 @@
+{
+  "chrome": "155.0.8059.80",
+  "reverb": {
+    "room": {
+      "lowPeak": 1,
+      "highPeak": 1,
+      "peak": 0.016782153397798538,
+      "rms": 0.00010468253606152357,
+      "jump": 0.008919992484152317,
+      "lateEnergy": 0,
+      "earlyEnergy": 0.004208038408808517,
+      "difference": 0
+    },
+    "long": {
+      "lowPeak": 1,
+      "highPeak": 1,
+      "peak": 0.017649538815021515,
+      "rms": 0.00025512540242616,
+      "jump": 0.008702759630978107,
+      "lateEnergy": 0.00005269322859227612,
+      "earlyEnergy": 0.01245912895340979,
+      "difference": 0
+    },
+    "sparse": {
+      "lowPeak": 1,
+      "highPeak": 1,
+      "peak": 0.04876504838466644,
+      "rms": 0.0003237240683289864,
+      "jump": 0.03265714645385742,
+      "lateEnergy": 1.408727052799e-10,
+      "earlyEnergy": 0.03527767832484086,
+      "difference": 0
+    },
+    "dense": {
+      "lowPeak": 1,
+      "highPeak": 1,
+      "peak": 0.013163361698389053,
+      "rms": 0.00017112881331210117,
+      "jump": 0.005361977964639664,
+      "lateEnergy": 4.6427453787453246e-11,
+      "earlyEnergy": 0.009685461500973602,
+      "difference": 0
+    },
+    "motion": {
+      "lowPeak": 1,
+      "highPeak": 1,
+      "peak": 0.009021546691656113,
+      "rms": 0.00016730468667850598,
+      "jump": 0.004368386697024107,
+      "lateEnergy": 4.523347184282946e-11,
+      "earlyEnergy": 0.009233823774562302,
+      "difference": 0.02312000671091699
+    }
+  },
+  "scenes": [
+    {
+      "name": "HOLLOW",
+      "peak": 0.06423288583755493,
+      "rms": 0.014633440306736604,
+      "finite": true
+    },
+    {
+      "name": "GLASS",
+      "peak": 0.037202224135398865,
+      "rms": 0.00964486583267686,
+      "finite": true
+    },
+    {
+      "name": "AURORA",
+      "peak": 0.06458431482315063,
+      "rms": 0.015326006966652537,
+      "finite": true
+    },
+    {
+      "name": "CHOIR",
+      "peak": 0.04092884808778763,
+      "rms": 0.009878759197464443,
+      "finite": true
+    },
+    {
+      "name": "TIDAL",
+      "peak": 0.03885737061500549,
+      "rms": 0.007615486024873633,
+      "finite": true
+    },
+    {
+      "name": "TAPE",
+      "peak": 0.02654286101460457,
+      "rms": 0.007484140811353477,
+      "finite": true
+    },
+    {
+      "name": "HALO",
+      "peak": 0.05600535497069359,
+      "rms": 0.01344078295655221,
+      "finite": true
+    },
+    {
+      "name": "ECHO",
+      "peak": 0.02679959312081337,
+      "rms": 0.006060019012177297,
+      "finite": true
+    },
+    {
+      "name": "HOWL",
+      "peak": 0.05961403250694275,
+      "rms": 0.012727589951914387,
+      "finite": true
+    },
+    {
+      "name": "STATIC",
+      "peak": 0.020523518323898315,
+      "rms": 0.004268158469543703,
+      "finite": true
+    },
+    {
+      "name": "EMBER",
+      "peak": 0.040634118020534515,
+      "rms": 0.009877598444503137,
+      "finite": true
+    },
+    {
+      "name": "DISSOLVE",
+      "peak": 0.024144021794199944,
+      "rms": 0.005130107817011626,
+      "finite": true
+    }
+  ],
+  "latencyMs": 1.899999976158142,
+  "layouts": [
+    {
+      "w": 1366,
+      "overflow": false
+    },
+    {
+      "w": 390,
+      "overflow": false
+    }
+  ],
+  "endurance": [
+    {
+      "chapter": 2,
+      "oldClosed": true,
+      "voices": 6,
+      "retiring": 0,
+      "history": 900000,
+      "heap": 4151998,
+      "retainedHeap": 3093396
+    },
+    {
+      "chapter": 3,
+      "oldClosed": true,
+      "voices": 6,
+      "retiring": 0,
+      "history": 1800000,
+      "heap": 4216118,
+      "retainedHeap": 3157416
+    },
+    {
+      "chapter": 4,
+      "oldClosed": true,
+      "voices": 6,
+      "retiring": 0,
+      "history": 2700000,
+      "heap": 4197052,
+      "retainedHeap": 3165644
+    },
+    {
+      "chapter": 5,
+      "oldClosed": true,
+      "voices": 6,
+      "retiring": 0,
+      "history": 3600000,
+      "heap": 4206516,
+      "retainedHeap": 3148076
+    }
+  ],
+  "errors": []
+}
