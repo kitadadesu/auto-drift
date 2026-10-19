@@ -1,0 +1,681 @@
+{
+  "chrome": "155.0.8059.80",
+  "samples": [
+    {
+      "name": "HOLLOW",
+      "repeat": 0,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.6000000238418579,
+        0.8000000715255737
+      ],
+      "peak": 0.08747216314077377,
+      "rms": 0.04577322542980564,
+      "time": 4.902312925170068,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25999039,
+      "finite": true
+    },
+    {
+      "name": "GLASS",
+      "repeat": 0,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        1,
+        0.8999999761581421
+      ],
+      "peak": 0.11759522557258606,
+      "rms": 0.051124667613645786,
+      "time": 7.308480725623583,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 26654837,
+      "finite": true
+    },
+    {
+      "name": "TIDAL",
+      "repeat": 0,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.7999999523162842,
+        0.8999999761581421
+      ],
+      "peak": 0.03255172818899155,
+      "rms": 0.015335274471220265,
+      "time": 9.717551020408163,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 26342334,
+      "finite": true
+    },
+    {
+      "name": "ECHO",
+      "repeat": 0,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        1,
+        0.8999999761581421
+      ],
+      "peak": 0.053688764572143555,
+      "rms": 0.025777551311255645,
+      "time": 12.120816326530612,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25398677,
+      "finite": true
+    },
+    {
+      "name": "DISSOLVE",
+      "repeat": 0,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.7999999523162842,
+        1
+      ],
+      "peak": 0.02630513906478882,
+      "rms": 0.010360596992160014,
+      "time": 14.526984126984127,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25340282,
+      "finite": true
+    },
+    {
+      "name": "MAX",
+      "repeat": 0,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.6000000238418579,
+        0.5999999046325684
+      ],
+      "peak": 0.03399508446455002,
+      "rms": 0.015692332995969453,
+      "time": 16.933151927437642,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25206379,
+      "finite": true
+    },
+    {
+      "name": "TRANSITION",
+      "repeat": 0,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.8999999761581421,
+        1.100000023841858
+      ],
+      "peak": 0.028666744008660316,
+      "rms": 0.012284077543051835,
+      "time": 19.342222222222222,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25217817,
+      "finite": true
+    },
+    {
+      "name": "CHAPTER",
+      "repeat": 0,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.6999999284744263,
+        0.7999999523162842,
+        1.2999999523162842
+      ],
+      "peak": 0.005503651220351458,
+      "rms": 0.0026343436381000853,
+      "time": 2.4961451247165534,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25502116,
+      "finite": true
+    },
+    {
+      "name": "HOLLOW",
+      "repeat": 1,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.5,
+        0.6999999284744263
+      ],
+      "peak": 0.04907934367656708,
+      "rms": 0.024892147005857866,
+      "time": 4.902312925170068,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25240471,
+      "finite": true
+    },
+    {
+      "name": "GLASS",
+      "repeat": 1,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.7999999523162842,
+        0.8000000715255737
+      ],
+      "peak": 0.06815323978662491,
+      "rms": 0.026473133559395533,
+      "time": 7.308480725623583,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25180844,
+      "finite": true
+    },
+    {
+      "name": "TIDAL",
+      "repeat": 1,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.9000000953674316,
+        0.7999999523162842
+      ],
+      "peak": 0.028026944026350975,
+      "rms": 0.013210252386401444,
+      "time": 9.717551020408163,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25720931,
+      "finite": true
+    },
+    {
+      "name": "ECHO",
+      "repeat": 1,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        1,
+        0.6999999284744263
+      ],
+      "peak": 0.07237042486667633,
+      "rms": 0.03575424610397773,
+      "time": 12.126621315192743,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25999855,
+      "finite": true
+    },
+    {
+      "name": "DISSOLVE",
+      "repeat": 1,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        1,
+        0.7999999523162842
+      ],
+      "peak": 0.02394525334239006,
+      "rms": 0.01092005772029519,
+      "time": 14.535691609977324,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25909243,
+      "finite": true
+    },
+    {
+      "name": "MAX",
+      "repeat": 1,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        1.399999976158142,
+        0.8000000715255737
+      ],
+      "peak": 0.03835632652044296,
+      "rms": 0.015453596083747549,
+      "time": 16.938956916099773,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25793842,
+      "finite": true
+    },
+    {
+      "name": "TRANSITION",
+      "repeat": 1,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.6000000238418579,
+        0.8000000715255737
+      ],
+      "peak": 0.016048036515712738,
+      "rms": 0.006672151068168262,
+      "time": 19.348027210884354,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25613002,
+      "finite": true
+    },
+    {
+      "name": "CHAPTER",
+      "repeat": 1,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.7000000476837158,
+        0.8999999761581421,
+        0.6000000238418579
+      ],
+      "peak": 0.009026633575558662,
+      "rms": 0.0030889375523079857,
+      "time": 2.501950113378685,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25942435,
+      "finite": true
+    },
+    {
+      "name": "HOLLOW",
+      "repeat": 2,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.8999999761581421,
+        1.2000000476837158
+      ],
+      "peak": 0.05137462168931961,
+      "rms": 0.021504772398698045,
+      "time": 4.911020408163266,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25677427,
+      "finite": true
+    },
+    {
+      "name": "GLASS",
+      "repeat": 2,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.9000000953674316,
+        0.6999999284744263
+      ],
+      "peak": 0.05034145340323448,
+      "rms": 0.020237826476624636,
+      "time": 7.31718820861678,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25601738,
+      "finite": true
+    },
+    {
+      "name": "TIDAL",
+      "repeat": 2,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.7999999523162842,
+        1
+      ],
+      "peak": 0.036149438470602036,
+      "rms": 0.014990909835080134,
+      "time": 9.723356009070296,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25499023,
+      "finite": true
+    },
+    {
+      "name": "ECHO",
+      "repeat": 2,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.7999999523162842,
+        0.7000000476837158
+      ],
+      "peak": 0.04430834576487541,
+      "rms": 0.023800964390128364,
+      "time": 12.129523809523809,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25372728,
+      "finite": true
+    },
+    {
+      "name": "DISSOLVE",
+      "repeat": 2,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.7000000476837158,
+        0.5999999046325684
+      ],
+      "peak": 0.01908421516418457,
+      "rms": 0.006688663744721828,
+      "time": 14.535691609977324,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25624053,
+      "finite": true
+    },
+    {
+      "name": "MAX",
+      "repeat": 2,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.7999999523162842,
+        0.5999999046325684
+      ],
+      "peak": 0.03225145488977432,
+      "rms": 0.009989500654259707,
+      "time": 16.938956916099773,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25359197,
+      "finite": true
+    },
+    {
+      "name": "TRANSITION",
+      "repeat": 2,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.8999999761581421,
+        0.6999999284744263
+      ],
+      "peak": 0.03431734815239906,
+      "rms": 0.01626707644012664,
+      "time": 19.348027210884354,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 26029018,
+      "finite": true
+    },
+    {
+      "name": "CHAPTER",
+      "repeat": 2,
+      "mode": "worklet",
+      "crushMode": "worklet",
+      "nodes": {
+        "createGain": 172,
+        "createDelay": 9,
+        "createConvolver": 1,
+        "createBuffer": 15,
+        "createBufferSource": 14,
+        "createBiquadFilter": 18,
+        "createWaveShaper": 7,
+        "createOscillator": 42
+      },
+      "updateTimes": [
+        0.7000000476837158,
+        1,
+        0.8000000715255737
+      ],
+      "peak": 0.008327970281243324,
+      "rms": 0.002810077960076161,
+      "time": 2.501950113378685,
+      "sampleRate": 44100,
+      "baseLatency": 0.005804988662131519,
+      "outputLatency": 0.032,
+      "heap": 25975161,
+      "finite": true
+    }
+  ],
+  "errors": []
+}

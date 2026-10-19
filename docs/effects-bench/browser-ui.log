@@ -1,0 +1,7 @@
+started
+history visible
+stop/resume pass
+viewport 1440 900
+viewport 1366 768
+viewport 390 844
+AutoDrift UI / audio start, moving knobs, fixed oscillator count, stop-resume, desktop/mobile: PASS

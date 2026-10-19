@@ -1,0 +1,21 @@
+{
+  "baseline": "b248539d8d9d615c81b7429205776c6ba8e8fc67",
+  "branch": "feat/effects-consolidation",
+  "repository": "kitadadesu/auto-drift",
+  "openPullRequestsBeforeWork": [],
+  "AGENTS": "No AGENTS.md in repository or existing workspace ancestors",
+  "os": "macOS 14.3 (23D56), arm64",
+  "chrome": "155.0.8059.80",
+  "viewport": [1366,768],
+  "notes": [40,47,52,55,59,64],
+  "sampleRate": 44100,
+  "scenarioOrder": ["HOLLOW","GLASS","TIDAL","ECHO","DISSOLVE","MAX","TRANSITION","CHAPTER"],
+  "repetitions": 3,
+  "steadyScenarioMilliseconds": 2400,
+  "warmupMilliseconds": 2500,
+  "mainUpdateHz": 1,
+  "primary": "Sum of top-level Chrome audio rendering ThreadControllerImpl::RunTask tdur plus AudioOutputDevice::FireRenderCallback tdur divided by marked elapsed seconds. Not inclusive nested sums.",
+  "normalPerformance": "Equal wall-time weighting of HOLLOW, GLASS, TIDAL, ECHO, DISSOLVE. MAX/TRANSITION/CHAPTER reported separately and also as all-scenario aggregate.",
+  "secondary": ["Worklet FunctionCall CPU (subset of render CPU, not additive)","renderer main-thread top-level CPU","per-task CPU mean/p95/max","callback wall p95/max","parameter-update milliseconds","AudioNode/AudioBuffer allocations per context","JS heap","offline impulse response and live signal checks"],
+  "limitations": ["One Mac and headless Chrome; not a cross-device guarantee", "Offline rendering is not real-time CPU utilization", "No human ear evaluation", "Accelerated 30/60-minute clocks and graph replacement are not a thermally sustained real-time hour", "Audio thread callback timing cannot prove absence of hardware/OS output glitches"]
+}

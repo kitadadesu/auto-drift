@@ -21,10 +21,10 @@ test('each source produces finite distinct signals and spectral zero crossing si
  assert.equal(new Set(Object.values(results).map(x=>x.crossings)).size,7);
  console.log('DSP measurements',JSON.stringify(results));
 });
-test('5s ring and 24 grains remain bounded, stop and flush remove old chapter audio',()=>{
+test('5s ring and 8 grains remain bounded, stop and flush remove old chapter audio',()=>{
  const d=new SynthesisDSP(1000);d.set({granular:1},notes);
  for(let i=0;i<60000;i++)d.sample(.1);
- assert.equal(d.filled,5000);assert.equal(d.buffer.length,5000);assert.equal(d.grains.length,24);
+ assert.equal(d.filled,5000);assert.equal(d.buffer.length,5000);assert.equal(d.grains.length,8);
  d.set({freeze:1},notes);for(let i=0;i<2000;i++)d.sample(.2);const write=d.write;
  for(let i=0;i<2000;i++)d.sample(.2);assert.equal(d.write,write);
  d.set({},Array(6).fill(null),false);d.flush();

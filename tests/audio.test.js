@@ -28,6 +28,7 @@ class Node {
   constructor() {
     for (const k of [
       "gain",
+      "playbackRate",
       "frequency",
       "detune",
       "threshold",
@@ -77,8 +78,8 @@ class Context {
   createAnalyser() {
     return new Node();
   }
-  createBuffer(ch, len) {
-    return { getChannelData: () => new Float32Array(len) };
+  createBuffer(ch, len, sampleRate) {
+    return { length:len, sampleRate, getChannelData: () => new Float32Array(len) };
   }
   createBufferSource() { return new Node(); }
   createOscillator() {
@@ -132,7 +133,7 @@ test("rapid audition and mute changes reuse voices without stop/start", async ()
   assert.ok(d.ctx.oscs.every((o) => !o.stopped));
   await d.dispose();
 });
-test("six independent spectra follow MIDI with separate in-flight glides", async () => {
+test("six independent spectra follow MIDI with shared Glide and continuous interruptions", async () => {
   const d = new Drone();
   d.update({...d.settings,bloom:0});
   d.update({ ...d.settings, harmonics: 0.8, inharmonicity: 0.6, drift: 1, glide: 2 });
@@ -160,8 +161,8 @@ test("six independent spectra follow MIDI with separate in-flight glides", async
       assert.equal(events.at(-1)[2], 1.2 + target.glide);
       return target.glide;
     });
-    assert.equal(new Set(times).size, 4);
-    assert.ok(times[0] < 2 && times[3] > 2);
+    assert.equal(new Set(times).size, 1);
+    assert.ok(times.every(t=>t===2));
   });
   // Unrelated volume/space edits must not restart spectral travel.
   const count = d.voices[0].partials[0].osc.frequency.events.length;
@@ -197,7 +198,7 @@ test("zero controls, Nyquist ceiling and absolute amplitude budget", async () =>
   }
   assert.equal(partialTarget(69, 1, { ...defaults, inharmonicity: 0 }, 48000).frequency, 1320);
   assert.notEqual(partialTarget(69, 1, { ...defaults, inharmonicity: 1 }, 48000).frequency, 1320);
-  assert.deepEqual([sanitize({harmonics: 2}).harmonics, sanitize({drift: -1}).drift, sanitize({inharmonicity: NaN}).inharmonicity], [1, 0, defaults.inharmonicity]);
+  assert.deepEqual([sanitize({harmonics: 2}).harmonics, sanitize({instability: -1}).instability, sanitize({inharmonicity: NaN}).inharmonicity], [1, 0, defaults.inharmonicity]);
   await d.dispose();
 });
 test("spectral rapid holds, all-muted recovery, stop and resume stay bounded", async () => {
@@ -326,8 +327,8 @@ test("Dream sends contain only Bloom high partials, mirror mute ADSR, and preser
   assert.equal(defaults.bloom, 0.7);
   for (let i=0; i<200; i++) {
     d.ctx.currentTime += 0.1;
-    d.update({...d.settings,dryDrift:i%2,wetDrift:(i%3)/2,shimmer:i%2,
-      diffusion:i%2,shimmerDecay:i%2?1:12});
+    d.update({...d.settings,instability:i%2,reverbMotion:(i%3)/2,shimmer:i%2,
+      reverbDensity:i%2,reverbDecay:i%2?1:12});
     assert.equal(voices[0].partials[1].motion, motion);
   }
   assert.deepEqual(d.voices, voices);
@@ -337,76 +338,68 @@ test("Dream sends contain only Bloom high partials, mirror mute ADSR, and preser
   d.move(Array(6).fill(null));
   for (const v of voices) assert.equal(v.spectralEnvelope.gain.value, v.gain.gain.value);
   d.move([40,45,50,55,59,64]);
-  d.update({...d.settings,bloom:0,harmonics:1,dryDrift:0,wetDrift:0,shimmer:0,diffusion:0});
+  d.update({...d.settings,bloom:0,harmonics:1,instability:0,reverbMotion:0,shimmer:0,reverbDensity:0});
   assert.ok(voices.every(v=>v.partials.every(p=>p.send.gain.value===0)));
   assert.equal(d.dryMod.gain.value,0);
-  assert.equal(d.wetMod.gain.value,0);
-  assert.equal(d.wetBypass.gain.value,1);
-  assert.equal(d.wetEffect.gain.value,0);
   assert.equal(d.spectralWet.gain.value,0);
-  assert.equal(d.diffuseWet.gain.value,0);
-  assert.ok(d.tailLines.every(l=>l.feedback.gain.value<0.89+1e-12));
+  assert.ok(d.space.lines.every(l=>l.feedback.gain.value<1));
   const mods=d.modulators;
   await d.dispose();
   assert.ok(mods.every(m=>m.stopped&&m.disconnected));
 });
 
 
-test("Dream independent modulation routes and settings bounds", async () => {
-  const settings = sanitize({...defaults, bloom:0, dryDrift:9, wetDrift:-1, shimmerDecay:99, diffusion:NaN});
-  assert.equal(settings.bloom,0);
-  assert.equal(settings.dryDrift,2);
-  assert.equal(settings.wetDrift,0);
-  assert.equal(settings.shimmerDecay,21);
-  assert.equal(settings.diffusion,defaults.diffusion);
-  const d = new Drone();
-  await d.play([40,45,50,55,59,64]);
-  assert.notEqual(d.modulators[0],d.modulators[1]);
-  assert.deepEqual(d.modulators[0].connections,[d.dryMod,d.echoMod]);
-  assert.deepEqual(d.modulators[1].connections,[d.wetMod]);
+test("shared modulation routes and v2 bounds", async () => {
+  const settings=sanitize({instability:9,reverbMotion:-1,reverbDecay:99,reverbDensity:NaN});
+  assert.equal(settings.instability,2);assert.equal(settings.reverbMotion,0);
+  assert.equal(settings.reverbDecay,35);assert.equal(settings.reverbDensity,defaults.reverbDensity);
+  const d=new Drone();await d.play([40,45,50,55,59,64]);
+  assert.equal(d.modulators.length,1);
+  assert.equal(d.modulators[0].buffer.length,97*128);
+  assert.equal(d.modulators[0].buffer.sampleRate,3000);
+  assert.equal(d.modulators[0].playbackRate.value,128/3000);
   assert.ok(d.dryMod.connections.includes(d.voices[0].oscs[0].detune));
   assert.ok(d.dryMod.connections.includes(d.voices[0].partials[2].osc.detune));
-  assert.deepEqual(d.wetMod.connections,[d.wetDelay.delayTime]);
-  d.update({...d.settings,detune:13,dryDrift:1});
-  assert.deepEqual(d.voices[0].oscs.map(o=>o.detune.value),[-13,13]);
-  assert.equal(d.dryMod.gain.value,4);
-  await d.dispose();
+  d.update({...d.settings,detune:13,instability:1});
+  assert.equal(d.voices[0].oscs[0].detune.value,-13);
+  assert.ok(d.voices[0].oscs[1].detune.value>13);
+  assert.equal(d.dryMod.gain.value,4);await d.dispose();
 });
 
 test('saturation boundary bypass, fixed morph nodes, passive feedback and disposal', async () => {
   const d = new Drone(); await d.play([40,45,50,55,59,64]);
   const voices = [...d.voices], context = d.ctx;
-  const stages = [d.preSaturation, d.postSaturation];
+  const stages = [d.saturation];
   const curves = stages.flatMap(s => s.colors.map(c => c.shape.curve));
   for(let i=0;i<240;i++) {
     d.update({...d.settings, drive:i%3?1:0, saturationMix:i%4?1:0,
-      character:i/239, saturationPost:i%2, shimmerDecay:12});
+      character:i/239, reverbDecay:12});
     if(d.settings.drive===0 || d.settings.saturationMix===0) stages.forEach(s => {
       assert.equal(s.dry.gain.value,1); assert.equal(s.wet.gain.value,0);
     });
-    d.tailLines.forEach(line => {
-      assert.equal(line.damping.Q.value,-3.0103); assert.equal(line.highpass.Q.value,-3.0103);
-      assert.ok(line.feedback.gain.value<0.94);
-      assert.ok(Math.abs(line.feedback.gain.value-10**(-3*line.seconds/12))<1e-12);
+    d.space.lines.forEach(line => {
+      assert.equal(line.low.Q.value,-3.0103); assert.equal(line.high.Q.value,-3.0103);
+      assert.ok(line.feedback.gain.value<1);
+      assert.ok(Math.abs(line.feedback.gain.value-10**(-3*line.seconds*(.45+d.settings.reverbSize*2.55)/12))<1e-12);
     });
   }
   assert.deepEqual(d.voices,voices); assert.equal(d.ctx,context);
   assert.deepEqual(stages.flatMap(s=>s.colors.map(c=>c.shape.curve)),curves);
-  stages.forEach(s=>s.colors.forEach(c=>assert.equal(c.shape.oversample,'4x')));
+  stages.forEach(s=>s.colors.forEach(c=>assert.equal(c.shape.oversample,'2x')));
   await d.dispose(); stages.forEach(s=>s.nodes.forEach(n=>assert.ok(n.disconnected)));
 });
 
 test('living texture fixed sources, exact zero, mute and resume cleanup', async()=>{
  const d=new Drone(); await d.play([40,45,50,55,59,64]);
- d.update({...d.settings,crush:1,beating:1,turbulence:1,wandering:1});
+ d.update({...d.settings,crush:1,instability:1,turbulence:1,wandering:1});
  const voices=[...d.voices], count=d.ctx.oscs.length;
  assert.equal(count,42);
  for(let i=0;i<100;i++){
   d.move([41,46,51,56,60,65]);
-  d.update({...d.settings,wandering:i%2,beating:i%2,turbulence:i%2,crush:i%2});
+  d.update({...d.settings,wandering:i%2,instability:i%2,turbulence:i%2,crush:i%2});
  }
  assert.equal(d.ctx.oscs.length,count);assert.deepEqual(d.voices,voices);
- d.update({...d.settings,crush:0,beating:0,turbulence:0,wandering:0});
+ d.update({...d.settings,crush:0,instability:0,turbulence:0,wandering:0});
  assert.equal(d.crushDry.gain.value,1);assert.equal(d.crushWet.gain.value,0);
  for(const v of voices){assert.equal(v.howlGain.gain.value,0);assert.equal(v.howlBreath.gain.value,0);assert.equal(v.motionGain.gain.value,1);assert.equal(v.amplitude.gain.value,0);assert.equal(v.beatMod.gain.value,0);}
  d.move(Array(6).fill(null));assert.ok(voices.every(v=>v.spectralEnvelope.gain.value===0));

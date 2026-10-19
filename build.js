@@ -4,7 +4,7 @@ import { createHash } from "node:crypto";
 // Version the entire module graph together: a fresh HTML document must never
 // reuse cached UI/audio modules from an earlier release.
 const files = [
-  "synthesis.js", "synthesis-dsp.js", "synthesis-worklet.js", "palette.js", "clock.js", "pulse.js", "index.html", "style.css", "app.js", "autoplay.js", "hold.js", "music.js", "texture.js", "journey.js", "history.js",
+  "effects.js", "reverb.js", "synthesis.js", "synthesis-dsp.js", "synthesis-worklet.js", "palette.js", "clock.js", "pulse.js", "index.html", "style.css", "app.js", "autoplay.js", "hold.js", "music.js", "texture.js", "journey.js", "history.js",
   "crush-worklet.js", "crush-dsp.js", "audio.js", "harmony.js", "chords.js", "notes.js",
 ];
 const sources = new Map(await Promise.all(files.map(async file =>

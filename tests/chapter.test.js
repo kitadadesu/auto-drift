@@ -52,8 +52,8 @@ test('automatic timeline reaches extended destruction and retains clear destinat
  const t=new TextureDrift(defaults,random());t.start(0);const reached=new Set(), scenes=new Set();let low=false;
  for(let i=0;i<3600;i++){
   const v=t.step(i*1000);scenes.add(t.scene);low ||= v.drive<.1&&v.shimmer<.15;
-  for(const k of ['crush','beating','turbulence','wandering','wetDrift','drive','character','shimmer','shimmerDecay','diffusion','reverb','delay']){
-   const old={crush:.85,beating:.85,turbulence:.9,wandering:.65,wetDrift:1,drive:.9,character:1,shimmer:.85,shimmerDecay:10.5,diffusion:1,reverb:.85,delay:.52}[k];
+  for(const k of ['crush','instability','turbulence','wandering','reverbMotion','drive','character','shimmer','reverbDecay','reverbDensity','reverb','delay']){
+   const old={crush:.85,instability:.85,turbulence:.9,wandering:.65,reverbMotion:.5,drive:.9,character:1,shimmer:.85,reverbDecay:10.5,reverbDensity:.5,reverb:.85,delay:.52}[k];
    if(v[k]>old)reached.add(k);assert.ok(v[k]<=textureBounds[k][1]);assert.equal(sanitize({...defaults,...v})[k],v[k]);
   }
   assert.ok(v.inharmonicity<=.08);assert.ok(v.feedback<1);

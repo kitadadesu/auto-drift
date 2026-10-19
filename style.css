@@ -388,3 +388,17 @@ details[open] .detail-inner,details[open] .history-inner{animation:slide-in .28s
 
 :root{--muted:#e8e3ec}
 footer{color:var(--muted)}
+/* Eight explicit effect modules plus SOURCE / ENVELOPE. Scroll tabs on phones. */
+#texture-tabs{display:flex;gap:6px;overflow-x:auto;flex-wrap:wrap;padding-bottom:8px}
+#texture-tabs button{flex:0 0 auto;font-size:10px;padding:8px}
+.detail-inner{overflow-y:auto}
+.detail-inner h2{margin-bottom:18px}
+.detail-inner .knobs{margin-top:18px;gap:12px}
+@media(max-height:720px){
+ .detail-inner h2{font-size:22px;margin:6px 0 12px}
+ .detail-inner p{font-size:11px;margin:8px 0}
+ #texture-tabs button{min-height:32px;padding:6px}
+ .detail-inner .dial{width:24px;height:24px;border-width:5px}
+ .detail-inner .knob{gap:4px}
+ .detail-inner .knobs{gap:8px;margin-top:12px}
+}

@@ -1,0 +1,87 @@
+✔ continuous string voices, unisons, mute retirement and disposal (2379.121667ms)
+✔ rapid audition and mute changes reuse voices without stop/start (2380.325417ms)
+✔ six independent spectra follow MIDI with separate in-flight glides (1598.3035ms)
+✔ interrupted partial motion starts from its geometric in-flight pitch (1.451792ms)
+✔ zero controls, Nyquist ceiling and absolute amplitude budget (1204.863333ms)
+✔ spectral rapid holds, all-muted recovery, stop and resume stay bounded (2578.371208ms)
+✔ resume and dispose disconnect delayed retiring partials before onended (1919.704125ms)
+✔ stop cancels a pending AudioContext resume (216.046709ms)
+✔ Bloom unfolds in order with a bounded core and exact zero bypass (14.63725ms)
+✔ Bloom shares sources, restarts only on pitch/unmute and survives live controls (3331.181375ms)
+✔ Dream sends contain only Bloom high partials, mirror mute ADSR, and preserve glides (741.433083ms)
+✔ Dream independent modulation routes and settings bounds (737.109958ms)
+✔ saturation boundary bypass, fixed morph nodes, passive feedback and disposal (624.703792ms)
+✔ living texture fixed sources, exact zero, mute and resume cleanup (935.099084ms)
+✔ common voices distinguish PCs, exact MIDI and string motion; prefer 3–4 over stasis or remote (2.809333ms)
+✔ Wander rises with similarity, boldness changes speed, large motion resets it (56.997458ms)
+✔ Edge scales with Wander, cooldown and accepted-edge resolution prevent consecutive events (784.451959ms)
+✔ recent returns and two-chord bounce are penalized; weighted selection is seeded and diverse (11799.870833ms)
+✔ variable intervals honor movement, edge resolution dwell and Pace scaling (4.784834ms)
+✔ empty edge falls back to normal; empty normal safely returns null (73.270459ms)
+✔ single timeout ownership across rapid toggles, manual replan, holds, hidden, stop and stale callbacks (4.170209ms)
+✔ long seeded auto walks retain six slots, key state, mute positions, bounded leaps and edge cooldown (22767.535584ms)
+✔ default timers retain the global receiver for scheduling and cancellation (0.774167ms)
+✔ deploy assets invalidate the whole module graph when UI changes (1811.991625ms)
+{ minimumContrast: 4.504273396898275 }
+✔ every remote destination excludes relative/near scales; anchored MIDI/mutes (750.86075ms)
+✔ active-clock exact boundaries, resume, four chapters/hour and looping; fresh inference (1177.641834ms)
+✔ fade windows hold harmony; no ordinary migration during new tonic fade (7.236875ms)
+✔ 288 deterministic palettes and large key/scene changes (74.554458ms)
+✔ automatic timeline reaches extended destruction and retains clear destinations (3931.306625ms)
+✔ all palettes keep readable accent, glow and text over the brightest field (8.996583ms)
+✔ audio clock consumes hidden gaps once and excludes STOP and suspended time (2.332459ms)
+✔ long worker suspension catches up without a harmony burst and texture tracks audio time (856.525875ms)
+✔ MIDI analysis preserves actual bass, fifth-color, duplicate D and modal ambiguity (30.405375ms)
+✔ Atlas degree arithmetic keeps every extension, unison and null slot (8.180458ms)
+✔ complete-set optimization cannot snap away a third/seventh or duplicate voice (16.663ms)
+✔ all keys, altered tunings, mutes and unisons keep bounded six-voice proposals immutable (12177.875833ms)
+✔ ii V I ranking follows accepted context and complete C-root harmony (116.112458ms)
+✔ rerolls offer diverse sounds; edge has measurably more outside-scale color (17055.740625ms)
+✔ accepted-only smoothed key history drifts, rejects single-chord jump, restores exact snapshot (1762.399625ms)
+✔ silence and invalid context inputs never create a nonfinite interpretation (3.653334ms)
+✔ hold/release, cancel, lost capture, keyboard repeat and blur (1.617542ms)
+✔ an older release cannot undo a rapid switch (20.789ms)
+✔ old touch on the same button cannot release the new finger (2.105625ms)
+{"reports":[{"minutes":2,"chords":7,"arrivals":0,"scenes":1},{"minutes":10,"chords":34,"arrivals":1,"scenes":5},{"minutes":30,"chords":104,"arrivals":3,"scenes":9},{"minutes":60,"chords":205,"arrivals":4,"scenes":11}],"arrivals":[{"at":261000,"key":"2:major"},{"at":1306000,"key":"7:minor"},{"at":1507500,"key":"10:major"},{"at":3364000,"key":"2:minor"}],"ranges":{"fm":[0,0.7940571384634822],"fmRatio":[1.8844824348827822,3.4990864060828466],"wave":[0,0.5473269583869725],"noise":[0,0.8252164771983401],"material":[0,0.4925117543106899],"granular":[0,0.8451242984253913],"freeze":[0,0.7176761447193101],"reverse":[0,0.8753093178123236],"crush":[0,1.5976],"beating":[0,1.3260254552984612],"turbulence":[0,1.6283045966951177],"wandering":[0,0.8438270115225844],"bloom":[0.019753310435451588,0.9597731326939538],"harmonics":[0,0.8217674070235342],"inharmonicity":[0,0.05698894201364368],"drift":[0.0876494862124324,0.9457497597463429],"dryDrift":[0.021600000000000064,1.6467200698260218],"wetDrift":[0.023257813323289134,1.847679841754958],"shimmer":[0.0015999999999999903,1.543310553004127],"shimmerDecay":[2.125551372915506,19.587767358124257],"diffusion":[0.11133672532625494,1.905352284194902],"drive":[0.0012000000000000066,0.49558558124564583],"character":[0.0015999999999999903,1.789180518082902],"saturationMix":[0.006690272285640231,1.3543626261499524],"reverb":[0.059166842823941246,1.585341812405456],"delay":[0.0007999999999999952,0.9596201227708159],"detune":[1.414042786045,20.557020011035725],"saturationPost":[0,0.92],"glide":[2.5,7.92],"attack":[1.0020993778117004,4],"decay":[0.9988667487693019,3.9090506931771527],"sustain":[0.6027009109536186,0.8448357404036447],"release":[1.407114562664181,5],"time":[0.3108069471322931,1.1173443156088705],"feedback":[0.07609123417451047,0.42973467199741855]}}
+✔ seeded 2/10/30/60 minute journeys change actual harmony and texture within bounds (67997.673625ms)
+✔ pause excludes wall time, same seeded journey is reproducible, override returns smoothly (1042.109833ms)
+{"duration":120,"ranges":{"crush":[0,0.7954278504356742],"beating":[0,1.358067471534852],"turbulence":[0,1.6001644968684763],"wandering":[0,0.8270815474165836]}}
+{"duration":600,"ranges":{"crush":[0,0.7954278504356742],"beating":[0,1.358067471534852],"turbulence":[0,1.6001644968684763],"wandering":[0,0.8270815474165836]}}
+{"duration":3600,"ranges":{"crush":[0,1.5976],"beating":[0,1.358067471534852],"turbulence":[0,1.6247172380426897],"wandering":[0,0.869361433007843]}}
+{"rate":44100,"peak":0.20301953528968827,"rms":0.08399383417020499,"jump":0.027987836880562774}
+{"rate":48000,"peak":0.20353942402165864,"rms":0.08374053576968171,"jump":0.025777155251652306}
+{"rate":96000,"peak":0.20733950536175114,"rms":0.08355646776492073,"jump":0.013310524493902666}
+✔ new controls sanitize finite endpoints and exact neutral defaults (190.873167ms)
+✔ seeded 2/10/60 minute timelines vary independently within safety bounds (636.71975ms)
+✔ crush DSP stereo, DC decay, finite peaks, continuous transitions (4282.974417ms)
+✔ Character is continuous, convex and finite through all boundaries (40.29325ms)
+✔ Migration probabilistically selects different close keys, excludes recent and handles sparse inference (13.32425ms)
+✔ Arrival requires actual tonic bass, third, repeated evidence, dwell and three minutes (460.901417ms)
+✔ Migration bias grows gently and seeded walks keep voice grammar and actual history (23680.816208ms)
+✔ Clock active duration excludes pause, resets stop and invalidates old callbacks (83.188875ms)
+✔ seeded migration reaches a new tonal center through adopted chords after the three-minute minimum (19364.488834ms)
+✔ altered tuning, mutes and unisons preserve six string slots (950.285792ms)
+✔ pitch parsing and chord labels (0.772917ms)
+✔ unsafe effect values are clamped (0.479083ms)
+✔ only actual edge adoption creates resolution context; undo restores it (3167.055959ms)
+✔ resolution balances chromatic relief and A context without changing ordinary scoring (602.727042ms)
+DSP measurements {"sine":{"rms":0,"peak":0,"delta":0,"crossings":0},"fm":{"rms":0.050790634827199074,"peak":0.1643710685686962,"delta":0.0915701382400484,"crossings":3620},"wave":{"rms":0.008973136696316155,"peak":0.0329726672101816,"delta":0.01961950772568071,"crossings":3609},"string":{"rms":0.013859789331142671,"peak":0.09579891491048811,"delta":0.0041073817658768795,"crossings":578},"cavity":{"rms":0.03239991934049206,"peak":0.22988492425966306,"delta":0.01779292638091327,"crossings":1075},"grain":{"rms":0.012563756702452921,"peak":0.03598421777700865,"delta":0.002074629611268014,"crossings":441},"reverse":{"rms":0.013435527224770726,"peak":0.03195061865813194,"delta":0.0018535219950230526,"crossings":434}}
+✔ each source produces finite distinct signals and spectral zero crossing signatures (4532.858625ms)
+✔ 5s ring and 24 grains remain bounded, stop and flush remove old chapter audio (625.265416ms)
+✔ all 12 scene profiles are distinct and long clocks remain finite with manual hold (401.0625ms)
+✔ automatic inharmonicity caps cover variation, macro, depth and unsafe origins; manual remains expressive (1748.560333ms)
+✔ history records origin, target, quarter morphs, arrival, adopted notes and bounded detached JSON (8516.055292ms)
+✔ register scoring distinguishes the same harmonic color without banning high seconds (3.617334ms)
+✔ bounded variants retain complete sets, baseline, mutes and hard leaps across registers (517.386125ms)
+✔ actual normal and Edge pools retain multiple registers of one pitch-class set (1237.884292ms)
+✔ extra equivalent variants do not multiply a harmony's total lottery mass (70.823416ms)
+✔ soft register tether permits an octave but resists unbounded upward/downward drift (1.042833ms)
+✔ migration merge retains another actual voicing of the same harmony (35.438417ms)
+ℹ tests 70
+ℹ suites 0
+ℹ pass 70
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 69617.069375

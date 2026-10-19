@@ -107,7 +107,7 @@ try {
     assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
     if(width>950) assert.ok(await page.evaluate(()=>document.documentElement.scrollHeight<=innerHeight+1),'desktop scroll');
     await page.locator('.sound-details:not(#history) summary').click();
-    assert.equal(await page.locator('.knob input').count(),27);
+    assert.equal(await page.locator('.knob input').count(),34);
     for(const el of await page.locator('.knob input').all()) {await el.evaluate(e=>{e.value=e.min;e.dispatchEvent(new Event('input',{bubbles:true}));});}
     await page.locator('#knob-inharmonicity').evaluate(e=>{e.value='0.8';e.dispatchEvent(new Event('input',{bubbles:true}));});
     assert.equal(await page.locator('#value-inharmonicity').textContent(),'80%');

@@ -1,0 +1,1590 @@
+{
+  "baseline-final": {
+    "bench:0:HOLLOW": {
+      "seconds": 2.405328,
+      "Realtime AudioWorklet thread": {
+        "count": 500,
+        "cpuMs": 743.01,
+        "cpuPercent": 30.890173814132627,
+        "meanUs": 1486.02,
+        "p95Us": 2163,
+        "maxUs": 3134,
+        "wallP95Us": 2169,
+        "wallMaxUs": 2439
+      },
+      "AudioOutputDevice": {
+        "count": 415,
+        "cpuMs": 9.982,
+        "cpuPercent": 0.4149953769298823,
+        "meanUs": 24.05301204819277,
+        "p95Us": 40,
+        "maxUs": 125,
+        "wallP95Us": 2233,
+        "wallMaxUs": 2475
+      },
+      "CrRendererMain": {
+        "count": 443,
+        "cpuMs": 166.395,
+        "cpuPercent": 6.917767556025622,
+        "meanUs": 375.6094808126411,
+        "p95Us": 2357,
+        "maxUs": 3061,
+        "wallP95Us": 2494,
+        "wallMaxUs": 3346
+      }
+    },
+    "bench:0:GLASS": {
+      "seconds": 2.403085,
+      "Realtime AudioWorklet thread": {
+        "count": 499,
+        "cpuMs": 867.769,
+        "cpuPercent": 36.11062446813159,
+        "meanUs": 1739.0160320641282,
+        "p95Us": 2690,
+        "maxUs": 3321,
+        "wallP95Us": 2695,
+        "wallMaxUs": 3333
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 13.435,
+        "cpuPercent": 0.5590730248825988,
+        "meanUs": 32.45169082125604,
+        "p95Us": 54,
+        "maxUs": 134,
+        "wallP95Us": 2765,
+        "wallMaxUs": 3409
+      },
+      "CrRendererMain": {
+        "count": 445,
+        "cpuMs": 193.96,
+        "cpuPercent": 8.071291693801925,
+        "meanUs": 435.86516853932585,
+        "p95Us": 2849,
+        "maxUs": 3480,
+        "wallP95Us": 2977,
+        "wallMaxUs": 4063
+      }
+    },
+    "bench:0:TIDAL": {
+      "seconds": 2.402662,
+      "Realtime AudioWorklet thread": {
+        "count": 499,
+        "cpuMs": 728.356,
+        "cpuPercent": 30.31454278629287,
+        "meanUs": 1459.63126252505,
+        "p95Us": 2155,
+        "maxUs": 2820,
+        "wallP95Us": 2146,
+        "wallMaxUs": 2401
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 11.792,
+        "cpuPercent": 0.4907889665712447,
+        "meanUs": 28.483091787439612,
+        "p95Us": 45,
+        "maxUs": 132,
+        "wallP95Us": 2212,
+        "wallMaxUs": 2437
+      },
+      "CrRendererMain": {
+        "count": 435,
+        "cpuMs": 169.894,
+        "cpuPercent": 7.071073667457179,
+        "meanUs": 390.56091954022986,
+        "p95Us": 2433,
+        "maxUs": 3012,
+        "wallP95Us": 2621,
+        "wallMaxUs": 3199
+      }
+    },
+    "bench:0:ECHO": {
+      "seconds": 2.402791,
+      "Realtime AudioWorklet thread": {
+        "count": 500,
+        "cpuMs": 786.78,
+        "cpuPercent": 32.74442096711699,
+        "meanUs": 1573.56,
+        "p95Us": 2344,
+        "maxUs": 3801,
+        "wallP95Us": 2336,
+        "wallMaxUs": 3864
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 11.358,
+        "cpuPercent": 0.4727002889556353,
+        "meanUs": 27.434782608695652,
+        "p95Us": 43,
+        "maxUs": 143,
+        "wallP95Us": 2395,
+        "wallMaxUs": 3900
+      },
+      "CrRendererMain": {
+        "count": 776,
+        "cpuMs": 198.739,
+        "cpuPercent": 8.271172981753303,
+        "meanUs": 256.1069587628866,
+        "p95Us": 2465,
+        "maxUs": 6432,
+        "wallP95Us": 2596,
+        "wallMaxUs": 6899
+      }
+    },
+    "bench:0:DISSOLVE": {
+      "seconds": 2.403059,
+      "Realtime AudioWorklet thread": {
+        "count": 501,
+        "cpuMs": 800.873,
+        "cpuPercent": 33.32723000142735,
+        "meanUs": 1598.548902195609,
+        "p95Us": 2309,
+        "maxUs": 3235,
+        "wallP95Us": 2291,
+        "wallMaxUs": 3343
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 9.948,
+        "cpuPercent": 0.4139723577323736,
+        "meanUs": 24.028985507246375,
+        "p95Us": 36,
+        "maxUs": 99,
+        "wallP95Us": 2363,
+        "wallMaxUs": 3376
+      },
+      "CrRendererMain": {
+        "count": 1486,
+        "cpuMs": 172.462,
+        "cpuPercent": 7.176769276160094,
+        "meanUs": 116.0578734858681,
+        "p95Us": 1046,
+        "maxUs": 2962,
+        "wallP95Us": 1093,
+        "wallMaxUs": 3199
+      }
+    },
+    "bench:0:MAX": {
+      "seconds": 2.402492,
+      "Realtime AudioWorklet thread": {
+        "count": 499,
+        "cpuMs": 806.193,
+        "cpuPercent": 33.55653213413406,
+        "meanUs": 1615.6172344689378,
+        "p95Us": 2358,
+        "maxUs": 2847,
+        "wallP95Us": 2355,
+        "wallMaxUs": 2699
+      },
+      "AudioOutputDevice": {
+        "count": 413,
+        "cpuMs": 9.957,
+        "cpuPercent": 0.4144446682860963,
+        "meanUs": 24.1089588377724,
+        "p95Us": 38,
+        "maxUs": 115,
+        "wallP95Us": 2417,
+        "wallMaxUs": 2730
+      },
+      "CrRendererMain": {
+        "count": 1231,
+        "cpuMs": 169.516,
+        "cpuPercent": 7.055840352434056,
+        "meanUs": 137.70593013809912,
+        "p95Us": 1885,
+        "maxUs": 3067,
+        "wallP95Us": 1915,
+        "wallMaxUs": 3265
+      }
+    },
+    "bench:0:TRANSITION": {
+      "seconds": 2.402976,
+      "Realtime AudioWorklet thread": {
+        "count": 500,
+        "cpuMs": 821.48,
+        "cpuPercent": 34.185942764305594,
+        "meanUs": 1642.96,
+        "p95Us": 2349,
+        "maxUs": 2594,
+        "wallP95Us": 2354,
+        "wallMaxUs": 2599
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 10.112,
+        "cpuPercent": 0.420811527039804,
+        "meanUs": 24.42512077294686,
+        "p95Us": 37,
+        "maxUs": 100,
+        "wallP95Us": 2412,
+        "wallMaxUs": 2634
+      },
+      "CrRendererMain": {
+        "count": 441,
+        "cpuMs": 158.317,
+        "cpuPercent": 6.588372085280918,
+        "meanUs": 358.9954648526077,
+        "p95Us": 2261,
+        "maxUs": 2913,
+        "wallP95Us": 2341,
+        "wallMaxUs": 3111
+      }
+    },
+    "bench:0:CHAPTER": {
+      "seconds": 3.085791,
+      "Realtime AudioWorklet thread": {
+        "count": 666,
+        "cpuMs": 971.795,
+        "cpuPercent": 31.4925735411115,
+        "meanUs": 1459.1516516516517,
+        "p95Us": 2362,
+        "maxUs": 3650,
+        "wallP95Us": 2364,
+        "wallMaxUs": 3691
+      },
+      "AudioOutputDevice": {
+        "count": 520,
+        "cpuMs": 14.215,
+        "cpuPercent": 0.46065984378073566,
+        "meanUs": 27.33653846153846,
+        "p95Us": 43,
+        "maxUs": 856,
+        "wallP95Us": 2452,
+        "wallMaxUs": 3774
+      },
+      "CrRendererMain": {
+        "count": 1635,
+        "cpuMs": 230.81,
+        "cpuPercent": 7.479767748366626,
+        "meanUs": 141.16819571865443,
+        "p95Us": 1544,
+        "maxUs": 31909,
+        "wallP95Us": 1566,
+        "wallMaxUs": 57488
+      }
+    },
+    "bench:1:HOLLOW": {
+      "seconds": 2.403294,
+      "Realtime AudioWorklet thread": {
+        "count": 500,
+        "cpuMs": 805.308,
+        "cpuPercent": 33.50850957061433,
+        "meanUs": 1610.616,
+        "p95Us": 2328,
+        "maxUs": 2946,
+        "wallP95Us": 2312,
+        "wallMaxUs": 2774
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 10.465,
+        "cpuPercent": 0.43544401974956043,
+        "meanUs": 25.27777777777778,
+        "p95Us": 37,
+        "maxUs": 115,
+        "wallP95Us": 2386,
+        "wallMaxUs": 2803
+      },
+      "CrRendererMain": {
+        "count": 686,
+        "cpuMs": 169.479,
+        "cpuPercent": 7.051946203835237,
+        "meanUs": 247.05393586005832,
+        "p95Us": 2225,
+        "maxUs": 2904,
+        "wallP95Us": 2252,
+        "wallMaxUs": 2912
+      }
+    },
+    "bench:1:GLASS": {
+      "seconds": 2.403629,
+      "Realtime AudioWorklet thread": {
+        "count": 499,
+        "cpuMs": 936.291,
+        "cpuPercent": 38.95322447848649,
+        "meanUs": 1876.3346693386773,
+        "p95Us": 2876,
+        "maxUs": 3659,
+        "wallP95Us": 2839,
+        "wallMaxUs": 3431
+      },
+      "AudioOutputDevice": {
+        "count": 415,
+        "cpuMs": 13.564,
+        "cpuPercent": 0.5643133778132982,
+        "meanUs": 32.68433734939759,
+        "p95Us": 53,
+        "maxUs": 126,
+        "wallP95Us": 3056,
+        "wallMaxUs": 3494
+      },
+      "CrRendererMain": {
+        "count": 744,
+        "cpuMs": 199.34,
+        "cpuPercent": 8.293293182932974,
+        "meanUs": 267.9301075268817,
+        "p95Us": 2468,
+        "maxUs": 4525,
+        "wallP95Us": 2526,
+        "wallMaxUs": 6301
+      }
+    },
+    "bench:1:TIDAL": {
+      "seconds": 2.40414,
+      "Realtime AudioWorklet thread": {
+        "count": 499,
+        "cpuMs": 866.844,
+        "cpuPercent": 36.056302877536254,
+        "meanUs": 1737.1623246492986,
+        "p95Us": 2754,
+        "maxUs": 3208,
+        "wallP95Us": 2742,
+        "wallMaxUs": 3165
+      },
+      "AudioOutputDevice": {
+        "count": 415,
+        "cpuMs": 12.222,
+        "cpuPercent": 0.5083730564775761,
+        "meanUs": 29.450602409638556,
+        "p95Us": 47,
+        "maxUs": 134,
+        "wallP95Us": 2828,
+        "wallMaxUs": 3236
+      },
+      "CrRendererMain": {
+        "count": 444,
+        "cpuMs": 169.282,
+        "cpuPercent": 7.041270475097123,
+        "meanUs": 381.26576576576576,
+        "p95Us": 2361,
+        "maxUs": 3690,
+        "wallP95Us": 2396,
+        "wallMaxUs": 3732
+      }
+    },
+    "bench:1:ECHO": {
+      "seconds": 2.403209,
+      "Realtime AudioWorklet thread": {
+        "count": 502,
+        "cpuMs": 793.731,
+        "cpuPercent": 33.02796385998887,
+        "meanUs": 1581.1374501992032,
+        "p95Us": 2342,
+        "maxUs": 2821,
+        "wallP95Us": 2347,
+        "wallMaxUs": 2944
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 9.027,
+        "cpuPercent": 0.37562276106655723,
+        "meanUs": 21.804347826086957,
+        "p95Us": 32,
+        "maxUs": 111,
+        "wallP95Us": 2393,
+        "wallMaxUs": 2979
+      },
+      "CrRendererMain": {
+        "count": 705,
+        "cpuMs": 162.398,
+        "cpuPercent": 6.75754792862377,
+        "meanUs": 230.3517730496454,
+        "p95Us": 2142,
+        "maxUs": 2907,
+        "wallP95Us": 2171,
+        "wallMaxUs": 2933
+      }
+    },
+    "bench:1:DISSOLVE": {
+      "seconds": 2.403384,
+      "Realtime AudioWorklet thread": {
+        "count": 501,
+        "cpuMs": 816.116,
+        "cpuPercent": 33.95695402815363,
+        "meanUs": 1628.9740518962076,
+        "p95Us": 2366,
+        "maxUs": 3345,
+        "wallP95Us": 2370,
+        "wallMaxUs": 2836
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 9.397,
+        "cpuPercent": 0.39099037024462174,
+        "meanUs": 22.698067632850243,
+        "p95Us": 33,
+        "maxUs": 126,
+        "wallP95Us": 2424,
+        "wallMaxUs": 2864
+      },
+      "CrRendererMain": {
+        "count": 631,
+        "cpuMs": 164.72,
+        "cpuPercent": 6.853669659113983,
+        "meanUs": 261.0459587955626,
+        "p95Us": 2170,
+        "maxUs": 3040,
+        "wallP95Us": 2196,
+        "wallMaxUs": 3101
+      }
+    },
+    "bench:1:MAX": {
+      "seconds": 2.402327,
+      "Realtime AudioWorklet thread": {
+        "count": 500,
+        "cpuMs": 803.351,
+        "cpuPercent": 33.44053494799002,
+        "meanUs": 1606.702,
+        "p95Us": 2349,
+        "maxUs": 3107,
+        "wallP95Us": 2353,
+        "wallMaxUs": 2659
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 9.05,
+        "cpuPercent": 0.37671807376764277,
+        "meanUs": 21.85990338164251,
+        "p95Us": 33,
+        "maxUs": 101,
+        "wallP95Us": 2402,
+        "wallMaxUs": 2694
+      },
+      "CrRendererMain": {
+        "count": 815,
+        "cpuMs": 168.783,
+        "cpuPercent": 7.025812888919784,
+        "meanUs": 207.09570552147238,
+        "p95Us": 2137,
+        "maxUs": 2803,
+        "wallP95Us": 2158,
+        "wallMaxUs": 2824
+      }
+    },
+    "bench:1:TRANSITION": {
+      "seconds": 2.402149,
+      "Realtime AudioWorklet thread": {
+        "count": 500,
+        "cpuMs": 828.727,
+        "cpuPercent": 34.499400328622414,
+        "meanUs": 1657.454,
+        "p95Us": 2374,
+        "maxUs": 2606,
+        "wallP95Us": 2378,
+        "wallMaxUs": 2611
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 9.084,
+        "cpuPercent": 0.37816138799050353,
+        "meanUs": 21.942028985507246,
+        "p95Us": 32,
+        "maxUs": 114,
+        "wallP95Us": 2416,
+        "wallMaxUs": 2645
+      },
+      "CrRendererMain": {
+        "count": 650,
+        "cpuMs": 161.634,
+        "cpuPercent": 6.728724987500775,
+        "meanUs": 248.6676923076923,
+        "p95Us": 2146,
+        "maxUs": 2706,
+        "wallP95Us": 2168,
+        "wallMaxUs": 2727
+      }
+    },
+    "bench:1:CHAPTER": {
+      "seconds": 3.087317,
+      "Realtime AudioWorklet thread": {
+        "count": 668,
+        "cpuMs": 983.044,
+        "cpuPercent": 31.841369059283515,
+        "meanUs": 1471.622754491018,
+        "p95Us": 2371,
+        "maxUs": 3640,
+        "wallP95Us": 2364,
+        "wallMaxUs": 3669
+      },
+      "AudioOutputDevice": {
+        "count": 522,
+        "cpuMs": 13.302,
+        "cpuPercent": 0.4308595456831935,
+        "meanUs": 25.482758620689655,
+        "p95Us": 33,
+        "maxUs": 745,
+        "wallP95Us": 2418,
+        "wallMaxUs": 3738
+      },
+      "CrRendererMain": {
+        "count": 1160,
+        "cpuMs": 224.487,
+        "cpuPercent": 7.271264985098711,
+        "meanUs": 193.52327586206897,
+        "p95Us": 1786,
+        "maxUs": 34088,
+        "wallP95Us": 1797,
+        "wallMaxUs": 61699
+      }
+    },
+    "bench:2:HOLLOW": {
+      "seconds": 2.403279,
+      "Realtime AudioWorklet thread": {
+        "count": 500,
+        "cpuMs": 795.888,
+        "cpuPercent": 33.11675423452708,
+        "meanUs": 1591.776,
+        "p95Us": 2318,
+        "maxUs": 2904,
+        "wallP95Us": 2322,
+        "wallMaxUs": 2912
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 9.685,
+        "cpuPercent": 0.4029910801034753,
+        "meanUs": 23.393719806763286,
+        "p95Us": 38,
+        "maxUs": 52,
+        "wallP95Us": 2371,
+        "wallMaxUs": 2954
+      },
+      "CrRendererMain": {
+        "count": 1001,
+        "cpuMs": 160.291,
+        "cpuPercent": 6.669679217435845,
+        "meanUs": 160.13086913086914,
+        "p95Us": 1884,
+        "maxUs": 2876,
+        "wallP95Us": 1892,
+        "wallMaxUs": 2912
+      }
+    },
+    "bench:2:GLASS": {
+      "seconds": 2.402693,
+      "Realtime AudioWorklet thread": {
+        "count": 500,
+        "cpuMs": 789.539,
+        "cpuPercent": 32.860586017439594,
+        "meanUs": 1579.078,
+        "p95Us": 2388,
+        "maxUs": 4443,
+        "wallP95Us": 2394,
+        "wallMaxUs": 3652
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 9.78,
+        "cpuPercent": 0.4070432635380383,
+        "meanUs": 23.6231884057971,
+        "p95Us": 35,
+        "maxUs": 159,
+        "wallP95Us": 2439,
+        "wallMaxUs": 3737
+      },
+      "CrRendererMain": {
+        "count": 681,
+        "cpuMs": 166.741,
+        "cpuPercent": 6.939754683598778,
+        "meanUs": 244.84728340675477,
+        "p95Us": 2191,
+        "maxUs": 2827,
+        "wallP95Us": 2217,
+        "wallMaxUs": 2851
+      }
+    },
+    "bench:2:TIDAL": {
+      "seconds": 2.40273,
+      "Realtime AudioWorklet thread": {
+        "count": 499,
+        "cpuMs": 816.152,
+        "cpuPercent": 33.967695080179624,
+        "meanUs": 1635.5751503006013,
+        "p95Us": 2762,
+        "maxUs": 3304,
+        "wallP95Us": 2765,
+        "wallMaxUs": 3344
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 12.438,
+        "cpuPercent": 0.5176611604300109,
+        "meanUs": 30.043478260869566,
+        "p95Us": 51,
+        "maxUs": 131,
+        "wallP95Us": 2847,
+        "wallMaxUs": 3432
+      },
+      "CrRendererMain": {
+        "count": 680,
+        "cpuMs": 174.987,
+        "cpuPercent": 7.282840768625689,
+        "meanUs": 257.33382352941175,
+        "p95Us": 2225,
+        "maxUs": 3620,
+        "wallP95Us": 2246,
+        "wallMaxUs": 3717
+      }
+    },
+    "bench:2:ECHO": {
+      "seconds": 2.403703,
+      "Realtime AudioWorklet thread": {
+        "count": 503,
+        "cpuMs": 720.439,
+        "cpuPercent": 29.972047295360532,
+        "meanUs": 1432.2842942345924,
+        "p95Us": 2253,
+        "maxUs": 3358,
+        "wallP95Us": 2259,
+        "wallMaxUs": 3280
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 9.402,
+        "cpuPercent": 0.39114649355598424,
+        "meanUs": 22.71014492753623,
+        "p95Us": 37,
+        "maxUs": 101,
+        "wallP95Us": 2346,
+        "wallMaxUs": 3304
+      },
+      "CrRendererMain": {
+        "count": 830,
+        "cpuMs": 154.715,
+        "cpuPercent": 6.436527308074251,
+        "meanUs": 186.40361445783134,
+        "p95Us": 1942,
+        "maxUs": 2493,
+        "wallP95Us": 1953,
+        "wallMaxUs": 2509
+      }
+    },
+    "bench:2:DISSOLVE": {
+      "seconds": 2.401682,
+      "Realtime AudioWorklet thread": {
+        "count": 500,
+        "cpuMs": 817.402,
+        "cpuPercent": 34.034564109653154,
+        "meanUs": 1634.804,
+        "p95Us": 2366,
+        "maxUs": 3442,
+        "wallP95Us": 2365,
+        "wallMaxUs": 3630
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 9.757,
+        "cpuPercent": 0.406256948255431,
+        "meanUs": 23.567632850241544,
+        "p95Us": 36,
+        "maxUs": 113,
+        "wallP95Us": 2427,
+        "wallMaxUs": 3657
+      },
+      "CrRendererMain": {
+        "count": 447,
+        "cpuMs": 157.04,
+        "cpuPercent": 6.538750758843177,
+        "meanUs": 351.3199105145414,
+        "p95Us": 2242,
+        "maxUs": 2851,
+        "wallP95Us": 2279,
+        "wallMaxUs": 2914
+      }
+    },
+    "bench:2:MAX": {
+      "seconds": 2.40339,
+      "Realtime AudioWorklet thread": {
+        "count": 500,
+        "cpuMs": 799.954,
+        "cpuPercent": 33.284402448208574,
+        "meanUs": 1599.908,
+        "p95Us": 2350,
+        "maxUs": 3599,
+        "wallP95Us": 2355,
+        "wallMaxUs": 2810
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 9.23,
+        "cpuPercent": 0.3840408755965532,
+        "meanUs": 22.294685990338163,
+        "p95Us": 32,
+        "maxUs": 124,
+        "wallP95Us": 2406,
+        "wallMaxUs": 2845
+      },
+      "CrRendererMain": {
+        "count": 724,
+        "cpuMs": 159.039,
+        "cpuPercent": 6.6172780946912475,
+        "meanUs": 219.66712707182322,
+        "p95Us": 2093,
+        "maxUs": 2570,
+        "wallP95Us": 2117,
+        "wallMaxUs": 2596
+      }
+    },
+    "bench:2:TRANSITION": {
+      "seconds": 2.403161,
+      "Realtime AudioWorklet thread": {
+        "count": 499,
+        "cpuMs": 832.656,
+        "cpuPercent": 34.648365215647225,
+        "meanUs": 1668.6492985971945,
+        "p95Us": 2393,
+        "maxUs": 3357,
+        "wallP95Us": 2401,
+        "wallMaxUs": 2798
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 9.452,
+        "cpuPercent": 0.3933153043012932,
+        "meanUs": 22.830917874396135,
+        "p95Us": 34,
+        "maxUs": 129,
+        "wallP95Us": 2440,
+        "wallMaxUs": 2840
+      },
+      "CrRendererMain": {
+        "count": 829,
+        "cpuMs": 165.476,
+        "cpuPercent": 6.885764208057638,
+        "meanUs": 199.60916767189386,
+        "p95Us": 2037,
+        "maxUs": 3723,
+        "wallP95Us": 2051,
+        "wallMaxUs": 3810
+      }
+    },
+    "bench:2:CHAPTER": {
+      "seconds": 3.083743,
+      "Realtime AudioWorklet thread": {
+        "count": 661,
+        "cpuMs": 994.218,
+        "cpuPercent": 32.24062446189582,
+        "meanUs": 1504.1119515885023,
+        "p95Us": 2473,
+        "maxUs": 3983,
+        "wallP95Us": 2480,
+        "wallMaxUs": 4024
+      },
+      "AudioOutputDevice": {
+        "count": 521,
+        "cpuMs": 12.951,
+        "cpuPercent": 0.41997663229393634,
+        "meanUs": 24.857965451055662,
+        "p95Us": 36,
+        "maxUs": 684,
+        "wallP95Us": 2534,
+        "wallMaxUs": 4094
+      },
+      "CrRendererMain": {
+        "count": 951,
+        "cpuMs": 230.431,
+        "cpuPercent": 7.4724450124410495,
+        "meanUs": 242.3038906414301,
+        "p95Us": 1883,
+        "maxUs": 35908,
+        "wallP95Us": 1910,
+        "wallMaxUs": 63691
+      }
+    }
+  },
+  "new-final": {
+    "bench:0:HOLLOW": {
+      "seconds": 2.404333,
+      "Realtime AudioWorklet thread": {
+        "count": 441,
+        "cpuMs": 417.18,
+        "cpuPercent": 17.351173901452086,
+        "meanUs": 945.9863945578231,
+        "p95Us": 1690,
+        "maxUs": 2383,
+        "wallP95Us": 1710,
+        "wallMaxUs": 2412
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 11.976,
+        "cpuPercent": 0.49810072065724675,
+        "meanUs": 28.92753623188406,
+        "p95Us": 62,
+        "maxUs": 92,
+        "wallP95Us": 1820,
+        "wallMaxUs": 2474
+      },
+      "CrRendererMain": {
+        "count": 438,
+        "cpuMs": 182.915,
+        "cpuPercent": 7.607723223031086,
+        "meanUs": 417.61415525114154,
+        "p95Us": 2618,
+        "maxUs": 4019,
+        "wallP95Us": 2774,
+        "wallMaxUs": 4287
+      }
+    },
+    "bench:0:GLASS": {
+      "seconds": 2.403836,
+      "Realtime AudioWorklet thread": {
+        "count": 480,
+        "cpuMs": 559.428,
+        "cpuPercent": 23.2723031022083,
+        "meanUs": 1165.475,
+        "p95Us": 2166,
+        "maxUs": 2756,
+        "wallP95Us": 2188,
+        "wallMaxUs": 2799
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 12.573,
+        "cpuPercent": 0.5230390093167754,
+        "meanUs": 30.369565217391305,
+        "p95Us": 60,
+        "maxUs": 104,
+        "wallP95Us": 2267,
+        "wallMaxUs": 2839
+      },
+      "CrRendererMain": {
+        "count": 446,
+        "cpuMs": 222.822,
+        "cpuPercent": 9.269434354090713,
+        "meanUs": 499.60089686098655,
+        "p95Us": 3426,
+        "maxUs": 4493,
+        "wallP95Us": 3577,
+        "wallMaxUs": 4966
+      }
+    },
+    "bench:0:TIDAL": {
+      "seconds": 2.403844,
+      "Realtime AudioWorklet thread": {
+        "count": 499,
+        "cpuMs": 532.532,
+        "cpuPercent": 22.153351049402538,
+        "meanUs": 1067.198396793587,
+        "p95Us": 1912,
+        "maxUs": 3270,
+        "wallP95Us": 1926,
+        "wallMaxUs": 3467
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 11.456,
+        "cpuPercent": 0.47657002700674417,
+        "meanUs": 27.67149758454106,
+        "p95Us": 55,
+        "maxUs": 106,
+        "wallP95Us": 2083,
+        "wallMaxUs": 3506
+      },
+      "CrRendererMain": {
+        "count": 448,
+        "cpuMs": 218.137,
+        "cpuPercent": 9.07450733075857,
+        "meanUs": 486.91294642857144,
+        "p95Us": 3160,
+        "maxUs": 5316,
+        "wallP95Us": 3185,
+        "wallMaxUs": 5478
+      }
+    },
+    "bench:0:ECHO": {
+      "seconds": 2.403266,
+      "Realtime AudioWorklet thread": {
+        "count": 478,
+        "cpuMs": 553.545,
+        "cpuPercent": 23.033030883805623,
+        "meanUs": 1158.0439330543934,
+        "p95Us": 2149,
+        "maxUs": 3207,
+        "wallP95Us": 2167,
+        "wallMaxUs": 3274
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 13.167,
+        "cpuPercent": 0.5478794274125295,
+        "meanUs": 31.804347826086957,
+        "p95Us": 70,
+        "maxUs": 117,
+        "wallP95Us": 2286,
+        "wallMaxUs": 3321
+      },
+      "CrRendererMain": {
+        "count": 439,
+        "cpuMs": 211.321,
+        "cpuPercent": 8.793075756075275,
+        "meanUs": 481.36902050113895,
+        "p95Us": 3150,
+        "maxUs": 4381,
+        "wallP95Us": 3260,
+        "wallMaxUs": 5064
+      }
+    },
+    "bench:0:DISSOLVE": {
+      "seconds": 2.401606,
+      "Realtime AudioWorklet thread": {
+        "count": 476,
+        "cpuMs": 504.868,
+        "cpuPercent": 21.02209937849922,
+        "meanUs": 1060.6470588235295,
+        "p95Us": 2119,
+        "maxUs": 2638,
+        "wallP95Us": 2126,
+        "wallMaxUs": 2652
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 11.499,
+        "cpuPercent": 0.4788045999218856,
+        "meanUs": 27.77536231884058,
+        "p95Us": 61,
+        "maxUs": 113,
+        "wallP95Us": 2271,
+        "wallMaxUs": 2750
+      },
+      "CrRendererMain": {
+        "count": 437,
+        "cpuMs": 213.134,
+        "cpuPercent": 8.874644716910268,
+        "meanUs": 487.720823798627,
+        "p95Us": 3140,
+        "maxUs": 4817,
+        "wallP95Us": 3342,
+        "wallMaxUs": 5081
+      }
+    },
+    "bench:0:MAX": {
+      "seconds": 2.402732,
+      "Realtime AudioWorklet thread": {
+        "count": 506,
+        "cpuMs": 640.045,
+        "cpuPercent": 26.638218494613632,
+        "meanUs": 1264.911067193676,
+        "p95Us": 1963,
+        "maxUs": 4710,
+        "wallP95Us": 1957,
+        "wallMaxUs": 4869
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 10.562,
+        "cpuPercent": 0.43958294141835214,
+        "meanUs": 25.51207729468599,
+        "p95Us": 43,
+        "maxUs": 114,
+        "wallP95Us": 2129,
+        "wallMaxUs": 4898
+      },
+      "CrRendererMain": {
+        "count": 440,
+        "cpuMs": 186.03,
+        "cpuPercent": 7.742436526420758,
+        "meanUs": 422.79545454545456,
+        "p95Us": 2787,
+        "maxUs": 4393,
+        "wallP95Us": 2985,
+        "wallMaxUs": 4807
+      }
+    },
+    "bench:0:TRANSITION": {
+      "seconds": 2.403559,
+      "Realtime AudioWorklet thread": {
+        "count": 456,
+        "cpuMs": 466.57,
+        "cpuPercent": 19.41163083577312,
+        "meanUs": 1023.1798245614035,
+        "p95Us": 1874,
+        "maxUs": 2455,
+        "wallP95Us": 1864,
+        "wallMaxUs": 2392
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 11.793,
+        "cpuPercent": 0.4906474107771018,
+        "meanUs": 28.485507246376812,
+        "p95Us": 59,
+        "maxUs": 181,
+        "wallP95Us": 1984,
+        "wallMaxUs": 2458
+      },
+      "CrRendererMain": {
+        "count": 1034,
+        "cpuMs": 233.5,
+        "cpuPercent": 9.714760486428666,
+        "meanUs": 225.8220502901354,
+        "p95Us": 2300,
+        "maxUs": 8231,
+        "wallP95Us": 2419,
+        "wallMaxUs": 8867
+      }
+    },
+    "bench:0:CHAPTER": {
+      "seconds": 2.997001,
+      "Realtime AudioWorklet thread": {
+        "count": 604,
+        "cpuMs": 619.562,
+        "cpuPercent": 20.672732508264094,
+        "meanUs": 1025.7649006622516,
+        "p95Us": 2113,
+        "maxUs": 3881,
+        "wallP95Us": 2124,
+        "wallMaxUs": 3971
+      },
+      "AudioOutputDevice": {
+        "count": 493,
+        "cpuMs": 15.832,
+        "cpuPercent": 0.5282614186648587,
+        "meanUs": 32.113590263691684,
+        "p95Us": 64,
+        "maxUs": 126,
+        "wallP95Us": 2264,
+        "wallMaxUs": 4036
+      },
+      "CrRendererMain": {
+        "count": 789,
+        "cpuMs": 228.646,
+        "cpuPercent": 7.629159950230246,
+        "meanUs": 289.7921419518378,
+        "p95Us": 2262,
+        "maxUs": 8930,
+        "wallP95Us": 2306,
+        "wallMaxUs": 37394
+      }
+    },
+    "bench:1:HOLLOW": {
+      "seconds": 2.403374,
+      "Realtime AudioWorklet thread": {
+        "count": 447,
+        "cpuMs": 502.194,
+        "cpuPercent": 20.895374585894665,
+        "meanUs": 1123.476510067114,
+        "p95Us": 2035,
+        "maxUs": 2787,
+        "wallP95Us": 2040,
+        "wallMaxUs": 2811
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 13.67,
+        "cpuPercent": 0.5687837182227985,
+        "meanUs": 33.01932367149758,
+        "p95Us": 64,
+        "maxUs": 88,
+        "wallP95Us": 2145,
+        "wallMaxUs": 2866
+      },
+      "CrRendererMain": {
+        "count": 1587,
+        "cpuMs": 200.765,
+        "cpuPercent": 8.353464754133148,
+        "meanUs": 126.5059861373661,
+        "p95Us": 356,
+        "maxUs": 4412,
+        "wallP95Us": 358,
+        "wallMaxUs": 4919
+      }
+    },
+    "bench:1:GLASS": {
+      "seconds": 2.40312,
+      "Realtime AudioWorklet thread": {
+        "count": 476,
+        "cpuMs": 563.62,
+        "cpuPercent": 23.45367688671394,
+        "meanUs": 1184.0756302521008,
+        "p95Us": 2190,
+        "maxUs": 3038,
+        "wallP95Us": 2192,
+        "wallMaxUs": 3075
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 13.469,
+        "cpuPercent": 0.5604797097107094,
+        "meanUs": 32.533816425120776,
+        "p95Us": 63,
+        "maxUs": 153,
+        "wallP95Us": 2299,
+        "wallMaxUs": 3124
+      },
+      "CrRendererMain": {
+        "count": 1005,
+        "cpuMs": 206.528,
+        "cpuPercent": 8.594160924131963,
+        "meanUs": 205.50049751243782,
+        "p95Us": 2285,
+        "maxUs": 4448,
+        "wallP95Us": 2349,
+        "wallMaxUs": 4946
+      }
+    },
+    "bench:1:TIDAL": {
+      "seconds": 2.403337,
+      "Realtime AudioWorklet thread": {
+        "count": 501,
+        "cpuMs": 527.812,
+        "cpuPercent": 21.96163084910689,
+        "meanUs": 1053.5169660678644,
+        "p95Us": 2039,
+        "maxUs": 2591,
+        "wallP95Us": 2003,
+        "wallMaxUs": 2610
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 12.618,
+        "cpuPercent": 0.5250200034368879,
+        "meanUs": 30.47826086956522,
+        "p95Us": 58,
+        "maxUs": 135,
+        "wallP95Us": 2155,
+        "wallMaxUs": 2685
+      },
+      "CrRendererMain": {
+        "count": 445,
+        "cpuMs": 195.074,
+        "cpuPercent": 8.116797602666626,
+        "meanUs": 438.3685393258427,
+        "p95Us": 2759,
+        "maxUs": 4011,
+        "wallP95Us": 2800,
+        "wallMaxUs": 4825
+      }
+    },
+    "bench:1:ECHO": {
+      "seconds": 2.403156,
+      "Realtime AudioWorklet thread": {
+        "count": 476,
+        "cpuMs": 535.817,
+        "cpuPercent": 22.296388582347547,
+        "meanUs": 1125.6659663865546,
+        "p95Us": 2140,
+        "maxUs": 2779,
+        "wallP95Us": 2147,
+        "wallMaxUs": 2798
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 12.761,
+        "cpuPercent": 0.5310100551108625,
+        "meanUs": 30.82367149758454,
+        "p95Us": 62,
+        "maxUs": 126,
+        "wallP95Us": 2263,
+        "wallMaxUs": 2876
+      },
+      "CrRendererMain": {
+        "count": 1122,
+        "cpuMs": 200.698,
+        "cpuPercent": 8.351434530259375,
+        "meanUs": 178.8752228163993,
+        "p95Us": 2199,
+        "maxUs": 3745,
+        "wallP95Us": 2232,
+        "wallMaxUs": 3919
+      }
+    },
+    "bench:1:DISSOLVE": {
+      "seconds": 2.404496,
+      "Realtime AudioWorklet thread": {
+        "count": 476,
+        "cpuMs": 525.648,
+        "cpuPercent": 21.861046972005777,
+        "meanUs": 1104.3025210084033,
+        "p95Us": 2010,
+        "maxUs": 2644,
+        "wallP95Us": 2019,
+        "wallMaxUs": 2677
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 13.67,
+        "cpuPercent": 0.5685183090344089,
+        "meanUs": 33.01932367149758,
+        "p95Us": 60,
+        "maxUs": 114,
+        "wallP95Us": 2122,
+        "wallMaxUs": 2770
+      },
+      "CrRendererMain": {
+        "count": 699,
+        "cpuMs": 194.552,
+        "cpuPercent": 8.091175863881661,
+        "meanUs": 278.3290414878398,
+        "p95Us": 2443,
+        "maxUs": 3892,
+        "wallP95Us": 2500,
+        "wallMaxUs": 4001
+      }
+    },
+    "bench:1:MAX": {
+      "seconds": 2.401729,
+      "Realtime AudioWorklet thread": {
+        "count": 506,
+        "cpuMs": 666.037,
+        "cpuPercent": 27.731563386210517,
+        "meanUs": 1316.2786561264822,
+        "p95Us": 2444,
+        "maxUs": 3563,
+        "wallP95Us": 2370,
+        "wallMaxUs": 3674
+      },
+      "AudioOutputDevice": {
+        "count": 413,
+        "cpuMs": 12.401,
+        "cpuPercent": 0.5163363560168529,
+        "meanUs": 30.026634382566584,
+        "p95Us": 61,
+        "maxUs": 160,
+        "wallP95Us": 2713,
+        "wallMaxUs": 3699
+      },
+      "CrRendererMain": {
+        "count": 648,
+        "cpuMs": 176.7,
+        "cpuPercent": 7.357199750679615,
+        "meanUs": 272.68518518518516,
+        "p95Us": 2283,
+        "maxUs": 3832,
+        "wallP95Us": 2305,
+        "wallMaxUs": 3933
+      }
+    },
+    "bench:1:TRANSITION": {
+      "seconds": 2.403096,
+      "Realtime AudioWorklet thread": {
+        "count": 455,
+        "cpuMs": 471.02,
+        "cpuPercent": 19.6005486256063,
+        "meanUs": 1035.2087912087911,
+        "p95Us": 1531,
+        "maxUs": 2253,
+        "wallP95Us": 1535,
+        "wallMaxUs": 2266
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 12.459,
+        "cpuPercent": 0.5184561915129483,
+        "meanUs": 30.094202898550726,
+        "p95Us": 54,
+        "maxUs": 78,
+        "wallP95Us": 1654,
+        "wallMaxUs": 2303
+      },
+      "CrRendererMain": {
+        "count": 1121,
+        "cpuMs": 191.616,
+        "cpuPercent": 7.973713909057316,
+        "meanUs": 170.93309545049064,
+        "p95Us": 2067,
+        "maxUs": 3834,
+        "wallP95Us": 2134,
+        "wallMaxUs": 4550
+      }
+    },
+    "bench:1:CHAPTER": {
+      "seconds": 2.982405,
+      "Realtime AudioWorklet thread": {
+        "count": 600,
+        "cpuMs": 607.936,
+        "cpuPercent": 20.384085997709903,
+        "meanUs": 1013.2266666666667,
+        "p95Us": 1978,
+        "maxUs": 3514,
+        "wallP95Us": 1986,
+        "wallMaxUs": 3593
+      },
+      "AudioOutputDevice": {
+        "count": 493,
+        "cpuMs": 13.593,
+        "cpuPercent": 0.45577310928596215,
+        "meanUs": 27.572008113590265,
+        "p95Us": 53,
+        "maxUs": 93,
+        "wallP95Us": 2164,
+        "wallMaxUs": 3649
+      },
+      "CrRendererMain": {
+        "count": 679,
+        "cpuMs": 224.422,
+        "cpuPercent": 7.524866676390363,
+        "meanUs": 330.5184094256259,
+        "p95Us": 2333,
+        "maxUs": 7519,
+        "wallP95Us": 2406,
+        "wallMaxUs": 35258
+      }
+    },
+    "bench:2:HOLLOW": {
+      "seconds": 2.403162,
+      "Realtime AudioWorklet thread": {
+        "count": 447,
+        "cpuMs": 500.782,
+        "cpuPercent": 20.8384619929909,
+        "meanUs": 1120.317673378076,
+        "p95Us": 2078,
+        "maxUs": 2810,
+        "wallP95Us": 2089,
+        "wallMaxUs": 2832
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 12.601,
+        "cpuPercent": 0.5243508344422889,
+        "meanUs": 30.43719806763285,
+        "p95Us": 66,
+        "maxUs": 82,
+        "wallP95Us": 2164,
+        "wallMaxUs": 2927
+      },
+      "CrRendererMain": {
+        "count": 656,
+        "cpuMs": 204.321,
+        "cpuPercent": 8.502173386563202,
+        "meanUs": 311.4649390243902,
+        "p95Us": 2680,
+        "maxUs": 4069,
+        "wallP95Us": 2729,
+        "wallMaxUs": 4329
+      }
+    },
+    "bench:2:GLASS": {
+      "seconds": 2.403076,
+      "Realtime AudioWorklet thread": {
+        "count": 476,
+        "cpuMs": 516.239,
+        "cpuPercent": 21.482425025259293,
+        "meanUs": 1084.5357142857142,
+        "p95Us": 1640,
+        "maxUs": 2839,
+        "wallP95Us": 1615,
+        "wallMaxUs": 2879
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 11.255,
+        "cpuPercent": 0.4683580544269095,
+        "meanUs": 27.185990338164252,
+        "p95Us": 47,
+        "maxUs": 106,
+        "wallP95Us": 1752,
+        "wallMaxUs": 2923
+      },
+      "CrRendererMain": {
+        "count": 784,
+        "cpuMs": 179.357,
+        "cpuPercent": 7.463642431616811,
+        "meanUs": 228.7716836734694,
+        "p95Us": 2173,
+        "maxUs": 3906,
+        "wallP95Us": 2205,
+        "wallMaxUs": 4076
+      }
+    },
+    "bench:2:TIDAL": {
+      "seconds": 2.404453,
+      "Realtime AudioWorklet thread": {
+        "count": 501,
+        "cpuMs": 486.504,
+        "cpuPercent": 20.233458503867617,
+        "meanUs": 971.065868263473,
+        "p95Us": 1524,
+        "maxUs": 2681,
+        "wallP95Us": 1530,
+        "wallMaxUs": 2756
+      },
+      "AudioOutputDevice": {
+        "count": 415,
+        "cpuMs": 11.933,
+        "cpuPercent": 0.4962875132098652,
+        "meanUs": 28.75421686746988,
+        "p95Us": 52,
+        "maxUs": 111,
+        "wallP95Us": 1650,
+        "wallMaxUs": 2801
+      },
+      "CrRendererMain": {
+        "count": 683,
+        "cpuMs": 180.458,
+        "cpuPercent": 7.50515813783842,
+        "meanUs": 264.21376281112737,
+        "p95Us": 2326,
+        "maxUs": 3585,
+        "wallP95Us": 2339,
+        "wallMaxUs": 3645
+      }
+    },
+    "bench:2:ECHO": {
+      "seconds": 2.403949,
+      "Realtime AudioWorklet thread": {
+        "count": 478,
+        "cpuMs": 548.503,
+        "cpuPercent": 22.816748608227545,
+        "meanUs": 1147.4958158995817,
+        "p95Us": 2234,
+        "maxUs": 3071,
+        "wallP95Us": 2240,
+        "wallMaxUs": 3093
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 13.138,
+        "cpuPercent": 0.5465174177987969,
+        "meanUs": 31.734299516908212,
+        "p95Us": 63,
+        "maxUs": 110,
+        "wallP95Us": 2352,
+        "wallMaxUs": 3133
+      },
+      "CrRendererMain": {
+        "count": 442,
+        "cpuMs": 198.178,
+        "cpuPercent": 8.243852095031965,
+        "meanUs": 448.3665158371041,
+        "p95Us": 2938,
+        "maxUs": 3972,
+        "wallP95Us": 3023,
+        "wallMaxUs": 4280
+      }
+    },
+    "bench:2:DISSOLVE": {
+      "seconds": 2.402689,
+      "Realtime AudioWorklet thread": {
+        "count": 476,
+        "cpuMs": 486.386,
+        "cpuPercent": 20.243402288019798,
+        "meanUs": 1021.8193277310925,
+        "p95Us": 1706,
+        "maxUs": 2754,
+        "wallP95Us": 1711,
+        "wallMaxUs": 2758
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 12.613,
+        "cpuPercent": 0.5249535000160237,
+        "meanUs": 30.466183574879228,
+        "p95Us": 55,
+        "maxUs": 86,
+        "wallP95Us": 2003,
+        "wallMaxUs": 2843
+      },
+      "CrRendererMain": {
+        "count": 781,
+        "cpuMs": 179.749,
+        "cpuPercent": 7.481159650708019,
+        "meanUs": 230.15236875800255,
+        "p95Us": 2157,
+        "maxUs": 3699,
+        "wallP95Us": 2197,
+        "wallMaxUs": 3780
+      }
+    },
+    "bench:2:MAX": {
+      "seconds": 2.401682,
+      "Realtime AudioWorklet thread": {
+        "count": 501,
+        "cpuMs": 550.431,
+        "cpuPercent": 22.918562907162563,
+        "meanUs": 1098.6646706586826,
+        "p95Us": 1707,
+        "maxUs": 2538,
+        "wallP95Us": 1701,
+        "wallMaxUs": 2746
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 10.393,
+        "cpuPercent": 0.4327383891789171,
+        "meanUs": 25.103864734299517,
+        "p95Us": 42,
+        "maxUs": 114,
+        "wallP95Us": 1747,
+        "wallMaxUs": 2794
+      },
+      "CrRendererMain": {
+        "count": 771,
+        "cpuMs": 160.959,
+        "cpuPercent": 6.701928065414156,
+        "meanUs": 208.76653696498053,
+        "p95Us": 2121,
+        "maxUs": 2575,
+        "wallP95Us": 2140,
+        "wallMaxUs": 2598
+      }
+    },
+    "bench:2:TRANSITION": {
+      "seconds": 2.403679,
+      "Realtime AudioWorklet thread": {
+        "count": 458,
+        "cpuMs": 558.128,
+        "cpuPercent": 23.219739407799462,
+        "meanUs": 1218.6200873362445,
+        "p95Us": 2243,
+        "maxUs": 3026,
+        "wallP95Us": 2250,
+        "wallMaxUs": 3036
+      },
+      "AudioOutputDevice": {
+        "count": 414,
+        "cpuMs": 15.067,
+        "cpuPercent": 0.6268307873056261,
+        "meanUs": 36.393719806763286,
+        "p95Us": 71,
+        "maxUs": 143,
+        "wallP95Us": 2352,
+        "wallMaxUs": 3114
+      },
+      "CrRendererMain": {
+        "count": 873,
+        "cpuMs": 201.11,
+        "cpuPercent": 8.366757790869746,
+        "meanUs": 230.36655211912944,
+        "p95Us": 2322,
+        "maxUs": 4176,
+        "wallP95Us": 2383,
+        "wallMaxUs": 4357
+      }
+    },
+    "bench:2:CHAPTER": {
+      "seconds": 2.978599,
+      "Realtime AudioWorklet thread": {
+        "count": 603,
+        "cpuMs": 668.027,
+        "cpuPercent": 22.427557385200224,
+        "meanUs": 1107.8391376451077,
+        "p95Us": 2338,
+        "maxUs": 3747,
+        "wallP95Us": 2363,
+        "wallMaxUs": 3839
+      },
+      "AudioOutputDevice": {
+        "count": 494,
+        "cpuMs": 15.689,
+        "cpuPercent": 0.5267241411146649,
+        "meanUs": 31.75910931174089,
+        "p95Us": 62,
+        "maxUs": 183,
+        "wallP95Us": 2483,
+        "wallMaxUs": 3886
+      },
+      "CrRendererMain": {
+        "count": 683,
+        "cpuMs": 242.397,
+        "cpuPercent": 8.137953447241472,
+        "meanUs": 354.900439238653,
+        "p95Us": 2641,
+        "maxUs": 7010,
+        "wallP95Us": 2697,
+        "wallMaxUs": 34864
+      }
+    }
+  }
+}
